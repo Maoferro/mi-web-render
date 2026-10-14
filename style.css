@@ -587,3 +587,9 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .hero-brand-plaque > strong { font-size: 12px; }
   .landscape-label { right: 12px; bottom: 12px; padding: 8px 11px; font-size: 8px; }
 }
+
+/* La ilustración vive como imagen flexible para conservar el paisaje en cualquier navegador. */
+.hero-art { min-height: 0; background: #e9efd9; }
+.hero-landscape { display: block; width: 100%; height: auto; }
+@media (max-width: 900px) { .hero-art { min-height: 0; } }
+@media (max-width: 680px) { .hero-art { min-height: 0; } }
