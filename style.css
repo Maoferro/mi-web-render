@@ -451,3 +451,73 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .hero-art { min-height: 0; border-radius: 18px; }
   .hero-card-image { border-width: 5px; border-radius: 18px; }
 }
+
+
+/* Orientación gratuita y contexto de diversificación agrícola. */
+.advisory-strip {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 22px;
+  margin-top: 26px;
+  padding: 27px 30px;
+  background: linear-gradient(115deg, #e7efdc, #f6f3e6);
+  border: 1px solid #dbe5ce;
+  border-radius: 20px;
+}
+.advisory-mark {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  color: #fffef8;
+  background: #4c8049;
+  border-radius: 50%;
+  font-size: 23px;
+}
+.advisory-copy .eyebrow { margin-bottom: 7px; }
+.advisory-copy h3,
+.transition-copy h3 {
+  margin: 0 0 8px;
+  color: var(--forest-deep);
+  font: 700 clamp(19px, 2.2vw, 25px)/1.25 var(--display);
+  letter-spacing: -.5px;
+}
+.advisory-copy > p:last-child,
+.transition-copy > p:not(.eyebrow) {
+  max-width: 760px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 12px;
+  line-height: 1.75;
+}
+.advisory-button { white-space: nowrap; }
+.transition-note {
+  margin-top: 42px;
+  padding: clamp(24px, 4vw, 40px);
+  background: #f1efdf;
+  border: 1px solid #e2e5d7;
+  border-radius: 22px;
+}
+.transition-copy { max-width: 920px; }
+.transition-copy .eyebrow { margin-bottom: 8px; }
+.transition-sources {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  margin-top: 18px;
+  color: #71806c;
+  font-size: 10px;
+}
+.transition-sources a { color: #426e3f; font-weight: 700; text-underline-offset: 3px; }
+@media (max-width: 680px) {
+  .advisory-strip { grid-template-columns: auto 1fr; gap: 15px; padding: 21px; border-radius: 18px; }
+  .advisory-mark { width: 40px; height: 40px; font-size: 19px; }
+  .advisory-copy h3 { font-size: 19px; }
+  .advisory-copy > p:last-child { font-size: 11px; }
+  .advisory-button { grid-column: 1 / -1; justify-self: start; }
+  .transition-note { margin-top: 30px; padding: 22px; border-radius: 18px; }
+  .transition-copy > p:not(.eyebrow) { font-size: 11px; }
+  .transition-sources { align-items: flex-start; flex-direction: column; gap: 8px; }
+}
