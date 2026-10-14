@@ -408,3 +408,16 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .product-card { grid-template-columns: 1fr; }
   .product-image { height: 215px; }
 }
+.equipment-visual { display: grid; grid-template-columns: 1.18fr .82fr; gap: 12px; min-height: 236px; }
+.equipment-worker { display: block; width: 100%; height: 236px; object-fit: cover; object-position: 42% center; border: 6px solid #fffef8; border-radius: 18px; box-shadow: 0 12px 30px rgba(27,62,34,.12); }
+.equipment-tools { display: grid; grid-template-rows: 1.1fr .9fr; gap: 12px; min-width: 0; min-height: 236px; }
+.equipment-sprayer { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+.equipment-shield { width: 100%; height: 100%; min-height: 0; object-fit: contain; padding: 8px; }
+.photo-credit { display: inline-block; margin-top: 13px; color: #66804e; font-size: 10px; font-weight: 700; text-decoration-color: rgba(102,128,78,.4); text-underline-offset: 3px; }
+@media (max-width: 680px) {
+  .equipment-visual { grid-template-columns: 1.18fr .82fr; min-height: 196px; gap: 9px; }
+  .equipment-worker { height: 196px; border-width: 4px; border-radius: 15px; }
+  .equipment-tools { grid-template-rows: 1.1fr .9fr; min-height: 196px; gap: 9px; }
+  .equipment-sprayer { height: 100%; }
+  .equipment-shield { height: 100%; }
+}
