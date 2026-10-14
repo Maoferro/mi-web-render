@@ -1,16 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
-  --ink: #17342b;
-  --ink-soft: #52665c;
-  --forest: #1282c3;
-  --forest-deep: #075d91;
+  --ink: #20351f;
+  --ink-soft: #52654b;
+  --forest: #457844;
+  --forest-deep: #18391e;
   --moss: #78a85f;
-  --lime: #c0dc96;
-  --cream: #f6f8f5;
+  --lime: #bed890;
+  --cream: #efedde;
   --paper: #fffefa;
-  --line: #e1e7dc;
-  --orange: #e99a58;
+  --line: #d7dfc7;
+  --orange: #bd5142;
   --serif: Georgia, 'Times New Roman', serif;
   --sans: 'DM Sans', Arial, sans-serif;
   --display: 'Manrope', 'DM Sans', Arial, sans-serif;
@@ -71,10 +71,10 @@ h1 em, h2 em { color: #78984f; font-family: var(--serif); font-weight: 400; }
 .hero-art { position: relative; display: grid; place-items: center; min-height: 450px; overflow: hidden; background: var(--forest); border-radius: 46% 46% 5px 5px; isolation: isolate; }
 .hero-art { background-color: #edf4e6; background-image: url('assets/fumigo-landscape.svg'); background-position: center bottom; background-size: cover; }
 .hero-art::before { content: ''; position: absolute; inset: 13px; border: 1px solid rgba(216,239,137,.2); border-radius: 46% 46% 3px 3px; }
-.hero-art::before { border-color: rgba(39,140,89,.23); }
+.hero-art::before { border-color: rgba(95,150,80,.23); }
 .hero-art::after { content: ''; position: absolute; z-index: -2; width: 380px; height: 380px; border: 1px solid rgba(245,244,238,.15); border-radius: 50%; }
 .art-center { position: relative; z-index: 1; display: grid; place-items: center; width: 244px; height: 244px; border: 1px solid rgba(216,239,137,.22); border-radius: 50%; background: radial-gradient(circle, rgba(216,239,137,.11), rgba(23,72,61,.03) 68%); }
-.art-center { border-color: rgba(39,140,89,.2); background: radial-gradient(circle, rgba(255,255,255,.93), rgba(255,255,255,.12) 72%); }
+.art-center { border-color: rgba(95,150,80,.2); background: radial-gradient(circle, rgba(255,255,255,.93), rgba(255,255,255,.12) 72%); }
 .art-center svg { width: 170px; filter: drop-shadow(0 14px 22px rgba(5,24,19,.18)); }
 .shield { fill: #5f9650; }
 .shield-inner { fill: #edf4e6; }
