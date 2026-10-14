@@ -421,3 +421,33 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .equipment-sprayer { height: 100%; }
   .equipment-shield { height: 100%; }
 }
+
+/* La tarjeta original es ahora la imagen principal de la portada. */
+.hero-art {
+  display: block;
+  align-self: center;
+  min-height: 0;
+  margin: 0;
+  overflow: visible;
+  border: 0;
+  border-radius: 22px;
+  background: transparent;
+  box-shadow: none;
+}
+.hero-art::before,
+.hero-art::after { content: none; }
+.hero-card-image {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 7px solid var(--paper);
+  border-radius: 24px;
+  box-shadow: 0 22px 55px rgba(36,77,41,.16);
+}
+@media (max-width: 900px) {
+  .hero-art { min-height: 0; }
+}
+@media (max-width: 680px) {
+  .hero-art { min-height: 0; border-radius: 18px; }
+  .hero-card-image { border-width: 5px; border-radius: 18px; }
+}
