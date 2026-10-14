@@ -13,10 +13,7 @@
 
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href="#inicio" aria-label="fumiGo+, inicio">
-        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 36"><path d="M2 25c8-1 11-8 17-8 6 0 9 6 16 6 5 0 8-3 11-5v16H2z"/><path d="M2 30c8-1 12-6 19-5 7 0 10 5 16 4 4 0 7-2 9-3v8H2z"/></svg></span>
-        <span class="brand-name">fumiGo<span>!</span><small>S.A.S.</small></span>
-      </a>
+      <a class="brand" href="#inicio" aria-label="fumiGo+, inicio"><img class="brand-logo" src="assets/fumigo-logotipo.png" alt="fumiGo! — Fumigo, tú tranquilo"></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="main-nav" aria-label="Abrir menú">
         <span></span><span></span>
       </button>
@@ -145,13 +142,28 @@
 
   <footer class="site-footer">
     <div class="container footer-main">
-      <a class="brand brand-footer" href="#inicio" aria-label="fumiGo!, volver al inicio"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 48 36"><path d="M2 25c8-1 11-8 17-8 6 0 9 6 16 6 5 0 8-3 11-5v16H2z"/><path d="M2 30c8-1 12-6 19-5 7 0 10 5 16 4 4 0 7-2 9-3v8H2z"/></svg></span><span class="brand-name">fumiGo<span>!</span><small>S.A.S.</small></span></a>
+      <a class="brand brand-footer" href="#inicio" aria-label="fumiGo!, volver al inicio"><img class="brand-logo" src="assets/fumigo-logotipo.png" alt="fumiGo! — Fumigo, tú tranquilo"></a>
       <p>Control de plagas con insumos biológicos.<br>Fumigo, tú tranquilo.</p>
       <nav class="social-links" aria-label="Redes sociales"><a href="https://www.facebook.com/fumigo.co" target="_blank" rel="noopener noreferrer">Facebook</a><a href="https://www.instagram.com/fumigo.co/" target="_blank" rel="noopener noreferrer">Instagram</a><a href="https://www.tiktok.com/@fumigo.co" target="_blank" rel="noopener noreferrer">TikTok</a></nav>
       <a class="footer-top" href="#inicio">Volver arriba <span aria-hidden="true">↑</span></a>
     </div>
     <div class="container footer-bottom"><span>© <span id="year">2026</span> fumiGo+ S.A.S.</span><a href="tel:+573114976285">311 497 6285</a><span>Líbano, Tolima · Colombia</span></div>
   </footer>
+
+  <a class="whatsapp-float" href="https://wa.me/573114976285?text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20los%20servicios%20de%20FumiGo" target="_blank" rel="noopener noreferrer" aria-label="Abrir chat de WhatsApp con FumiGo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.4 11.7a8.4 8.4 0 0 1-12.4 7.4l-4.5 1.2 1.2-4.4a8.4 8.4 0 1 1 15.7-4.2Z"/><path d="M8.2 7.8c.2-.4.4-.4.7-.4h.5c.2 0 .4.1.5.4l.7 1.7c.1.3.1.5-.1.7l-.5.6c-.2.2-.2.4-.1.6.6 1 1.4 1.8 2.4 2.3.2.1.4.1.6-.1l.7-.8c.2-.2.4-.3.7-.2l1.6.8c.3.1.4.3.4.5 0 .4-.2 1.2-.8 1.6-.5.4-1.2.6-1.9.4-1.3-.3-2.6-1-3.8-2.1-1.3-1.2-2.2-2.6-2.4-3.7-.2-.9.1-1.8.8-2.3Z"/></svg>
+    <span>Escríbenos</span>
+  </a>
+  <button class="assistant-toggle" type="button" aria-expanded="false" aria-controls="virtual-chat"><span aria-hidden="true">✳</span> Asistente virtual</button>
+  <section class="virtual-chat" id="virtual-chat" aria-label="Asistente virtual de FumiGo" aria-hidden="true">
+    <header class="virtual-chat-header"><div><strong>Asistente fumiGo!</strong><span>Respuestas rápidas</span></div><button class="chat-close" type="button" aria-label="Cerrar chat">×</button></header>
+    <div class="assistant-messages" id="assistant-messages" aria-live="polite">
+      <div class="assistant-bubble">¡Hola! Puedo orientarte sobre servicios, zonas y productos. ¿Qué quieres saber?</div>
+      <div class="quick-prompts"><button type="button">¿Qué servicios ofrecen?</button><button type="button">¿Qué zonas atienden?</button><button type="button">Quiero cotizar</button></div>
+    </div>
+    <form class="assistant-form" id="assistant-form"><label class="sr-only" for="assistant-input">Escribe tu pregunta</label><input id="assistant-input" name="question" type="text" placeholder="Escribe tu pregunta…" autocomplete="off"><button type="submit" aria-label="Enviar pregunta">Enviar</button></form>
+    <p class="assistant-disclaimer">Respuestas automáticas generales. Este chat no guarda ni envía tus mensajes; para confirmar disponibilidad o cotizar, continúa por WhatsApp.</p>
+  </section>
 
   <script>
     const menuButton = document.querySelector('.menu-toggle');
@@ -167,6 +179,74 @@
       menuButton.setAttribute('aria-label', 'Abrir menú');
       mainNav.classList.remove('is-open');
     }));
+
+    const assistantToggle = document.querySelector('.assistant-toggle');
+    const virtualChat = document.querySelector('.virtual-chat');
+    const closeChat = document.querySelector('.chat-close');
+    const messages = document.querySelector('#assistant-messages');
+    const assistantForm = document.querySelector('#assistant-form');
+    const assistantInput = document.querySelector('#assistant-input');
+    const whatsappUrl = 'https://wa.me/573114976285?text=Hola%2C%20quiero%20cotizar%20un%20servicio%20con%20FumiGo';
+
+    function setChatOpen(isOpen) {
+      virtualChat.classList.toggle('is-open', isOpen);
+      virtualChat.setAttribute('aria-hidden', String(!isOpen));
+      assistantToggle.setAttribute('aria-expanded', String(isOpen));
+      if (isOpen) assistantInput.focus();
+    }
+
+    assistantToggle.addEventListener('click', () => setChatOpen(!virtualChat.classList.contains('is-open')));
+    closeChat.addEventListener('click', () => setChatOpen(false));
+
+    function addChatMessage(text, kind, offerWhatsApp = false) {
+      const message = document.createElement('div');
+      message.className = kind === 'user' ? 'user-bubble' : 'assistant-bubble';
+      message.textContent = text;
+      messages.append(message);
+      if (offerWhatsApp) {
+        const link = document.createElement('a');
+        link.className = 'assistant-whatsapp';
+        link.href = whatsappUrl;
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = 'Continuar por WhatsApp ↗';
+        messages.append(link);
+      }
+      messages.scrollTop = messages.scrollHeight;
+    }
+
+    function answerQuestion(question) {
+      const q = question.toLocaleLowerCase('es').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (/servicio|fumig|plaga|desrat|desinfec|saneamiento/.test(q)) {
+        return ['Ofrecemos fumigación y control de plagas, desratización, desinfección, saneamiento ambiental y comercialización de insumos y equipos relacionados.', true];
+      }
+      if (/zona|donde|ciudad|libano|tolima|atienden/.test(q)) {
+        return ['Estamos en Líbano, Tolima. Escríbenos para confirmar disponibilidad para tu dirección.', true];
+      }
+      if (/producto|insumo|equipo|quimic|aseo|venta/.test(q)) {
+        return ['Comercializamos insumos, equipos y productos relacionados con el control de plagas y el aseo. Consulta referencias y disponibilidad con nuestro equipo.', true];
+      }
+      if (/precio|cotiz|valor|costo|contact|whatsapp|telefono|correo|hablar/.test(q)) {
+        return ['El valor depende del servicio y del espacio. Escríbenos para conversar sobre lo que necesitas y solicitar una cotización.', true];
+      }
+      return ['Puedo orientarte sobre servicios, zonas y productos. Para una pregunta específica, nuestro equipo puede ayudarte por WhatsApp.', true];
+    }
+
+    function submitQuestion(question) {
+      const trimmed = question.trim();
+      if (!trimmed) return;
+      addChatMessage(trimmed, 'user');
+      const [answer, offerWhatsApp] = answerQuestion(trimmed);
+      addChatMessage(answer, 'assistant', offerWhatsApp);
+    }
+
+    assistantForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      submitQuestion(assistantInput.value);
+      assistantInput.value = '';
+      assistantInput.focus();
+    });
+    messages.querySelectorAll('.quick-prompts button').forEach((button) => button.addEventListener('click', () => submitQuestion(button.textContent)));
   </script>
 </body>
 </html>
