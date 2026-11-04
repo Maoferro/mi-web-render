@@ -419,6 +419,10 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .pricing-subheading .eyebrow { margin-bottom: 8px; }
 .pricing-subheading h3 { margin: 0; color: var(--forest-deep); font: 700 25px/1.2 var(--display); letter-spacing: -.7px; }
 .pricing-subheading > span { padding-bottom: 3px; color: #778271; font-size: 11px; }
+.visit-policy { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 15px; margin: 0 0 38px; padding: 21px 23px; background: #edf2e5; border: 1px solid #dbe6cf; border-radius: 16px; }
+.visit-policy-icon { display: grid; place-items: center; width: 33px; height: 33px; color: #fff; background: #557e46; border-radius: 50%; font: 700 15px var(--display); }
+.visit-policy strong { display: block; margin-bottom: 5px; color: var(--forest-deep); font: 700 13px/1.45 var(--display); }
+.visit-policy p { margin: 0; color: #637161; font-size: 10px; line-height: 1.75; }
 .oneoff-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 13px; }
 .price-card { display: flex; flex-direction: column; min-height: 206px; padding: 21px 20px 17px; background: #fffef8; border: 1px solid #e1e6d6; border-radius: 16px; box-shadow: 0 8px 22px rgba(37,72,40,.04); }
 .price-kicker { min-height: 29px; color: #718263; font-size: 9px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; }
