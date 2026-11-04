@@ -137,6 +137,15 @@ h2 { margin-bottom: 0; color: var(--forest-deep); font-size: clamp(35px, 4vw, 50
 .service-wide .service-wide-copy h3 { margin-bottom: 5px; }
 .service-wide .service-wide-copy p { max-width: 630px; margin-bottom: 0; }
 .service-wide .card-link { width: 215px; margin: 0; padding-top: 12px; }
+.appliance-gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; margin: 22px 0 44px; }
+.appliance-photo { overflow: hidden; margin: 0; background: var(--paper); border: 1px solid rgba(20,43,38,.08); border-radius: 14px; }
+.appliance-photo img { display: block; width: 100%; height: 230px; object-fit: cover; }
+.appliance-photo figcaption { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; color: var(--forest-deep); font-size: 11px; }
+.appliance-photo figcaption strong { font-size: 12px; }
+.appliance-photo figcaption a { color: #71804f; font-size: 10px; text-decoration: none; }
+.appliance-photo figcaption a:hover { text-decoration: underline; }
+@media (max-width: 900px) { .appliance-gallery { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) { .appliance-gallery { grid-template-columns: 1fr; margin-bottom: 34px; } .appliance-photo img { height: 250px; } }
 
 .sectors { color: var(--paper); background: var(--forest-deep); }
 .sectors-grid { display: grid; grid-template-columns: .8fr 1.2fr; align-items: start; gap: 100px; }
