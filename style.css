@@ -639,3 +639,87 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .hero-landscape { display: block; width: 100%; height: auto; }
 @media (max-width: 900px) { .hero-art { min-height: 0; } }
 @media (max-width: 680px) { .hero-art { min-height: 0; } }
+
+/* Teledetección, proceso agronómico y operación de drones. */
+.sensing-showcase { margin-top: 76px; }
+.sensing-intro, .process-heading { display: flex; align-items: end; justify-content: space-between; gap: 42px; margin-bottom: 25px; }
+.sensing-intro .eyebrow, .process-heading .eyebrow { margin-bottom: 8px; }
+.sensing-intro h3, .process-heading h3 { max-width: 570px; margin: 0; color: var(--forest-deep); font: 700 clamp(25px, 3.3vw, 37px)/1.15 var(--display); letter-spacing: -1.2px; }
+.sensing-intro h3 em, .process-heading h3 em, .drone-copy h3 em { color: #78984f; font-family: var(--serif); font-weight: 400; }
+.sensing-intro > p, .process-heading > p { max-width: 460px; margin: 0 0 2px; color: var(--ink-soft); font-size: 12px; line-height: 1.8; }
+.sensing-grid { display: grid; grid-template-columns: 1.12fr .88fr; gap: 18px; align-items: stretch; }
+.sensing-card { display: flex; flex-direction: column; overflow: hidden; margin: 0; background: #fffef8; border: 1px solid #e1e6d6; border-radius: 19px; box-shadow: 0 12px 30px rgba(37,72,40,.06); }
+.sensing-image { display: grid; place-items: center; height: 310px; overflow: hidden; padding: 12px; background: #e6ebdd; }
+.sensing-orthophoto .sensing-image img { width: 100%; height: 100%; object-fit: contain; }
+.sensing-ndvi .sensing-image { background: #fff; }
+.sensing-ndvi .sensing-image img { width: 100%; height: 100%; object-fit: contain; }
+.sensing-card figcaption { display: grid; gap: 7px; padding: 17px 19px 19px; }
+.sensing-label { color: #71865b; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; }
+.sensing-card figcaption strong { color: var(--forest-deep); font: 700 14px/1.4 var(--display); }
+.sensing-card figcaption > span:last-child { color: #697667; font-size: 10px; line-height: 1.65; }
+.image-note { margin: 12px 0 0; color: #7b8578; font-size: 9px; line-height: 1.6; }
+.precision-process { margin-top: 78px; padding: clamp(24px, 4vw, 40px); background: #f1efdf; border: 1px solid #e2e5d7; border-radius: 24px; }
+.process-heading { margin-bottom: 28px; }
+.process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 11px; }
+.process-step { min-height: 206px; padding: 20px 18px; background: #fffef8; border: 1px solid rgba(35,70,39,.08); border-radius: 15px; }
+.process-step > span { display: grid; place-items: center; width: 31px; height: 31px; margin-bottom: 18px; color: #406d3d; background: #e7eedb; border-radius: 50%; font: 800 10px var(--display); }
+.process-step h4 { margin: 0 0 8px; color: var(--forest-deep); font: 700 14px/1.3 var(--display); }
+.process-step p { margin: 0; color: #687568; font-size: 10px; line-height: 1.7; }
+.process-outcome { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 14px; margin-top: 17px; padding: 18px 20px; background: #e8efdf; border: 1px solid #d8e4cc; border-radius: 15px; }
+.outcome-mark { display: grid; place-items: center; width: 32px; height: 32px; color: #527b42; background: #f8f7ef; border-radius: 50%; }
+.process-outcome p { margin: 0; color: #556750; font-size: 11px; line-height: 1.75; }
+.process-outcome strong { color: var(--forest-deep); }
+.process-caveat { margin: 14px 0 0; color: #7b8578; font-size: 9px; line-height: 1.7; }
+.process-caveat a, .parts-support a { color: #426e3f; font-weight: 700; text-underline-offset: 3px; }
+.drone-operations { display: grid; grid-template-columns: .95fr 1.05fr; align-items: center; gap: 38px; margin-top: 82px; }
+.drone-copy .eyebrow { margin-bottom: 8px; }
+.drone-copy h3 { max-width: 500px; margin: 0 0 14px; color: var(--forest-deep); font: 700 clamp(25px, 3.2vw, 36px)/1.15 var(--display); letter-spacing: -1.1px; }
+.drone-copy > p:not(.eyebrow) { color: var(--ink-soft); font-size: 12px; line-height: 1.8; }
+.drone-checklist { display: grid; gap: 9px; margin: 19px 0; padding: 0; list-style: none; counter-reset: drone-step; }
+.drone-checklist li { position: relative; padding-left: 34px; color: #536653; font-size: 10px; line-height: 1.6; counter-increment: drone-step; }
+.drone-checklist li::before { content: counter(drone-step, decimal-leading-zero); position: absolute; left: 0; top: 0; color: #698a50; font: 800 10px var(--display); }
+.drone-copy .drone-safety { margin: 0; padding: 11px 13px; color: #6b7867; background: #f0f1e8; border-left: 2px solid #9dbb75; font-size: 9px; line-height: 1.7; }
+.drone-gallery { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.drone-gallery figure { overflow: hidden; margin: 0; background: #fffef8; border: 1px solid #e1e6d6; border-radius: 16px; box-shadow: 0 12px 28px rgba(37,72,40,.07); }
+.drone-gallery img { display: block; width: 100%; height: 218px; object-fit: cover; }
+.drone-gallery figcaption { min-height: 47px; padding: 11px 12px; color: #637260; font-size: 9px; line-height: 1.5; }
+.parts-support { grid-column: 1 / -1; display: grid; grid-template-columns: .78fr 1.22fr; align-items: center; gap: 28px; margin-top: 9px; padding: 22px; background: linear-gradient(125deg, #e9eedf, #f5f3e6); border: 1px solid #dfe5d4; border-radius: 21px; }
+.parts-support > img { display: block; width: 100%; height: 235px; object-fit: cover; object-position: center 52%; border: 5px solid #fffef8; border-radius: 15px; }
+.parts-support .eyebrow { margin-bottom: 7px; }
+.parts-support h4 { margin: 0 0 9px; color: var(--forest-deep); font: 700 21px/1.25 var(--display); letter-spacing: -.5px; }
+.parts-support p:not(.eyebrow) { margin: 0 0 9px; color: #586b57; font-size: 10px; line-height: 1.7; }
+.parts-support p a { display: inline-block; }
+.parts-flow { display: grid; grid-template-columns: 1fr 1fr; gap: 9px 14px; margin: 13px 0; padding: 0; list-style: none; counter-reset: parts-step; }
+.parts-flow li { position: relative; min-height: 44px; padding: 8px 9px 8px 32px; color: #5c6b57; background: rgba(255,254,248,.72); border: 1px solid rgba(35,70,39,.07); border-radius: 9px; font-size: 9px; line-height: 1.5; counter-increment: parts-step; }
+.parts-flow li::before { content: counter(parts-step); position: absolute; left: 10px; top: 8px; color: #668650; font: 800 10px var(--display); }
+.parts-flow strong { color: var(--forest-deep); }
+.parts-cta { display: inline-flex; align-items: center; gap: 14px; margin-top: 5px; padding: 11px 15px; color: #fff !important; background: var(--forest); border-radius: 999px; font-size: 10px; text-decoration: none; }
+.parts-cta span { color: var(--lime); font-size: 15px; }
+@media (max-width: 900px) {
+  .sensing-intro, .process-heading { align-items: flex-start; flex-direction: column; gap: 13px; }
+  .process-grid { grid-template-columns: repeat(2, 1fr); }
+  .drone-operations { grid-template-columns: 1fr; gap: 26px; }
+  .drone-copy { max-width: 720px; }
+  .drone-gallery img { height: 260px; }
+  .parts-support { grid-template-columns: .85fr 1.15fr; }
+}
+@media (max-width: 680px) {
+  .sensing-showcase { margin-top: 48px; }
+  .sensing-intro h3, .process-heading h3 { font-size: 27px; }
+  .sensing-grid, .process-grid { grid-template-columns: 1fr; }
+  .sensing-image { height: 260px; }
+  .precision-process { margin-top: 48px; padding: 20px; border-radius: 19px; }
+  .process-step { min-height: 0; padding: 18px; }
+  .process-step > span { margin-bottom: 11px; }
+  .process-outcome { padding: 15px; }
+  .drone-operations { gap: 22px; margin-top: 52px; }
+  .drone-copy h3 { font-size: 27px; }
+  .drone-gallery { gap: 9px; }
+  .drone-gallery img { height: 155px; }
+  .drone-gallery figcaption { padding: 9px; font-size: 8px; }
+  .parts-support { grid-template-columns: 1fr; gap: 17px; margin-top: 1px; padding: 15px; border-radius: 17px; }
+  .parts-support > img { height: 220px; }
+  .parts-support h4 { font-size: 19px; }
+  .parts-flow { gap: 7px; }
+  .parts-flow li { padding-left: 28px; font-size: 8px; }
+}

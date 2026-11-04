@@ -4,9 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#efedde">
-  <meta name="description" content="FumiGo+ S.A.S. Control de plagas con insumos biológicos, fumigación, desratización y saneamiento ambiental en Líbano, Tolima.">
+  <meta name="description" content="FumiGo+ S.A.S.: control de plagas, análisis NDVI e imágenes multiespectrales, agricultura de precisión y operación con drones agrícolas en Líbano, Tolima.">
   <title>fumiGo+ S.A.S. | Control de plagas y saneamiento</title>
-  <link rel="stylesheet" href="style.css?v=planes-mantenimiento-20261014">
+  <link rel="stylesheet" href="style.css?v=agricultura-drones-20261104">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
@@ -20,7 +20,7 @@
       <nav class="main-nav" id="main-nav" aria-label="Navegación principal">
         <a href="#servicios">Servicios</a>
         <a href="#planes">Planes</a>
-        <a href="#tecnologia">Tecnología</a>
+        <a href="#tecnologia">Agricultura</a>
         <a href="#sectores">Espacios</a>
         <a href="#nosotros">Quiénes somos</a>
         <a class="nav-cta" href="#contacto">Hablemos <span aria-hidden="true">↗</span></a>
@@ -146,17 +146,65 @@
       <div class="container">
         <div class="tech-grid">
           <div class="tech-copy">
-            <p class="eyebrow eyebrow-dark">Agricultura y territorio</p>
-            <h2>Decisiones con los pies en el campo y la mirada <em>desde arriba.</em></h2>
-            <p>Integramos recorridos de campo con imágenes satelitales para observar la cobertura vegetal y sus variaciones. El análisis NDVI puede organizarse por parcela y, en contextos urbanos, por la unidad territorial que aplique en cada municipio.</p>
-            <div class="tech-tags"><span>Imágenes satelitales</span><span>Análisis NDVI</span><span>Parcelas · UPZ/UPL cuando aplique</span></div>
-            <p class="tech-caveat">El NDVI ayuda a observar cambios en la vegetación; no identifica plagas por sí solo. La interpretación se complementa con información y verificación en campo.</p>
+            <p class="eyebrow eyebrow-dark">Agricultura de precisión</p>
+            <h2>Leemos el cultivo desde arriba y lo <em>validamos en campo.</em></h2>
+            <p>Combinamos imágenes satelitales multiespectrales, ortofotos de alta resolución, límites de lotes y recorridos GNSS. Así visualizamos cómo cambia la cobertura vegetal dentro del predio y priorizamos dónde observar con mayor detalle.</p>
+            <div class="tech-tags"><span>Satélite multiespectral</span><span>NDVI · NDRE si hay banda red edge</span><span>Ortofotos · GNSS · parcelas</span></div>
+            <p class="tech-caveat">Los índices muestran patrones relativos de la vegetación. No diagnostican por sí solos plagas, enfermedades, deficiencias nutricionales ni una dosis de fertilizante.</p>
           </div>
           <figure class="tech-photo">
             <img src="assets/field-gnss-coverage.webp" alt="Registro GNSS de un recorrido de aplicación delimitado sobre una parcela agrícola" loading="lazy" decoding="async">
             <figcaption><strong>Seguimiento de recorrido en parcela</strong><span>Registro GNSS compartido por FumiGo.</span></figcaption>
           </figure>
         </div>
+
+        <div class="sensing-showcase">
+          <div class="sensing-intro">
+            <div><p class="eyebrow eyebrow-dark">Dos escalas de lectura</p><h3>Del panorama del lote al <em>mapa de variabilidad.</em></h3></div>
+            <p>La imagen disponible determina qué podemos ver. La escena satelital aporta seguimiento amplio y repetible; una ortofoto de mayor resolución permite reconocer más detalle espacial. Se elige la fuente según cultivo, tamaño del lote, fecha, nubosidad y objetivo.</p>
+          </div>
+          <div class="sensing-grid">
+            <figure class="sensing-card sensing-orthophoto">
+              <div class="sensing-image"><img src="assets/ortofoto-alta-resolucion.webp" alt="Ortofoto aérea de una zona rural con parcelas, vegetación, caminos y construcciones" loading="lazy" decoding="async"></div>
+              <figcaption><span class="sensing-label">01 · Ortofoto de alta resolución</span><strong>Ubicamos coberturas, bordes, caminos y sectores del predio.</strong><span>Es una vista cartográfica del terreno. Por sí sola no equivale a un análisis multiespectral.</span></figcaption>
+            </figure>
+            <figure class="sensing-card sensing-ndvi">
+              <div class="sensing-image"><img src="assets/mapa-ndvi-referencia.webp" alt="Mapa NDVI de un cultivo con zonas en verde, amarillo y rojo y escala de valores de cero a uno" loading="lazy" decoding="async"></div>
+              <figcaption><span class="sensing-label">02 · Mapa de índice NDVI</span><strong>Observamos diferencias relativas del verdor en el área.</strong><span>En este ejemplo, el verde marca valores más altos y el rojo valores más bajos del índice; se interpreta según fecha, cultivo y condiciones del lote.</span></figcaption>
+            </figure>
+          </div>
+          <p class="image-note">Imágenes de referencia compartidas por FumiGo. La ortofoto muestra información visual del terreno y el mapa de color es un producto NDVI; no se deben leer como si fueran la misma capa o el mismo sensor.</p>
+        </div>
+
+        <section class="precision-process" aria-labelledby="precision-title">
+          <div class="process-heading"><div><p class="eyebrow eyebrow-dark">Nuestro proceso</p><h3 id="precision-title">De la imagen a una acción <em>bien enfocada.</em></h3></div><p>El mapa orienta la inspección y ayuda a organizar decisiones; el diagnóstico agronómico se completa con datos del lote y revisión técnica.</p></div>
+          <div class="process-grid">
+            <article class="process-step"><span>01</span><h4>Entendemos el predio</h4><p>Definimos cultivo y etapa, límites del lote, historial, inquietud del productor y fecha útil para comparar.</p></article>
+            <article class="process-step"><span>02</span><h4>Elegimos las imágenes</h4><p>Buscamos escenas con fecha, resolución y calidad adecuadas; revisamos nubes, sombras y que el sensor tenga las bandas requeridas.</p></article>
+            <article class="process-step"><span>03</span><h4>Mapeamos variaciones</h4><p>Calculamos índices disponibles, como NDVI; usamos NDRE u otros únicamente cuando las bandas del sensor lo permiten. Delimitamos zonas para priorizar.</p></article>
+            <article class="process-step"><span>04</span><h4>Verificamos y damos seguimiento</h4><p>Contrastamos el mapa con recorrido GNSS y observación en campo. Si hace falta, recomendamos muestreo de suelo o tejido antes de definir acciones.</p></article>
+          </div>
+          <div class="process-outcome"><span class="outcome-mark" aria-hidden="true">✳</span><p><strong>¿Cómo puede ayudar?</strong> A priorizar recorridos, ubicar sectores que requieren revisión, comparar cambios entre fechas y orientar el uso más informado de agua e insumos. Cualquier plan de fertilización, aplicación biológica o control debe considerar diagnóstico, recomendación técnica, etiqueta y registro autorizado.</p></div>
+          <p class="process-caveat">La nubosidad, las sombras, la resolución espacial, la etapa del cultivo y el tipo de sensor pueden afectar la lectura. Un índice de vegetación no mide directamente nutrientes ni confirma la causa de una anomalía. <a href="https://www.usgs.gov/special-topics/remote-sensing-phenology/science/ndvi-foundation-remote-sensing-phenology" target="_blank" rel="noopener noreferrer">Sobre NDVI · USGS ↗</a> · <a href="https://www.esa.int/Applications/Observing_the_Earth/Copernicus/Sentinel-2/Facts_and_figures" target="_blank" rel="noopener noreferrer">Bandas y resolución Sentinel-2 · ESA ↗</a></p>
+        </section>
+
+        <section class="drone-operations" aria-labelledby="drone-title">
+          <div class="drone-copy">
+            <p class="eyebrow eyebrow-dark">Operación con drones agrícolas</p>
+            <h3 id="drone-title">Planeación, vuelo y soporte de <em>equipos.</em></h3>
+            <p>Un vuelo útil empieza antes del despegue: se conoce el terreno, el cultivo, los obstáculos y el objetivo; se revisan el equipo, las baterías, el clima y las condiciones de operación. Durante el trabajo se sigue la ruta planeada y, al finalizar, se guardan los registros y se revisa el resultado.</p>
+            <ol class="drone-checklist"><li>Revisión del lote y delimitación del área de trabajo.</li><li>Planeación de ruta y verificación de condiciones seguras.</li><li>Inspección del dron, carga, baterías, sistema de aplicación y calibración indicada por el fabricante.</li><li>Seguimiento del vuelo, cobertura y registro GNSS.</li><li>Revisión posterior, limpieza, carga y programación del mantenimiento.</li></ol>
+            <p class="drone-safety">Cada vuelo y aplicación debe realizarse por personal competente, con los procedimientos del fabricante y los requisitos aeronáuticos, ambientales y de etiqueta que correspondan al lugar y al producto.</p>
+          </div>
+          <div class="drone-gallery">
+            <figure><img src="assets/dron-vuelo-cultivo.webp" alt="Dron agrícola volando sobre un cultivo en hileras" loading="lazy" decoding="async"><figcaption>Vuelo sobre cultivo · registro fotográfico compartido</figcaption></figure>
+            <figure><img src="assets/dron-preparacion-en-campo.webp" alt="Dron agrícola y operador preparando equipos en una zona de trabajo rural" loading="lazy" decoding="async"><figcaption>Alistamiento de equipos en campo</figcaption></figure>
+          </div>
+          <div class="parts-support">
+            <img src="assets/baterias-estacion-carga.webp" alt="Baterías de dron agrícola y estación de carga portátil" loading="lazy" decoding="async">
+            <div><p class="eyebrow eyebrow-dark">Intermediación y suministro bajo pedido</p><h4>Baterías, cargadores y componentes compatibles.</h4><p>Gestionamos solicitudes de baterías, cargadores, estaciones de carga, bombas, boquillas, filtros y otros repuestos para drones agrícolas. Primero confirmamos la marca, el modelo exacto, la referencia, el voltaje y el conector para buscar opciones compatibles.</p><ol class="parts-flow"><li><strong>Identificamos:</strong> equipo y referencia solicitada.</li><li><strong>Buscamos:</strong> proveedor, disponibilidad, procedencia y garantía.</li><li><strong>Cotizamos:</strong> producto, gestión, transporte y costos de importación aplicables.</li><li><strong>Coordinamos:</strong> compra con aprobación del cliente, envío y entrega.</li></ol><p>La propuesta y el plazo se confirman antes de comprar. Las baterías de litio pueden tener requisitos especiales de embalaje y transporte; se revisan con el proveedor y el transportador. <a href="https://www.iata.org/en/programs/cargo/dangerous-goods/lithium-batteries/" target="_blank" rel="noopener noreferrer">Guía de transporte de baterías · IATA ↗</a></p><a class="parts-cta" href="https://wa.me/573114976285?text=Hola%2C%20quiero%20consultar%20por%20bater%C3%ADas%2C%20cargadores%20o%20repuestos%20para%20un%20dron%20agr%C3%ADcola" target="_blank" rel="noopener noreferrer">Consultar un componente por WhatsApp <span aria-hidden="true">↗</span></a></div>
+          </div>
+        </section>
 
         <aside class="transition-note" aria-labelledby="transition-title">
           <div class="transition-copy">
@@ -316,6 +364,9 @@
       }
       if (/producto|insumo|equipo|quimic|aseo|venta/.test(q)) {
         return ['Comercializamos insumos, equipos y productos relacionados con el control de plagas y el aseo. Consulta referencias y disponibilidad con nuestro equipo.', true];
+      }
+      if (/ndvi|ndre|multiespectral|satelit|ortofoto|dron|drone|bateria|repuesto|fertiliz|cultivo|parcela|agricultura/.test(q)) {
+        return ['Integramos imágenes satelitales y ortofotos con análisis de índices como NDVI, según las bandas y resolución disponibles. El mapa ayuda a priorizar zonas para revisar; lo contrastamos con recorridos GNSS y observación en campo. También podemos cotizar bajo pedido baterías, cargadores y repuestos compatibles para drones agrícolas. Escríbenos con el cultivo, ubicación o marca y modelo del equipo para orientarte.', true];
       }
       if (/plan|precio|tarifa|mensual|cotiz|valor|costo/.test(q)) {
         return ['Manejamos servicios puntuales desde $100.000 para locales pequeños; restaurantes y cafeterías $150.000–$220.000; panaderías y bodegas medianas $180.000–$280.000. Plan Hogar $45.000/mes, Plan Negocio $90.000/mes y Comercial Plus desde $150.000/mes. Son tarifas orientativas, sujetas al diagnóstico del espacio y al alcance acordado.', true];
