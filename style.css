@@ -395,6 +395,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 }
 
 .technology { background: #faf9f1; }
+.application-section { background: #f5f3e8; }
 .tech-grid { display: grid; grid-template-columns: .92fr 1.08fr; align-items: center; gap: clamp(36px, 6vw, 78px); }
 .tech-copy h2 { max-width: 570px; margin-bottom: 20px; }
 .tech-copy > p:not(.eyebrow) { color: var(--ink-soft); font-size: 14px; line-height: 1.85; }
@@ -407,11 +408,22 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .tech-photo figcaption strong { font: 700 12px var(--display); }
 .tech-photo figcaption span { color: #71806c; font-size: 10px; }
 .equipment-row { display: grid; grid-template-columns: 1.05fr .95fr; align-items: center; gap: 50px; margin-top: 88px; padding: 32px; background: linear-gradient(130deg, #edf0e3, #f5f2e4); border: 1px solid #e1e6d6; border-radius: 24px; }
+.application-section .equipment-row { margin-top: 0; margin-bottom: 22px; }
 .equipment-visual { position: relative; display: flex; align-items: center; gap: 14px; min-height: 236px; }
 .equipment-sprayer { display: block; width: 64%; height: 236px; object-fit: cover; border: 6px solid #fffef8; border-radius: 18px; box-shadow: 0 12px 30px rgba(27,62,34,.12); }
 .equipment-shield { display: block; width: 31%; height: 162px; object-fit: contain; padding: 8px; background: #fffef8; border: 1px solid #e3e7dc; border-radius: 16px; box-shadow: 0 12px 30px rgba(27,62,34,.1); }
 .equipment-copy h3 { max-width: 430px; margin-bottom: 12px; color: var(--forest-deep); font: 700 clamp(22px, 2.7vw, 30px)/1.2 var(--display); letter-spacing: -.8px; }
 .equipment-copy > p:last-child { margin: 0; color: var(--ink-soft); font-size: 12px; line-height: 1.8; }
+.equipment-copy h2 { max-width: 490px; margin: 0 0 12px; color: var(--forest-deep); font: 700 clamp(24px, 3vw, 34px)/1.2 var(--display); letter-spacing: -.9px; }
+.equipment-copy > p:not(.eyebrow) { margin: 0; color: var(--ink-soft); font-size: 12px; line-height: 1.8; }
+.application-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.application-step { position: relative; min-height: 196px; padding: 20px 18px; background: #fffef8; border: 1px solid #e2e6da; border-radius: 16px; }
+.application-step-icon { display: grid; place-items: center; width: 43px; height: 43px; margin-bottom: 17px; color: #4d7544; background: #e9efdc; border-radius: 50%; }
+.application-step-icon svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.application-step-number { position: absolute; top: 22px; right: 19px; color: #9da994; font-size: 9px; font-weight: 800; letter-spacing: .8px; }
+.application-step h3 { margin: 0 0 8px; color: var(--forest-deep); font: 700 13px/1.35 var(--display); }
+.application-step p { margin: 0; color: #6b776d; font-size: 10px; line-height: 1.7; }
+.application-photo-note { margin: 10px 0 0; color: #7d877a; font-size: 9px; line-height: 1.6; text-align: right; }
 .supplies { background: #f1efdf; }
 .pricing { background: #f8f7ef; }
 .pricing .section-heading { margin-bottom: 52px; }
@@ -467,6 +479,7 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
 .product-disclaimer { max-width: 860px; margin: 24px auto 0; color: #71806c; font-size: 10px; line-height: 1.7; text-align: center; }
 
 @media (max-width: 900px) {
+  .application-steps { grid-template-columns: repeat(2, 1fr); }
   .tech-grid { grid-template-columns: 1fr 1fr; gap: 30px; }
   .equipment-row { gap: 28px; padding: 25px; }
   .equipment-visual { gap: 10px; }
@@ -479,6 +492,10 @@ a:focus-visible, button:focus-visible, input:focus-visible { outline: 3px solid 
   .product-copy { padding: 18px; }
 }
 @media (max-width: 680px) {
+  .application-section { padding-top: 44px; padding-bottom: 50px; }
+  .application-steps { grid-template-columns: 1fr; }
+  .application-step { min-height: 0; }
+  .application-photo-note { text-align: left; }
   .tech-grid, .equipment-row { grid-template-columns: 1fr; }
   .tech-grid { gap: 28px; }
   .tech-photo img { aspect-ratio: 4 / 3; }
