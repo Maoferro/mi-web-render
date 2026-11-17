@@ -1,17 +1,18 @@
 # Subastas del Campo — prototipo
 
-Página independiente accesible en `/subastas/` cuando el sitio estático publica la raíz del repositorio.
+Página informativa independiente en `/subastas/` y aplicación demostrativa en `/subastas/app.html`.
 
 ## Incluye
 
-- Búsqueda y filtros de lotes de demostración.
-- Formulario para agregar lotes al almacenamiento local del navegador.
-- Registro local de ofertas de prueba.
-- Explicación del modelo: productor y comprador acuerdan directamente el pago y la entrega.
+- Búsqueda, filtros por departamento y tipo de cosecha, y ordenamiento.
+- Vistas para mercado, ofertas, publicaciones, favoritos, conversaciones y fichas.
+- Una ficha por oferta válida como regla demostrativa; publicar y conversar no consumen fichas.
+- Chat de demostración y formulario para registrar lotes localmente.
+- Modelo de operación directa: productor y comprador acuerdan pago y entrega entre ellos.
 
 ## Límites del prototipo
 
-No hay cuentas de usuario, base de datos compartida, notificaciones, pujas en tiempo real, pagos ni logística. Las publicaciones y ofertas no salen del dispositivo y no tienen validez comercial. Para lanzar subastas reales se necesita backend con autenticación, registro inmutable de ofertas, cierre del lote y herramientas administrativas. La integración de pagos divididos queda para una fase posterior, si se elige ese modelo.
+No hay cuentas de usuario, base de datos compartida, mensajería entre personas distintas, notificaciones ni cobro de fichas. Las publicaciones, mensajes y ofertas no salen del dispositivo y no tienen validez comercial. Para una app real se necesita backend con autenticación, registro verificable de ofertas, mensajes privados y gestión de fichas en servidor. El plan de Google Sheets está en `GOOGLE_SHEETS_PLAN.md`.
 
 ## Archivos
 
