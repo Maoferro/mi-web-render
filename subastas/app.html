@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e32">
+  <meta name="description" content="Aplicación demostrativa para explorar lotes agrícolas, hacer ofertas y administrar publicaciones.">
+  <title>Mercado | Subastas del Campo</title>
+  <link rel="stylesheet" href="app.css?v=app-1">
+  <script src="market.js?v=app-1" defer></script>
+</head>
+<body>
+  <div class="demo-banner"><span>●</span> MODO DEMOSTRACIÓN <small>Las ofertas y publicaciones se guardan solo en este navegador.</small><a href="./">Volver a la página informativa ↗</a></div>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="./"><span class="brand-icon">🌱</span><span>Subastas<small>del Campo</small></span></a>
+      <p class="side-label">ESPACIO DE TRABAJO</p>
+      <nav class="side-nav" aria-label="Secciones de la aplicación">
+        <button class="side-link active" data-view="market"><span>⌂</span> Mercado <b id="nav-market-count">0</b></button>
+        <button class="side-link" data-view="bids"><span>↗</span> Mis ofertas <b id="nav-bid-count">0</b></button>
+        <button class="side-link" data-view="listings"><span>▤</span> Mis publicaciones <b id="nav-listing-count">0</b></button>
+        <button class="side-link" data-view="favorites"><span>♡</span> Guardados</button>
+      </nav>
+      <div class="seller-box"><div class="seller-mark">✳</div><strong>¿Tienes cosecha?</strong><p>Publica tu lote con cantidad, ubicación y condiciones.</p><button class="btn btn-dark" id="sidebar-publish">＋ Publicar un lote</button></div>
+      <div class="side-foot"><span class="avatar">M</span><span><strong>Modo visitante</strong><small>Cuenta de demostración</small></span><span class="dots">•••</span></div>
+    </aside>
+
+    <main class="main-area">
+      <header class="app-header"><div class="breadcrumb"><span>Subastas del Campo</span><i>/</i><strong id="breadcrumb-current">Mercado</strong></div><div class="header-actions"><span class="region-pill">⌖ Tolima, Colombia</span><button class="icon-btn" id="help-button" aria-label="Ayuda">?</button><span class="avatar avatar-header">M</span></div></header>
+      <section class="workspace">
+        <div class="welcome-row"><div><p class="eyebrow"><span class="pulse"></span> MERCADO AGRÍCOLA · DEMO</p><h1 id="view-title">Encuentra tu próximo lote</h1><p id="view-subtitle">Explora productos del campo y participa con ofertas de prueba.</p></div><button class="btn btn-primary" id="header-publish">＋ Publicar un lote</button></div>
+
+        <section class="stats-row" aria-label="Resumen del mercado">
+          <article class="stat-card"><span class="stat-icon green">▤</span><div><small>Lotes abiertos</small><strong id="stat-open">0</strong><em>disponibles para explorar</em></div></article>
+          <article class="stat-card"><span class="stat-icon gold">↗</span><div><small>Ofertas registradas aquí</small><strong id="stat-bids">0</strong><em>solo en esta demostración</em></div></article>
+          <article class="stat-card"><span class="stat-icon blue">⌖</span><div><small>Departamentos</small><strong>1</strong><em>muestras del Tolima</em></div></article>
+        </section>
+
+        <section class="market-panel" id="market-view">
+          <div class="panel-heading"><div><h2 id="panel-title">Lotes destacados</h2><p id="panel-description">Productos publicados para recibir ofertas.</p></div><label class="sort-control">Ordenar por <select id="sort-select"><option value="recent">Más recientes</option><option value="offers">Más ofertas</option><option value="price">Menor precio mínimo</option></select></label></div>
+          <div class="toolbar"><label class="search"><span>⌕</span><input id="search-input" type="search" placeholder="Busca producto, variedad o municipio" aria-label="Buscar lotes"></label><div class="filters" id="category-filters"><button class="filter active" data-category="Todos">Todos <span>·</span> <i id="count-all">0</i></button><button class="filter" data-category="Café">Café</button><button class="filter" data-category="Frutas">Frutas</button><button class="filter" data-category="Granos">Granos</button><button class="filter" data-category="Otros">Otros</button></div></div>
+          <div class="results-line"><span id="results-count">0 lotes</span><span class="secure-note">ⓘ Acuerdos y pagos directamente entre las partes</span></div>
+          <div class="lot-grid" id="lot-grid" aria-live="polite"></div>
+          <div class="empty-state" id="empty-state" hidden><span>🌱</span><h3>Aún no hay lotes en esta sección</h3><p>Cambia el filtro o publica el primer lote.</p><button class="btn btn-primary" id="empty-publish">Publicar un lote</button></div>
+        </section>
+        <footer class="app-footer"><span>© 2026 Subastas del Campo · Prototipo independiente</span><span>Sin custodia de dinero · Sin operación de transporte</span></footer>
+      </section>
+    </main>
+  </div>
+
+  <dialog class="modal" id="publish-dialog"><form class="modal-card" id="publish-form"><div class="modal-head"><div><p class="eyebrow">NUEVO LOTE · DEMOSTRACIÓN</p><h2>Publica tu cosecha</h2><p>Completa los datos para crear una ficha visible en este dispositivo.</p></div><button class="close-btn" type="button" data-close>×</button></div>
+    <div class="form-grid"><label>Producto<input name="title" required maxlength="70" placeholder="Ej. Café pergamino seco"></label><label>Categoría<select name="category"><option>Café</option><option>Frutas</option><option>Granos</option><option>Otros</option></select></label><label>Municipio, departamento<input name="location" required placeholder="Líbano, Tolima"></label><label>Cantidad y unidad<input name="quantity" required placeholder="Ej. 800 kg"></label><label>Precio mínimo total (COP)<input name="minimum" type="number" min="1000" step="1000" required placeholder="1.500.000"></label><label>Fecha de cierre<input name="closeDate" type="date" required></label><label class="wide">Calidad, variedad y condiciones<textarea name="details" rows="3" placeholder="Cosecha, selección, fecha disponible, forma de recogida"></textarea></label></div>
+    <div class="notice">La plataforma conecta a las partes. El pago, la verificación del producto y el transporte se acuerdan directamente entre productor y comprador.</div><div class="modal-actions"><button class="btn btn-light" type="button" data-close>Cancelar</button><button class="btn btn-primary" type="submit">Crear lote de prueba</button></div>
+  </form></dialog>
+
+  <dialog class="modal" id="detail-dialog"><div class="modal-card detail-card"><div class="modal-head"><div><p class="eyebrow" id="detail-category">LOTE</p><h2 id="detail-title">Producto</h2></div><button class="close-btn" type="button" data-close>×</button></div><div class="detail-hero" id="detail-hero"><span id="detail-emoji">🌾</span></div><div class="detail-facts" id="detail-facts"></div><p class="detail-description" id="detail-description"></p><div class="offer-box"><div><small>Oferta más alta</small><strong id="detail-current">$0</strong></div><div><small>Precio mínimo</small><strong id="detail-minimum">$0</strong></div><div><small>Ofertas</small><strong id="detail-bids">0</strong></div></div><label class="offer-input">Tu oferta de prueba (COP)<input id="offer-input" type="number" min="1000" step="1000"></label><p class="notice">Oferta simulada: no se envía a otra persona, no reserva el producto ni crea obligación de compra.</p><div class="modal-actions"><button class="btn btn-light" type="button" data-close>Cerrar</button><button class="btn btn-primary" id="submit-offer">Registrar oferta</button></div></div></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
