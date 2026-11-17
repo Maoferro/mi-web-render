@@ -4,10 +4,12 @@ Página informativa independiente en `/subastas/` y aplicación demostrativa en 
 
 ## Incluye
 
-- Búsqueda, filtros por departamento y tipo de cosecha, y ordenamiento.
+- Búsqueda por producto, marca o vendedor; filtros por departamento y tipo de cosecha; orden por precio actual, precio inicial y cantidad de ofertas.
+- Publicaciones tanto de cosecha a granel como de producto empacado o marca propia.
+- Historial de pujas de demostración por participante, incremento mínimo configurable, cierre y selección de ganador.
 - Vistas para mercado, ofertas, publicaciones, favoritos, conversaciones y fichas.
 - Una ficha por oferta válida como regla demostrativa; publicar y conversar no consumen fichas.
-- Chat de demostración y formulario para registrar lotes localmente.
+- Chat y formulario para registrar productos localmente.
 - Modelo de operación directa: productor y comprador acuerdan pago y entrega entre ellos.
 
 ## Límites del prototipo
@@ -18,4 +20,5 @@ No hay cuentas de usuario, base de datos compartida, mensajería entre personas 
 
 - `index.html`: página y modales.
 - `styles.css`: estilos aislados de la app.
-- `app.js`: datos de muestra, búsqueda, filtros, publicaciones y pujas locales.
+- `market-v5.js`: datos de muestra, búsqueda, filtros, publicaciones y pujas locales.
+- `app-v5.css`: estilos aislados de la aplicación.

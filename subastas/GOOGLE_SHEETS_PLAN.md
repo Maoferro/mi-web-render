@@ -11,10 +11,11 @@ El Sheet sirve como registro administrativo y reporte. No debe compartirse con c
 Pestañas propuestas:
 
 - **Usuarios:** ID, rol, nombre, correo/teléfono de contacto, fecha de registro y aceptación del aviso de privacidad.
-- **Lotes:** ID del lote, ID del vendedor, tipo de cosecha, producto, departamento, municipio, cantidad, precio mínimo, apertura/cierre y estado.
-- **Ofertas:** ID de oferta, lote, ID del comprador, monto, fichas usadas, hora y estado.
+- **Productos:** ID de publicación, ID/nombre público del vendedor, cosecha a granel o producto empacado/marca propia, tipo de cosecha, producto, departamento, municipio, cantidad, precio de apertura, incremento mínimo, fecha de cierre y estado.
+- **Ofertas:** ID de oferta, publicación, ID y alias público del comprador, monto, fichas usadas, hora de recepción en el servidor y estado. Con este registro se muestra la oferta más alta y la última puja de cada participante.
+- **Cierres:** ID de publicación, hora de cierre del servidor, ganador, oferta ganadora y estado de confirmación del vendedor y comprador.
 - **Fichas:** movimientos por usuario, cantidad, motivo, fecha y referencia de pago del paquete cuando se active la venta de fichas.
-- **Acuerdos:** lote, vendedor y comprador, resumen de condiciones que ambas partes confirman, precio convenido, fecha y lugar acordados, estado de confirmación y fecha.
+- **Acuerdos:** publicación, vendedor y comprador, resumen de condiciones que ambas partes confirman, precio convenido, fecha y punto acordados, estado de confirmación y fecha.
 
 ## Conversaciones y datos personales
 
