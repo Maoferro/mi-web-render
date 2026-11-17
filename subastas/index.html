@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#173e32">
   <meta name="description" content="Prototipo de subastas rurales para conectar productores del campo con compradores, sin custodiar pagos ni operar entregas.">
   <title>Subastas del Campo | Mercado directo de cosechas</title>
-  <link rel="stylesheet" href="styles.css?v=prototype-1">
+  <link rel="stylesheet" href="styles-market-v2.css">
   <script src="app.js?v=prototype-1" defer></script>
 </head>
 <body>
@@ -20,10 +20,10 @@
     <section class="hero">
       <div class="hero-copy">
         <p class="eyebrow"><span class="eyebrow-dot"></span> Mercado directo entre fincas y compradores</p>
-        <h1>Tu cosecha<br>encuentra <em>su mercado.</em></h1>
-        <p class="hero-lead">Productores publican sus lotes. Compradores hacen ofertas. El pago y la entrega se acuerdan directamente entre las partes.</p>
+        <h1>Tu producto<br>encuentra <em>su mercado.</em></h1>
+        <p class="hero-lead">Cosechas por volumen o productos con marca propia: publícalos en subasta, recibe ofertas y conversa directamente con compradores.</p>
         <div class="hero-actions"><a class="button button-primary" href="app.html">Abrir mercado <span aria-hidden="true">↗</span></a><a class="button button-secondary" href="#publicar">Quiero vender</a></div>
-        <div class="hero-promises"><span><i>✓</i> Sin suscripción obligatoria</span><span><i>✓</i> Sin logística de la plataforma</span></div>
+        <div class="hero-promises"><span><i>✓</i> La plataforma conecta a las partes</span><span><i>✓</i> Pago y entrega directos</span></div>
       </div>
       <div class="hero-visual" aria-label="Ilustración de una cosecha lista para ofrecer en subasta">
         <div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div>
@@ -31,23 +31,30 @@
         <div class="produce-card produce-two"><span>🥑</span><small>Aguacate</small></div>
         <div class="produce-card produce-three"><span>🌽</span><small>Maíz</small></div>
         <div class="market-stamp"><span>DIRECTO</span><strong>Del productor<br>al comprador</strong><i>sin intermediación logística</i></div>
-        <div class="hero-caption"><span class="live-dot"></span> Lotes, ofertas y acuerdos en un solo lugar</div>
+        <div class="hero-caption"><span class="live-dot"></span> Cosechas, marcas y compradores en un mismo mercado</div>
       </div>
     </section>
 
     <section class="how-strip" id="como-funciona" aria-label="Cómo funciona la plataforma">
-      <article><span class="step-no">01</span><div><strong>Publica el lote</strong><p>Producto, cantidad, calidad, ubicación y condiciones.</p></div></article>
-      <article><span class="step-no">02</span><div><strong>Recibe ofertas</strong><p>Los compradores participan hasta el cierre anunciado.</p></div></article>
-      <article><span class="step-no">03</span><div><strong>Acuerden directo</strong><p>Productor y comprador coordinan pago y recogida.</p></div></article>
+      <article><span class="step-no">01</span><div><strong>Publica tu producto</strong><p>Elige cosecha por volumen o producto empacado; indica ubicación, precio inicial e incremento.</p></div></article>
+      <article><span class="step-no">02</span><div><strong>Participa en la puja</strong><p>Consulta ofertas y participantes; cada oferta válida usa una ficha en el modelo propuesto.</p></div></article>
+      <article><span class="step-no">03</span><div><strong>Conecta y acuerda</strong><p>Al cerrar la subasta, vendedor y comprador conversan y coordinan entre ellos.</p></div></article>
     </section>
+
+    <section class="offer-types" aria-labelledby="offer-types-title">
+      <div class="section-heading"><div><p class="eyebrow eyebrow-dark">Dos formas de vender</p><h2 id="offer-types-title">Del cultivo a <em>tu marca.</em></h2></div><p>No necesitas ser una finca grande. La subasta puede ofrecer una cosecha completa, una parte disponible o unidades de un producto empacado.</p></div>
+      <div class="offer-type-grid"><article class="offer-type-card bulk"><span class="offer-type-emoji">🌾</span><p class="eyebrow eyebrow-dark">COSECHA POR VOLUMEN</p><h3>Vende lo que produces</h3><p>Café pergamino, cacao, aguacate, granos u otros productos por kilos, sacos, cajas o la unidad que acuerden.</p><span class="type-example">Ejemplo · 700 kg de café pergamino</span></article><article class="offer-type-card branded"><span class="offer-type-emoji">🏷️</span><p class="eyebrow eyebrow-dark">PRODUCTO EMPACADO</p><h3>También vende con tu marca</h3><p>Subasta café tostado, panela, miel u otros productos listos para comercializar en bolsas, frascos o cajas.</p><span class="type-example">Ejemplo · 40 bolsas de café de 500 g</span></article></div>
+    </section>
+
+    <section class="auction-model" aria-label="Cómo funcionan las fichas y el cierre de subastas"><div class="auction-model-copy"><p class="eyebrow">PUJAS CON FICHAS</p><h2>Ofertas claras.<br><em>Cierre anunciado.</em></h2><p>En el modelo propuesto, publicar y conversar no consume fichas; cada oferta válida usa una. El vendedor establece precio inicial, incremento mínimo, fecha de cierre y alcance geográfico. El precio de los paquetes de fichas está por definirse; hoy la demo no cobra.</p><a class="button button-light" href="app.html">Explorar la aplicación <span aria-hidden="true">↗</span></a></div><div class="auction-steps"><article><span>01</span><div><strong>El vendedor elige el alcance</strong><p>Municipio, departamento, departamentos seleccionados o todo el país.</p></div></article><article><span>02</span><div><strong>El comprador encuentra opciones cercanas</strong><p>Filtra por departamento y busca por municipio para priorizar productos de su zona.</p></div></article><article><span>03</span><div><strong>La oferta más alta queda visible</strong><p>El historial muestra la última puja de cada participante con un alias público.</p></div></article><article><span>04</span><div><strong>Las partes acuerdan directamente</strong><p>Al cierre, comprador y vendedor coordinan pago y entrega por su cuenta.</p></div></article></div></section>
 
     <section class="market-section" id="lotes">
       <div class="section-heading">
-        <div><p class="eyebrow eyebrow-dark">El mercado de hoy</p><h2>Lotes abiertos <em>a ofertas.</em></h2></div>
-        <p>Busca por producto o zona. En la versión real, cada ficha incluirá origen, calidad, cantidad disponible y condiciones de entrega.</p>
+        <div><p class="eyebrow eyebrow-dark">Muestra del mercado</p><h2>Productos abiertos <em>a ofertas.</em></h2></div>
+        <p>En la aplicación podrás buscar por producto, vendedor y ubicación; filtrar por departamento y tipo de cosecha; y ordenar por precio o número de ofertas. Estos avisos son ejemplos de demostración.</p>
       </div>
       <div class="market-controls">
-        <label class="searchbox"><span aria-hidden="true">⌕</span><input id="lot-search" type="search" placeholder="Buscar producto o municipio" aria-label="Buscar lotes"></label>
+        <label class="searchbox"><span aria-hidden="true">⌕</span><input id="lot-search" type="search" placeholder="Producto, marca o municipio" aria-label="Buscar lotes"></label>
         <div class="category-tabs" role="group" aria-label="Filtrar por categoría">
           <button class="filter-chip active" type="button" data-category="Todos">Todos</button>
           <button class="filter-chip" type="button" data-category="Café">Café</button>
@@ -60,14 +67,14 @@
     </section>
 
     <section class="publish-section" id="publicar">
-      <div class="publish-copy"><p class="eyebrow">Para productores</p><h2>¿Tienes un lote<br>listo para <em>ofrecer?</em></h2><p>Cuéntales a compradores qué produces, cuánto tienes disponible y dónde se recoge. El prototipo guarda las publicaciones solo en este navegador.</p><button class="button button-light" id="open-publish" type="button">Crear publicación <span aria-hidden="true">↗</span></button></div>
-      <div class="publish-side"><div class="publish-icon" aria-hidden="true">✳</div><h3>Un buen lote empieza con información clara.</h3><ul><li>Producto y variedad</li><li>Cantidad y unidad de venta</li><li>Calidad o grado del producto</li><li>Municipio y fecha disponible</li><li>Precio mínimo y forma de recogida</li></ul></div>
+      <div class="publish-copy"><p class="eyebrow">Para productores y marcas</p><h2>¿Tienes productos<br>para <em>subastar?</em></h2><p>Publica una cosecha por volumen o productos de tu marca. La plataforma conecta a las partes; tú y el comprador acuerdan los detalles.</p><a class="button button-light" href="app.html">Publicar desde la app <span aria-hidden="true">↗</span></a></div>
+      <div class="publish-side"><div class="publish-icon" aria-hidden="true">✳</div><h3>Una ficha clara ayuda a pujar con confianza.</h3><ul><li>Nombre del productor o marca</li><li>Tipo de producto y cantidad</li><li>Departamento y municipio</li><li>Precio inicial e incremento</li><li>Fecha de cierre anunciada</li></ul></div>
     </section>
 
     <section class="direct-deal">
       <div class="deal-symbol" aria-hidden="true">↔</div>
       <div><p class="eyebrow eyebrow-dark">Trato directo</p><h2>La plataforma conecta.<br><em>Las partes acuerdan.</em></h2></div>
-      <p>En este modelo, el productor recibe el pago del comprador y ambos organizan transporte, calidad, tiempos y entrega. La plataforma no recibe ni guarda el dinero de la cosecha ni presta el servicio logístico.</p>
+      <p>La plataforma facilita el anuncio, la puja y el contacto. Vendedor y comprador negocian el precio, definen el pago y coordinan la fecha, el transporte y la entrega. La plataforma no recibe el pago del producto ni organiza la logística.</p>
     </section>
   </main>
 
