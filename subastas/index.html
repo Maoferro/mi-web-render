@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173e32">
+  <meta name="description" content="Prototipo de subastas rurales para conectar productores del campo con compradores, sin custodiar pagos ni operar entregas.">
+  <title>Subastas del Campo | Mercado directo de cosechas</title>
+  <link rel="stylesheet" href="styles.css?v=prototype-1">
+  <script src="app.js?v=prototype-1" defer></script>
+</head>
+<body>
+  <div class="demo-ribbon"><strong>Prototipo de demostración.</strong> Lotes y ofertas de ejemplo; no representan ventas reales ni son vinculantes.</div>
+  <header class="topbar">
+    <a class="wordmark" href="#inicio" aria-label="Subastas del Campo, inicio"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 34V16m0 7c-8 0-12-5-12-12 8 0 12 4 12 12Zm0-5c0-7 4-11 12-11 0 7-4 11-12 11Z"/><path d="M9 32h22"/></svg></span><span>Subastas<span class="wordmark-soft"> del Campo</span></span></a>
+    <nav class="topnav" aria-label="Navegación principal"><a href="#lotes">Ver lotes</a><a href="#como-funciona">Cómo funciona</a><a class="nav-publish" href="#publicar">Publicar cosecha <span aria-hidden="true">↗</span></a></nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-dot"></span> Mercado directo entre fincas y compradores</p>
+        <h1>Tu cosecha<br>encuentra <em>su mercado.</em></h1>
+        <p class="hero-lead">Productores publican sus lotes. Compradores hacen ofertas. El pago y la entrega se acuerdan directamente entre las partes.</p>
+        <div class="hero-actions"><a class="button button-primary" href="#lotes">Explorar subastas <span aria-hidden="true">↓</span></a><a class="button button-secondary" href="#publicar">Quiero vender</a></div>
+        <div class="hero-promises"><span><i>✓</i> Sin suscripción obligatoria</span><span><i>✓</i> Sin logística de la plataforma</span></div>
+      </div>
+      <div class="hero-visual" aria-label="Ilustración de una cosecha lista para ofrecer en subasta">
+        <div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div>
+        <div class="produce-card produce-one"><span>☕</span><small>Café de origen</small></div>
+        <div class="produce-card produce-two"><span>🥑</span><small>Aguacate</small></div>
+        <div class="produce-card produce-three"><span>🌽</span><small>Maíz</small></div>
+        <div class="market-stamp"><span>DIRECTO</span><strong>Del productor<br>al comprador</strong><i>sin intermediación logística</i></div>
+        <div class="hero-caption"><span class="live-dot"></span> Lotes, ofertas y acuerdos en un solo lugar</div>
+      </div>
+    </section>
+
+    <section class="how-strip" id="como-funciona" aria-label="Cómo funciona la plataforma">
+      <article><span class="step-no">01</span><div><strong>Publica el lote</strong><p>Producto, cantidad, calidad, ubicación y condiciones.</p></div></article>
+      <article><span class="step-no">02</span><div><strong>Recibe ofertas</strong><p>Los compradores participan hasta el cierre anunciado.</p></div></article>
+      <article><span class="step-no">03</span><div><strong>Acuerden directo</strong><p>Productor y comprador coordinan pago y recogida.</p></div></article>
+    </section>
+
+    <section class="market-section" id="lotes">
+      <div class="section-heading">
+        <div><p class="eyebrow eyebrow-dark">El mercado de hoy</p><h2>Lotes abiertos <em>a ofertas.</em></h2></div>
+        <p>Busca por producto o zona. En la versión real, cada ficha incluirá origen, calidad, cantidad disponible y condiciones de entrega.</p>
+      </div>
+      <div class="market-controls">
+        <label class="searchbox"><span aria-hidden="true">⌕</span><input id="lot-search" type="search" placeholder="Buscar producto o municipio" aria-label="Buscar lotes"></label>
+        <div class="category-tabs" role="group" aria-label="Filtrar por categoría">
+          <button class="filter-chip active" type="button" data-category="Todos">Todos</button>
+          <button class="filter-chip" type="button" data-category="Café">Café</button>
+          <button class="filter-chip" type="button" data-category="Frutas">Frutas</button>
+          <button class="filter-chip" type="button" data-category="Granos">Granos</button>
+        </div>
+      </div>
+      <div class="lot-grid" id="lot-grid" aria-live="polite"></div>
+      <p class="empty-state" id="empty-state" hidden>No encontramos lotes con esa búsqueda.</p>
+    </section>
+
+    <section class="publish-section" id="publicar">
+      <div class="publish-copy"><p class="eyebrow">Para productores</p><h2>¿Tienes un lote<br>listo para <em>ofrecer?</em></h2><p>Cuéntales a compradores qué produces, cuánto tienes disponible y dónde se recoge. El prototipo guarda las publicaciones solo en este navegador.</p><button class="button button-light" id="open-publish" type="button">Crear publicación <span aria-hidden="true">↗</span></button></div>
+      <div class="publish-side"><div class="publish-icon" aria-hidden="true">✳</div><h3>Un buen lote empieza con información clara.</h3><ul><li>Producto y variedad</li><li>Cantidad y unidad de venta</li><li>Calidad o grado del producto</li><li>Municipio y fecha disponible</li><li>Precio mínimo y forma de recogida</li></ul></div>
+    </section>
+
+    <section class="direct-deal">
+      <div class="deal-symbol" aria-hidden="true">↔</div>
+      <div><p class="eyebrow eyebrow-dark">Trato directo</p><h2>La plataforma conecta.<br><em>Las partes acuerdan.</em></h2></div>
+      <p>En este modelo, el productor recibe el pago del comprador y ambos organizan transporte, calidad, tiempos y entrega. La plataforma no recibe ni guarda el dinero de la cosecha ni presta el servicio logístico.</p>
+    </section>
+  </main>
+
+  <footer class="footer"><a class="wordmark" href="#inicio"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 34V16m0 7c-8 0-12-5-12-12 8 0 12 4 12 12Zm0-5c0-7 4-11 12-11 0 7-4 11-12 11Z"/><path d="M9 32h22"/></svg></span><span>Subastas<span class="wordmark-soft"> del Campo</span></span></a><p>Un prototipo independiente para explorar un mercado de cosechas por subasta.</p><span class="footer-note">Demostración local · sin pagos ni logística</span></footer>
+
+  <dialog class="modal" id="publish-modal" aria-labelledby="publish-title">
+    <form class="modal-card" id="publish-form">
+      <div class="modal-head"><div><p class="eyebrow eyebrow-dark">Nueva publicación · demostración</p><h2 id="publish-title">Describe tu lote</h2></div><button class="icon-button" type="button" data-close="publish-modal" aria-label="Cerrar">×</button></div>
+      <div class="form-grid">
+        <label class="field field-wide">Nombre del producto<input name="title" required maxlength="70" placeholder="Ej. Café pergamino seco"></label>
+        <label class="field">Categoría<select name="category" required><option value="Café">Café</option><option value="Frutas">Frutas</option><option value="Granos">Granos</option><option value="Otros">Otros</option></select></label>
+        <label class="field">Municipio<input name="location" required maxlength="50" placeholder="Ej. Líbano, Tolima"></label>
+        <label class="field">Cantidad<input name="quantity" required maxlength="30" placeholder="Ej. 800 kg"></label>
+        <label class="field">Precio mínimo (COP)<input name="minimum" type="number" min="1000" step="1000" required placeholder="0"></label>
+        <label class="field field-wide">Calidad y condiciones<textarea name="details" rows="3" maxlength="220" placeholder="Variedad, cosecha, calidad, disponibilidad y recogida"></textarea></label>
+      </div>
+      <p class="form-note">La publicación se guarda únicamente en este dispositivo. Aún no se envía a otros usuarios.</p>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close="publish-modal">Cancelar</button><button class="button button-primary" type="submit">Guardar ejemplo</button></div>
+    </form>
+  </dialog>
+
+  <dialog class="modal" id="lot-modal" aria-labelledby="lot-modal-title">
+    <form class="modal-card" id="bid-form">
+      <div class="modal-head"><div><p class="eyebrow eyebrow-dark" id="bid-category">Lote de muestra</p><h2 id="lot-modal-title">Haz una oferta de ejemplo</h2></div><button class="icon-button" type="button" data-close="lot-modal" aria-label="Cerrar">×</button></div>
+      <p class="modal-lot-summary" id="lot-modal-summary"></p>
+      <label class="field">Tu oferta en pesos colombianos<input name="offer" type="number" min="1000" step="1000" required></label>
+      <p class="form-note">Esta oferta es una demostración local, no se notifica al productor y no genera una obligación comercial.</p>
+      <div class="modal-actions"><button class="button button-secondary" type="button" data-close="lot-modal">Cancelar</button><button class="button button-primary" type="submit">Registrar oferta de prueba</button></div>
+    </form>
+  </dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
