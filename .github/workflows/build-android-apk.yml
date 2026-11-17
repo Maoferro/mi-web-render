@@ -1,0 +1,45 @@
+name: Build Android preview APK
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Release tag for the preview APK
+        required: true
+        default: v0.1.0-preview
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+      - name: Install Android platform and build tools
+        run: sdkmanager "platforms;android-35" "build-tools;35.0.0"
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.7'
+      - name: Build debug APK
+        run: gradle --no-daemon -p mobile/android assembleDebug
+      - name: Publish APK to GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          gh release create "$TAG" mobile/android/app/build/outputs/apk/debug/app-debug.apk \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "Subastas del Campo $TAG" \
+            --notes "APK de prueba para Android. Es una app contenedora que carga el prototipo web hospedado en Render; requiere internet. Ofertas, tokens, perfiles y publicaciones siguen en modo demostración local." \
+            --latest=false || gh release upload "$TAG" mobile/android/app/build/outputs/apk/debug/app-debug.apk \
+            --repo "$GITHUB_REPOSITORY" --clobber
