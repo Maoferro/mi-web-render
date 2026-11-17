@@ -43,3 +43,4 @@ jobs:
             --notes "APK de prueba para Android. Es una app contenedora que carga el prototipo web hospedado en Render; requiere internet. Ofertas, tokens, perfiles y publicaciones siguen en modo demostración local." \
             --latest=false || gh release upload "$TAG" mobile/android/app/build/outputs/apk/debug/app-debug.apk \
             --repo "$GITHUB_REPOSITORY" --clobber
+
