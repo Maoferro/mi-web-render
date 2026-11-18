@@ -550,6 +550,262 @@ html, body {
 }
 
 /* ========================================================
+   MODAL DE COMPRA / RECARGA DE TOKENS (Nequi, Davivienda, etc.)
+   ======================================================== */
+.token-checkout-card {
+  width: min(490px, calc(100vw - 28px)) !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* Grilla de paquetes */
+.checkout-section-title {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #4a5c4c;
+  display: block;
+  margin-bottom: 6px;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.token-package-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+.pkg-card {
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+
+.pkg-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pkg-inner {
+  padding: 10px 11px;
+  background: #ffffff;
+  border: 1.5px solid #dce4d5;
+  border-radius: 12px;
+  transition: all 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.pkg-card:hover .pkg-inner {
+  border-color: #8da968;
+  background: #fbfdf9;
+}
+
+.pkg-card.active .pkg-inner,
+.pkg-radio:checked + .pkg-inner {
+  border-color: #173e32;
+  background: #f2f7ed;
+  box-shadow: 0 4px 12px rgba(23, 62, 50, 0.1);
+}
+
+.pkg-badge {
+  font-size: 8.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #647565;
+  margin-bottom: 2px;
+}
+
+.pkg-badge.popular {
+  color: #266b3b;
+}
+
+.pkg-badge.best {
+  color: #1c5e7c;
+}
+
+.pkg-badge.promo {
+  color: #9c5c1f;
+  background: #fdf2e2;
+  padding: 1px 5px;
+  border-radius: 4px;
+  align-self: flex-start;
+}
+
+.pkg-amount {
+  font-size: 15px;
+  color: #1b3326;
+  font-family: 'Manrope', sans-serif;
+  font-weight: 800;
+}
+
+.pkg-amount span {
+  font-size: 11px;
+  font-weight: 600;
+  color: #5d715f;
+}
+
+.pkg-price {
+  font-size: 12px;
+  font-weight: 700;
+  color: #173e32;
+  margin-top: 2px;
+}
+
+.pkg-rate {
+  font-size: 9px;
+  color: #849383;
+}
+
+/* Grilla de Métodos de Pago */
+.payment-methods-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 7px;
+}
+
+.pay-method-card {
+  position: relative;
+  cursor: pointer;
+  display: block;
+}
+
+.pay-radio {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.pay-method-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #ffffff;
+  border: 1.5px solid #dce4d5;
+  border-radius: 11px;
+  transition: all 0.18s ease;
+}
+
+.pay-method-card:hover .pay-method-inner {
+  border-color: #9cb57c;
+}
+
+.pay-method-card.active .pay-method-inner,
+.pay-radio:checked + .pay-method-inner {
+  border-color: #173e32;
+  background: #f4f8f0;
+}
+
+.pay-icon-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.nequi-bg { background: #200020; }
+.davivienda-bg { background: #ed1c24; }
+.bancolombia-bg { background: #fdc300; }
+.pse-bg { background: #002e6c; }
+.card-bg { background: #2c4d3e; }
+
+.pay-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.pay-info strong {
+  display: block;
+  font-size: 12px;
+  color: #1c3225;
+  font-weight: 700;
+}
+
+.pay-info small {
+  display: block;
+  font-size: 9.5px;
+  color: #728373;
+}
+
+.pay-check {
+  font-size: 12px;
+  font-weight: 900;
+  color: transparent;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1.5px solid #d4ddd0;
+}
+
+.pay-method-card.active .pay-check,
+.pay-radio:checked + .pay-method-inner .pay-check {
+  background: #173e32;
+  color: #ffffff;
+  border-color: #173e32;
+}
+
+/* Spinner animado */
+.spinner-token {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto;
+  border: 3.5px solid #e1e9dd;
+  border-top-color: #173e32;
+  border-radius: 50%;
+  animation: tokenSpin 0.75s linear infinite;
+}
+
+@keyframes tokenSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Botón de tokens en Header (App & Web) */
+.token-header-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 32px;
+  padding: 0 10px;
+  background: #f4f8f0;
+  border: 1.5px solid #d9e4d3;
+  border-radius: 99px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #1b3d2c;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.token-header-pill:hover {
+  background: #e9f2e3;
+  border-color: #bed0b4;
+  transform: translateY(-1px);
+}
+
+.token-header-pill .token-symbol {
+  color: #739343;
+  font-size: 13px;
+}
+
+.token-header-pill .token-add {
+  font-size: 9.5px;
+  color: #27623a;
+  background: #e2eedb;
+  padding: 1px 5px;
+  border-radius: 99px;
+}
+
+/* ========================================================
    BARRA DE NAVEGACIÓN INFERIOR (Estilo App Nativa en Móviles)
    ======================================================== */
 .mobile-app-bottom-nav {
