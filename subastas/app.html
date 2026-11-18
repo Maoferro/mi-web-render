@@ -7,7 +7,9 @@
   <meta name="description" content="Aplicación demostrativa para explorar lotes agrícolas, hacer ofertas y administrar publicaciones.">
   <title>Mercado | Subastas del Campo</title>
   <link rel="stylesheet" href="app-v11.css">
+<link rel="stylesheet" href="responsive.css">
   <script src="market-v11.js" defer></script>
+<script src="subscribe.js" defer></script>
 </head>
 <body>
   <div class="demo-banner"><span>●</span> MODO DEMOSTRACIÓN <small>Pujas, chat y publicaciones son de demostración en este navegador; no sincronizan entre personas.</small><a href="./">Volver a la página informativa ↗</a></div>
@@ -25,6 +27,8 @@
       </nav>
       <div class="seller-box"><div class="seller-mark">✳</div><strong>¿Tienes producto para vender?</strong><p>Publica cosechas por volumen o productos de tu marca.</p><button class="btn btn-dark" id="sidebar-publish">＋ Publicar producto</button></div>
       <button class="side-foot profile-open" id="profile-open" type="button"><span class="avatar" id="profile-initial">M</span><span><strong id="profile-name">Visitante</strong><small id="profile-role">Cuenta de demostración</small></span><span class="dots">Perfil</span></button>
+      <button class="button button-primary hidden" id="subscribe-btn">Suscríbete</button>
+      <button class="button button-secondary hidden" id="logout-btn">Cerrar sesión</button>
     </aside>
 
     <main class="main-area">
