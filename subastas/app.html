@@ -13,9 +13,9 @@
 </head>
 <body>
   <div class="demo-banner"><span>●</span> MODO DEMOSTRACIÓN <small>Pujas, chat y publicaciones son de demostración en este navegador; no sincronizan entre personas.</small><a href="./">Volver a la página informativa ↗</a></div>
-  <div class="app-shell">
+  <div class="app-shell hidden" id="app-content">
     <aside class="sidebar">
-      <a class="brand" href="./"><span class="brand-icon">🌱</span><span>Subastas<small>del Campo</small></span></a>
+      <a class="brand" href="./"><span class="brand-icon" style="padding:0;overflow:hidden;background:transparent;"><img src="logo-circle.svg" alt="Logo" width="37" height="37"></span><span>Subastas<small>del Campo</small></span></a>
       <p class="side-label">ESPACIO DE TRABAJO</p>
       <nav class="side-nav" aria-label="Secciones de la aplicación">
         <button class="side-link active" data-view="market"><span>⌂</span> Mercado <b id="nav-market-count">0</b></button>
@@ -26,13 +26,12 @@
         <button class="side-link" data-view="tokens"><span>✳</span> Mis tokens <b id="nav-token-count">5</b></button>
       </nav>
       <div class="seller-box"><div class="seller-mark">✳</div><strong>¿Tienes producto para vender?</strong><p>Publica cosechas por volumen o productos de tu marca.</p><button class="btn btn-dark" id="sidebar-publish">＋ Publicar producto</button></div>
-      <button class="side-foot profile-open" id="profile-open" type="button"><span class="avatar" id="profile-initial">M</span><span><strong id="profile-name">Visitante</strong><small id="profile-role">Cuenta de demostración</small></span><span class="dots">Perfil</span></button>
-      <button class="button button-primary hidden" id="subscribe-btn">Suscríbete</button>
-      <button class="button button-secondary hidden" id="logout-btn">Cerrar sesión</button>
+      <button class="side-foot profile-open" id="profile-open" type="button"><span class="avatar" id="profile-initial">M</span><span><strong id="profile-name">Visitante</strong><small id="profile-role">Cuenta activa</small></span><span class="dots">Perfil</span></button>
+      <button class="btn btn-light hidden" id="logout-btn" style="width:100%;margin-top:10px;font-size:9px;color:#a05247;border-color:#f1dedb;background:#fff5f3;">⎋ Cerrar sesión</button>
     </aside>
 
     <main class="main-area">
-      <header class="app-header"><div class="breadcrumb"><span>Subastas del Campo</span><i>/</i><strong id="breadcrumb-current">Mercado</strong></div><div class="header-actions"><span class="region-pill">⌖ Colombia · mercado agrícola</span><a class="guide-link" href="guia.html">Guía comprador/vendedor</a><button class="icon-btn" id="help-button" aria-label="Ayuda">?</button><button class="avatar avatar-header profile-open-header" id="profile-open-header" type="button" aria-label="Abrir perfil">M</button></div></header>
+      <header class="app-header"><div class="breadcrumb"><span>Subastas del Campo</span><i>/</i><strong id="breadcrumb-current">Mercado</strong></div><div class="header-actions"><span class="region-pill">⌖ Colombia · mercado agrícola</span><a class="guide-link" href="guia.html">Guía</a><a class="guide-link" href="admin.html" style="color:#245944;font-weight:700;">⚙ Admin</a><button class="icon-btn" id="help-button" aria-label="Ayuda">?</button><button class="avatar avatar-header profile-open-header" id="profile-open-header" type="button" aria-label="Abrir perfil">M</button></div></header>
       <section class="workspace">
         <div class="welcome-row"><div><p class="eyebrow"><span class="pulse"></span> MERCADO AGRÍCOLA · DEMO</p><h1 id="view-title">Encuentra tu próximo lote</h1><p id="view-subtitle">Explora productos del campo y participa con ofertas de prueba.</p></div><button class="btn btn-primary" id="header-publish">＋ Publicar producto</button></div>
 
@@ -56,7 +55,66 @@
     </main>
   </div>
 
-  <dialog class="modal" id="profile-dialog"><form class="modal-card" id="profile-form"><div class="modal-head"><div><p class="eyebrow">INGRESO RÁPIDO · DEMO</p><h2>¿Cómo quieres participar?</h2><p>Configura un perfil para probar el recorrido de comprador o vendedor.</p></div><button class="close-btn" type="button" data-close>×</button></div><div class="form-grid"><label class="wide">Nombre o nombre de finca<input id="profile-name-input" name="name" required maxlength="60" placeholder="Ej. Mauricio o Finca El Roble"></label><label class="wide">Quiero participar como<select id="profile-role-input" name="role"><option value="buyer">Comprador</option><option value="seller">Vendedor</option></select></label></div><p class="notice">Este perfil solo se guarda en este navegador y sirve para recorrer la demostración. No crea una cuenta real ni publica datos para otros usuarios.</p><div class="modal-actions"><button class="btn btn-light" type="button" data-close>Cancelar</button><button class="btn btn-primary" type="submit">Guardar perfil</button></div></form></dialog>
+  <dialog class="modal" id="profile-dialog">
+    <div class="modal-card" style="max-width: 480px;">
+      <div class="modal-head">
+        <div>
+          <p class="eyebrow">MI CUENTA · SUBASTAS DEL CAMPO</p>
+          <h2>Perfil de Usuario</h2>
+        </div>
+        <button class="close-btn" type="button" data-close>×</button>
+      </div>
+
+      <!-- Tarjeta visual de cabecera de usuario -->
+      <div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f5f8f2;border:1px solid #e2ebd9;border-radius:14px;margin-bottom:18px;">
+        <div class="avatar" id="modal-profile-avatar" style="width:48px;height:48px;font-size:18px;background:#173e32;color:#fff;">M</div>
+        <div style="min-width:0;flex:1;">
+          <strong id="modal-profile-name" style="display:block;color:#1d342b;font-size:15px;font-family:var(--display);">Usuario Activo</strong>
+          <span class="role-badge buyer" id="modal-profile-role-badge" style="margin-top:4px;display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;background:#e8f4f8;color:#27627a;">
+            Comprador de cosechas
+          </span>
+        </div>
+        <span style="font-size:10px;color:#527c44;background:#eaf3e3;padding:4px 8px;border-radius:6px;font-weight:700;">Activo ✓</span>
+      </div>
+
+      <!-- Resumen de datos de la cuenta -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
+        <div style="padding:11px 13px;background:#ffffff;border:1px solid #e7ebe3;border-radius:10px;">
+          <small style="display:block;color:#7c8c7d;font-size:10px;font-weight:600;text-transform:uppercase;">Cédula / ID</small>
+          <strong id="modal-profile-id" style="display:block;margin-top:2px;color:#24362b;font-size:12px;">Registrado</strong>
+        </div>
+        <div style="padding:11px 13px;background:#ffffff;border:1px solid #e7ebe3;border-radius:10px;">
+          <small style="display:block;color:#7c8c7d;font-size:10px;font-weight:600;text-transform:uppercase;">Celular / WhatsApp</small>
+          <strong id="modal-profile-phone" style="display:block;margin-top:2px;color:#24362b;font-size:12px;">Registrado</strong>
+        </div>
+        <div style="padding:11px 13px;background:#ffffff;border:1px solid #e7ebe3;border-radius:10px;grid-column:1/-1;">
+          <small style="display:block;color:#7c8c7d;font-size:10px;font-weight:600;text-transform:uppercase;">Correo Electrónico</small>
+          <strong id="modal-profile-email" style="display:block;margin-top:2px;color:#24362b;font-size:12px;">usuario@correo.com</strong>
+        </div>
+      </div>
+
+      <!-- Personalización de datos -->
+      <form id="profile-form" style="border-top:1px solid #edf1ea;padding-top:14px;">
+        <p style="margin:0 0 10px;color:#788879;font-size:11px;font-weight:600;">Actualizar nombre público o rol:</p>
+        <div class="form-grid">
+          <label class="wide">Nombre público o finca
+            <input id="profile-name-input" name="name" required maxlength="60" placeholder="Tu nombre">
+          </label>
+          <label class="wide">Rol en el mercado
+            <select id="profile-role-input" name="role">
+              <option value="buyer">Comprador de cosechas</option>
+              <option value="seller">Vendedor / Productor agrícola</option>
+            </select>
+          </label>
+        </div>
+        <div class="modal-actions" style="margin-top:16px;">
+          <button class="btn btn-light" type="button" id="modal-logout-btn" style="color:#b94b3e;border-color:#f4d5d0;background:#fff5f3;">⎋ Cerrar sesión</button>
+          <button class="btn btn-light" type="button" data-close>Cerrar</button>
+          <button class="btn btn-primary" type="submit">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </dialog>
   <dialog class="modal" id="publish-dialog"><form class="modal-card" id="publish-form"><div class="modal-head"><div><p class="eyebrow">NUEVO LOTE · DEMOSTRACIÓN</p><h2>Publica tu cosecha</h2><p>Elige un producto individual o agrupa varios productos para venderlos juntos en una sola subasta.</p></div><button class="close-btn" type="button" data-close>×</button></div>
     <div class="form-grid"><label class="wide">Modalidad de publicación<select name="listingMode" id="listing-mode"><option value="single">Un producto</option><option value="bundle">Paquete de varios productos · se vende completo</option></select><small>En un paquete, cada oferta aplica al conjunto entero; no se aceptan ofertas parciales.</small></label><label>Nombre del producto o marca<input name="title" required maxlength="70" placeholder="Ej. Café Pepitos Pérez"></label><label class="wide">Foto real del producto<input name="photo" type="file" accept="image/jpeg,image/png,image/webp" required><small>JPG, PNG o WebP · máximo 8 MB. La foto ayuda al comprador a identificar lo que oferta.</small><img id="photo-preview" class="photo-preview" alt="Vista previa de la foto" hidden></label><div class="wide bundle-panel" id="bundle-panel" hidden><div class="bundle-panel-head"><div><strong>Contenido del paquete</strong><small>Agrega al menos dos productos y especifica cuánto incluye cada uno.</small></div><button class="btn btn-light" type="button" id="add-bundle-item">＋ Agregar al paquete</button></div><div id="bundle-items"></div><p class="bundle-summary" id="bundle-summary">La publicación se venderá como un solo paquete.</p></div><label data-single-field>Tipo de producto<select name="saleType"><option value="Cosecha por volumen">Cosecha por volumen</option><option value="Producto empacado / marca propia">Producto empacado / marca propia</option></select></label><label data-single-field>Tipo de cultivo o producto<select name="category"><option>Café</option><option>Frutas</option><option>Granos</option><option>Otros</option></select></label><label data-single-field>Variedad o tipo específico<input name="variety" maxlength="70" placeholder="Ej. Castillo, Caturra, Hass"></label><label>Vendedor, finca o marca<input name="seller" required maxlength="70" placeholder="Nombre público del productor"></label><label>Municipio<input name="municipality" required placeholder="Ej. Líbano"></label><label>Departamento<select name="department" required><option value="">Selecciona</option><option>Tolima</option><option>Huila</option><option>Caldas</option><option>Quindío</option><option>Cundinamarca</option><option>Meta</option><option>Otro</option></select></label><label>Alcance de la subasta<select name="coverage"><option value="Municipio">Solo este municipio</option><option value="Departamento">Todo el departamento</option><option value="Departamentos elegidos">Departamentos seleccionados</option><option value="Nacional">Todo el país</option></select></label><label>Departamentos incluidos<input name="allowedDepartments" placeholder="Si los eliges: Tolima, Huila, Cauca"></label><label id="single-quantity" data-single-field>Cantidad exacta y presentación<input name="quantity" required placeholder="Ej. 1 kg, 20 sacos de 60 kg o 40 bolsas de 500 g"></label><label data-single-field>Fecha de cosecha o elaboración<input name="harvestDate" type="date"></label><label data-single-field>El precio de apertura aplica a<select name="priceBasis"><option>Todo el lote</option><option>Por kilogramo</option><option>Por unidad o empaque</option></select></label><label>Oferta inicial (COP)<input name="minimum" type="number" min="1" step="1" required placeholder="200"></label><label>Incremento mínimo por oferta (COP)<input name="increment" type="number" min="1" step="1" value="100" required></label><label>Fecha límite de cierre (18:00 · hora Colombia, visible para todos)<input name="closeDate" type="date" required></label><label>Umbral privado para cierre anticipado (opcional)<input name="secretTarget" type="number" min="0" step="1" placeholder="Solo lo ve el vendedor"><small>Al alcanzarlo, el diseño propone cerrar de inmediato. No es visible al público.</small></label><label>Minutos sin ofertas para cierre por inactividad<input name="inactivityMinutes" type="number" min="1" max="1440" value="10" required><small>El plazo se reinicia cada vez que se acepta una nueva oferta.</small></label><label class="wide">Regla de cierre<select name="closingRule"><option value="first">Cerrar al alcanzar el umbral privado o por cierre manual</option><option value="inactivity">Cerrar por inactividad, fecha límite o cierre manual</option></select><small>El umbral privado es un cierre anticipado; si vence por tiempo antes de alcanzarlo, gana la oferta más alta.</small></label><label class="wide" data-single-field>Calidad, proceso y condiciones<textarea name="details" rows="3" placeholder="Estado, selección, beneficio/secado, empaque, disponibilidad y punto de recogida"></textarea></label></div>
     <div class="notice">Publicar es gratis en este modelo. El alcance limita dónde se muestra la subasta; no incluye ni garantiza transporte. Cada oferta válida descuenta un token ($500 COP propuestos). El vendedor puede cerrar antes y la fecha límite cierra automáticamente la subasta; todos ven esa fecha. Pago y entrega se acuerdan directamente.</div><div class="modal-actions"><button class="btn btn-light" type="button" data-close>Cancelar</button><button class="btn btn-primary" type="submit">Crear publicación de prueba</button></div>
@@ -64,5 +122,175 @@
 
   <dialog class="modal" id="detail-dialog"><div class="modal-card detail-card"><div class="modal-head"><div><p class="eyebrow" id="detail-category">PRODUCTO EN SUBASTA</p><h2 id="detail-title">Producto</h2></div><button class="close-btn" type="button" data-close>×</button></div><div class="detail-hero" id="detail-hero"><span id="detail-emoji">🌾</span></div><section class="detail-products" id="detail-products" hidden><h3>Productos incluidos · se vende todo el paquete</h3><ul id="detail-products-list"></ul></section><div class="detail-facts" id="detail-facts"></div><p class="detail-description" id="detail-description"></p><div class="offer-box"><div><small>Oferta más alta</small><strong id="detail-current">$0</strong></div><div><small>Oferta inicial</small><strong id="detail-minimum">$0</strong></div><div><small>Ofertas</small><strong id="detail-bids">0</strong></div></div><div class="bid-chart" id="bid-chart"></div><div class="bid-history" id="bid-history"></div><label class="offer-input">Tu oferta (COP) · incremento mínimo <input id="offer-input" type="number" min="1" step="1"></label><p class="notice">Modelo propuesto: cada oferta válida cuesta $500 COP y descuenta 1 token. Los pagos del producto y la entrega se acuerdan directamente entre las partes.</p><div class="modal-actions"><button class="btn btn-light" type="button" data-close>Cerrar</button><button class="btn btn-primary" id="submit-offer">Ofertar · $500 COP (1 token)</button></div></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Pantalla de Portada y Acceso exacta a la referencia del usuario -->
+  <div class="auth-wrapper" id="auth-screen">
+    <!-- Ícono flotante superior fuera de la tarjeta - Círculo con hojas verdes -->
+    <div class="auth-floating-icon" aria-hidden="true">
+      <img src="logo-circle.svg" alt="Subastas del Campo" width="68" height="68">
+    </div>
+
+    <!-- Tarjeta blanca principal -->
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1 class="auth-title">Subastas del Campo</h1>
+        <p class="auth-subtitle">Tu mercado digital para el agro colombiano</p>
+      </div>
+
+      <!-- Segmented Control / Switcher -->
+      <div class="auth-segmented" role="tablist">
+        <button type="button" class="auth-seg-btn active" id="tab-login-btn" role="tab" aria-selected="true">Iniciar Sesión</button>
+        <button type="button" class="auth-seg-btn" id="tab-register-btn" role="tab" aria-selected="false">Registrarse</button>
+      </div>
+
+      <!-- Formulario Iniciar Sesión -->
+      <form class="auth-form" id="login-form">
+        <div class="auth-field">
+          <label class="auth-label" for="login-email">Email o celular</label>
+          <div class="auth-input-box">
+            <span class="input-icon">✉</span>
+            <input class="auth-input" type="text" id="login-email" required placeholder="tu@email.com">
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <div class="auth-field-header">
+            <label for="login-password">Contraseña</label>
+            <a href="#" id="forgot-password-link">¿Olvidaste tu contraseña?</a>
+          </div>
+          <div class="auth-input-box">
+            <span class="input-icon">🔒</span>
+            <input class="auth-input" type="password" id="login-password" required placeholder="••••••••">
+          </div>
+        </div>
+
+        <button type="submit" class="auth-cta-btn">Iniciar Sesión</button>
+
+        <div class="auth-separator">O CONTINÚA CON</div>
+
+        <button type="button" class="auth-google-btn" id="google-auth-btn">
+          <svg viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continuar con Google</span>
+        </button>
+      </form>
+
+      <!-- Formulario Registrarse -->
+      <form class="auth-form hidden" id="register-form">
+        <div class="auth-grid-2">
+          <div class="auth-field">
+            <label class="auth-label" for="reg-first-name">Nombre</label>
+            <div class="auth-input-box">
+              <span class="input-icon">👤</span>
+              <input class="auth-input" type="text" id="reg-first-name" name="firstName" required placeholder="Ej. Juan">
+            </div>
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="reg-last-name">Apellido</label>
+            <div class="auth-input-box">
+              <span class="input-icon">👤</span>
+              <input class="auth-input" type="text" id="reg-last-name" name="lastName" required placeholder="Ej. Pérez">
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-grid-2">
+          <div class="auth-field">
+            <label class="auth-label" for="reg-id-number">Cédula</label>
+            <div class="auth-input-box">
+              <span class="input-icon">🪪</span>
+              <input class="auth-input" type="text" id="reg-id-number" name="idNumber" required placeholder="123456789">
+            </div>
+          </div>
+          <div class="auth-field">
+            <label class="auth-label" for="reg-phone">Celular</label>
+            <div class="auth-input-box">
+              <span class="input-icon">📱</span>
+              <input class="auth-input" type="tel" id="reg-phone" name="phone" required placeholder="3001234567">
+            </div>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-email">Email</label>
+          <div class="auth-input-box">
+            <span class="input-icon">✉</span>
+            <input class="auth-input" type="email" id="reg-email" name="email" required placeholder="tu@email.com">
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-role">Tipo de usuario</label>
+          <div class="auth-input-box">
+            <span class="input-icon">🌱</span>
+            <select class="auth-select" id="reg-role" name="role" required>
+              <option value="comprador">Comprador de cosechas</option>
+              <option value="vendedor">Vendedor / Productor agrícola</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="auth-field">
+          <label class="auth-label" for="reg-password">Contraseña</label>
+          <div class="auth-input-box">
+            <span class="input-icon">🔒</span>
+            <input class="auth-input" type="password" id="reg-password" required placeholder="••••••••">
+          </div>
+        </div>
+
+        <button type="submit" class="auth-cta-btn">Registrarse</button>
+
+        <div class="auth-separator">O CONTINÚA CON</div>
+
+        <button type="button" class="auth-google-btn" id="google-auth-btn-reg">
+          <svg viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+          </svg>
+          <span>Continuar con Google</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- Texto legal fuera de la tarjeta -->
+    <p class="auth-terms-note">Al continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.</p>
+
+    <!-- Badge de versión -->
+    <div class="auth-version-badge">v1.0.0-demo</div>
+  </div>
+
+  <!-- Diálogo simulador de cuenta de Google -->
+  <dialog class="google-modal" id="google-modal">
+    <div class="google-modal-card">
+      <div style="margin-bottom:10px;">
+        <svg style="width:36px;height:36px;" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+        </svg>
+      </div>
+      <h3 style="margin:0 0 5px;font-family:'Manrope',sans-serif;font-size:17px;color:#173e32;">Acceder con Google</h3>
+      <p style="margin:0 0 16px;font-size:12px;color:#788777;">Selecciona una cuenta para continuar a Subastas del Campo</p>
+      
+      <div class="google-account-item" id="google-quick-account">
+        <div class="google-user-avatar">MR</div>
+        <div>
+          <strong style="display:block;font-size:13px;color:#223528;">Mauricio Rodríguez</strong>
+          <small style="color:#788777;font-size:11px;">mauricio.rodriguez@gmail.com</small>
+        </div>
+      </div>
+
+      <div style="margin-top:18px;">
+        <button type="button" class="btn btn-light" id="google-cancel-btn" style="width:100%;height:38px;border-radius:10px;">Cancelar</button>
+      </div>
+    </div>
+  </dialog>
 </body>
 </html>

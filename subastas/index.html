@@ -9,15 +9,13 @@
   <link rel="stylesheet" href="styles-market-v2.css">
 <link rel="stylesheet" href="responsive.css">
   <script src="app.js?v=prototype-1" defer></script>
-<script src="subscribe.js" defer></script>
 </head>
 <body>
   <div class="demo-ribbon"><strong>Prototipo de demostración.</strong> Lotes y ofertas de ejemplo; no representan ventas reales ni son vinculantes.</div>
   <header class="topbar">
-    <a class="wordmark" href="#inicio" aria-label="Subastas del Campo, inicio"><span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 34V16m0 7c-8 0-12-5-12-12 8 0 12 4 12 12Zm0-5c0-7 4-11 12-11 0 7-4 11-12 11Z"/><path d="M9 32h22"/></svg></span><span>Subastas<span class="wordmark-soft"> del Campo</span></span></a>
+    <a class="wordmark" href="#inicio" aria-label="Subastas del Campo, inicio"><span class="brand-mark" aria-hidden="true" style="padding:0;overflow:hidden;background:transparent;"><img src="logo-circle.svg" alt="Logo" width="34" height="34" style="border-radius:50%;"></span><span>Subastas<span class="wordmark-soft"> del Campo</span></span></a>
     <nav class="topnav" aria-label="Navegación principal"><a href="#lotes">Ver lotes</a><a href="#como-funciona">Cómo funciona</a><a class="nav-publish" href="app.html">Entrar a la app <span aria-hidden="true">↗</span></a></nav>
-    <a class="button button-primary" id="subscribe-btn" href="#">Suscríbete</a>
-    <button class="button button-secondary hidden" id="logout-btn">Cerrar sesión</button>
+    <a class="button button-primary" href="app.html">Abrir app</a>
   </header>
 
   <main id="inicio">
@@ -110,35 +108,5 @@
     </form>
   </dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
-    <!-- Subscription Modal -->
-    <dialog class="modal" id="subscribe-modal" aria-labelledby="subscribe-title">
-      <form class="modal-card" id="subscribe-form">
-        <div class="modal-head">
-          <div>
-            <p class="eyebrow eyebrow-dark">Nuevo usuario</p>
-            <h2 id="subscribe-title">Crear cuenta</h2>
-          </div>
-          <button class="icon-button" type="button" data-close="subscribe-modal" aria-label="Cerrar">×</button>
-        </div>
-        <div class="form-grid">
-          <label class="field"><span>Nombre</span><input name="firstName" required maxlength="50" placeholder="Ej. Juan"></label>
-          <label class="field"><span>Apellido</span><input name="lastName" required maxlength="50" placeholder="Ej. Pérez"></label>
-          <label class="field"><span>Cédula</span><input name="idNumber" required maxlength="20" placeholder="Ej. 123456789"></label>
-          <label class="field"><span>Teléfono</span><input name="phone" type="tel" required maxlength="20" placeholder="Ej. 3001234567"></label>
-          <label class="field"><span>Correo electrónico</span><input name="email" type="email" required maxlength="100" placeholder="Ej. juan@ejemplo.com"></label>
-          <label class="field"><span>Tipo de usuario</span>
-            <select name="role" required>
-              <option value="comprador">Comprador</option>
-              <option value="vendedor">Vendedor</option>
-            </select>
-          </label>
-        </div>
-        <p class="form-note">Los datos se guardan localmente en este dispositivo y pueden ser exportados más adelante a una hoja de cálculo.</p>
-        <div class="modal-actions">
-          <button class="button button-secondary" type="button" data-close="subscribe-modal">Cancelar</button>
-          <button class="button button-primary" type="submit">Crear cuenta</button>
-        </div>
-      </form>
-    </dialog>
 </body>
 </html>

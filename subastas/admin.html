@@ -3,62 +3,875 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Listado de suscriptores - Admin</title>
-  <link rel="stylesheet" href="styles-market-v2.css">
-  <link rel="stylesheet" href="responsive.css">
+  <meta name="theme-color" content="#173e32">
+  <title>Panel de Administración | Subastas del Campo</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap">
   <style>
-    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
-    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
-    th { background: #f0f0f0; }
+    :root {
+      --green: #173e32;
+      --green-dark: #0f2b23;
+      --green-light: #245944;
+      --leaf: #88a85f;
+      --leaf-soft: #edf4e7;
+      --bg: #f8faf6;
+      --card-bg: #ffffff;
+      --line: #e6ebdf;
+      --text: #23362a;
+      --muted: #738374;
+      --gold: #ba8b43;
+      --gold-soft: #fbf5e8;
+      --red: #b94b3e;
+      --red-soft: #fdf0ed;
+      --sans: 'DM Sans', sans-serif;
+      --display: 'Manrope', sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    /* Barra Superior */
+    .admin-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 16px 36px;
+      background: #ffffff;
+      border-bottom: 1px solid var(--line);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-badge {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      background: var(--leaf-soft);
+      border-radius: 12px;
+      font-size: 20px;
+    }
+
+    .brand-text strong {
+      display: block;
+      color: var(--green);
+      font-family: var(--display);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+    }
+
+    .brand-text small {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    .admin-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      background: #eef3e6;
+      color: #3b5a45;
+      border: 1px solid #dce6d3;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .admin-pill .dot {
+      width: 7px;
+      height: 7px;
+      background: #5d8a4e;
+      border-radius: 50%;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 38px;
+      padding: 0 16px;
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--green);
+      color: #ffffff;
+      box-shadow: 0 3px 10px rgba(23, 62, 50, 0.2);
+    }
+
+    .btn-primary:hover {
+      background: var(--green-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: var(--text);
+      border-color: var(--line);
+    }
+
+    .btn-secondary:hover {
+      background: #f1f4ec;
+      border-color: #d8dfd0;
+    }
+
+    .btn-export {
+      background: #edf5e6;
+      color: #2e5936;
+      border-color: #d9e6ce;
+    }
+
+    .btn-export:hover {
+      background: #e0eed4;
+    }
+
+    /* Contenedor Principal */
+    .admin-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 32px 36px 60px;
+    }
+
+    /* Encabezado de Sección */
+    .page-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      margin-bottom: 26px;
+    }
+
+    .page-head h1 {
+      margin: 0 0 6px;
+      color: var(--green);
+      font-family: var(--display);
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .page-head p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Tarjetas de Métricas (KPIs) */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .metric-card {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 22px;
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      box-shadow: 0 4px 18px rgba(23, 62, 50, 0.03);
+    }
+
+    .metric-icon {
+      display: grid;
+      place-items: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 13px;
+      font-size: 22px;
+    }
+
+    .metric-icon.total { background: #eef4e7; color: #43663a; }
+    .metric-icon.buyers { background: #e8f2f6; color: #326980; }
+    .metric-icon.sellers { background: #fdf2e2; color: #a5712e; }
+    .metric-icon.recent { background: #f5edf7; color: #763b82; }
+
+    .metric-info small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-info strong {
+      display: block;
+      margin-top: 3px;
+      color: var(--text);
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 800;
+    }
+
+    /* Panel Central con Tabla */
+    .data-panel {
+      background: #ffffff;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: 0 6px 24px rgba(23, 62, 50, 0.04);
+      overflow: hidden;
+    }
+
+    /* Barra de Herramientas de la Tabla */
+    .panel-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 6px;
+      background: #f1f4ec;
+      padding: 4px;
+      border-radius: 11px;
+    }
+
+    .filter-tab {
+      height: 32px;
+      padding: 0 14px;
+      background: transparent;
+      border: 0;
+      color: #637365;
+      font-family: var(--sans);
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .filter-tab.active {
+      background: #ffffff;
+      color: var(--green);
+      font-weight: 700;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+
+    .search-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: min(340px, 100%);
+    }
+
+    .search-box span {
+      position: absolute;
+      left: 12px;
+      color: #8c9b8c;
+      font-size: 15px;
+    }
+
+    .search-box input {
+      width: 100%;
+      height: 38px;
+      padding: 0 14px 0 36px;
+      background: #f9faf7;
+      border: 1.5px solid var(--line);
+      border-radius: 10px;
+      font-family: var(--sans);
+      font-size: 12px;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-box input:focus {
+      background: #ffffff;
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(23, 62, 50, 0.1);
+    }
+
+    /* Tabla */
+    .table-responsive {
+      overflow-x: auto;
+      width: 100%;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 12.5px;
+    }
+
+    thead th {
+      padding: 13px 20px;
+      color: #708072;
+      background: #fafbfa;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--line);
+      white-space: nowrap;
+    }
+
+    tbody tr {
+      border-bottom: 1px solid #f0f3eb;
+      transition: background 0.15s ease;
+    }
+
+    tbody tr:hover {
+      background: #fbfdf9;
+    }
+
+    tbody td {
+      padding: 15px 20px;
+      vertical-align: middle;
+      color: var(--text);
+    }
+
+    /* Elementos dentro de las filas */
+    .user-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      background: #edf3e6;
+      color: var(--green);
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .user-name-box strong {
+      display: block;
+      color: #1b2f23;
+      font-weight: 700;
+      font-size: 13px;
+    }
+
+    .user-name-box small {
+      display: block;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* Badges de Rol */
+    .role-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .role-badge.buyer {
+      background: #e8f4f8;
+      color: #27627a;
+    }
+
+    .role-badge.seller {
+      background: #fdf3e2;
+      color: #9d6824;
+    }
+
+    .contact-link {
+      color: var(--text);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.15s;
+    }
+
+    .contact-link:hover {
+      color: var(--green);
+    }
+
+    .wa-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 9px;
+      background: #e8f7ea;
+      color: #1f7a32;
+      border: 1px solid #d2edd6;
+      border-radius: 7px;
+      font-size: 11px;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .wa-btn:hover {
+      background: #daf2dc;
+    }
+
+    .action-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: #ffffff;
+      color: #8c988c;
+      cursor: pointer;
+      display: inline-grid;
+      place-items: center;
+      transition: all 0.15s ease;
+    }
+
+    .action-btn:hover {
+      color: var(--red);
+      background: var(--red-soft);
+      border-color: #f7d2cc;
+    }
+
+    /* Estado Vacío */
+    .empty-state {
+      padding: 56px 20px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+    }
+
+    .empty-state h3 {
+      margin: 0 0 6px;
+      color: var(--green);
+      font-family: var(--display);
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .empty-state p {
+      margin: 0 auto;
+      max-width: 360px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+
+    /* Pie de página */
+    .admin-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .metrics-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .admin-topbar {
+        padding: 12px 18px;
+      }
+      .admin-container {
+        padding: 20px 18px 40px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .metrics-grid {
+        grid-template-columns: 1fr;
+      }
+      .page-head {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .panel-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .search-box {
+        width: 100%;
+      }
+    }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a class="wordmark" href="index.html" aria-label="Subastas del Campo, inicio">
-      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 34V16m0 7c-8 0-12-5-12-12 8 0 12 4 12 12Zm0-5c0-7 4-11 12-11 0 7-4 11-12 11Z"/><path d="M9 32h22"/></svg></span>
-      <span>Subastas<span class="wordmark-soft"> del Campo</span></span>
+
+  <!-- Barra Superior -->
+  <header class="admin-topbar">
+    <a class="brand-wrap" href="index.html">
+      <div class="brand-badge" style="padding:0;overflow:hidden;background:transparent;"><img src="logo-circle.svg" alt="Logo" width="38" height="38"></div>
+      <div class="brand-text">
+        <strong>Subastas del Campo</strong>
+        <small>Sistema de Gestión</small>
+      </div>
     </a>
-    <nav class="topnav" aria-label="Navegación principal">
-      <a href="index.html" class="button button-primary">Volver</a>
-    </nav>
+
+    <div class="admin-pill">
+      <span class="dot"></span>
+      <span>Base de datos en tiempo real</span>
+    </div>
+
+    <div class="topbar-actions">
+      <button class="btn btn-export" id="export-csv-btn">
+        <span>📥</span>
+        <span>Exportar Excel / CSV</span>
+      </button>
+      <a href="app.html" class="btn btn-primary">
+        <span>Abrir App</span>
+        <span>↗</span>
+      </a>
+      <a href="index.html" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
   </header>
 
-  <main>
-    <h1>Suscriptores</h1>
-    <section id="compradores">
-      <h2>Compradores</h2>
-      <table id="buyers-table">
-        <thead><tr><th>Nombre</th><th>Apellido</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Fecha</th></tr></thead>
-        <tbody></tbody>
-      </table>
+  <!-- Contenedor Principal -->
+  <main class="admin-container">
+    <div class="page-head">
+      <div>
+        <h1>Directorio de Suscriptores</h1>
+        <p>Usuarios y productores registrados en la plataforma Subastas del Campo.</p>
+      </div>
+      <div>
+        <button class="btn btn-secondary" id="clear-demo-btn" style="color:#b94b3e;border-color:#f4d5d0;">
+          🗑 Limpiar datos de prueba
+        </button>
+      </div>
+    </div>
+
+    <!-- Métricas / KPIs -->
+    <section class="metrics-grid" aria-label="Estadísticas de usuarios">
+      <article class="metric-card">
+        <div class="metric-icon total">👥</div>
+        <div class="metric-info">
+          <small>Total Registrados</small>
+          <strong id="metric-total">0</strong>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <div class="metric-icon buyers">🛒</div>
+        <div class="metric-info">
+          <small>Compradores</small>
+          <strong id="metric-buyers">0</strong>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <div class="metric-icon sellers">🌾</div>
+        <div class="metric-info">
+          <small>Vendedores Agrícolas</small>
+          <strong id="metric-sellers">0</strong>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <div class="metric-icon recent">⏱</div>
+        <div class="metric-info">
+          <small>Último Registro</small>
+          <strong id="metric-latest" style="font-size:15px;margin-top:7px;">Ninguno</strong>
+        </div>
+      </article>
     </section>
-    <section id="vendedores">
-      <h2>Vendedores</h2>
-      <table id="sellers-table">
-        <thead><tr><th>Nombre</th><th>Apellido</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Fecha</th></tr></thead>
-        <tbody></tbody>
-      </table>
+
+    <!-- Panel de Tabla -->
+    <section class="data-panel">
+      <!-- Toolbar de Filtros y Búsqueda -->
+      <div class="panel-toolbar">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="all">Todos (<span id="count-all">0</span>)</button>
+          <button class="filter-tab" data-filter="comprador">Compradores (<span id="count-buyers">0</span>)</button>
+          <button class="filter-tab" data-filter="vendedor">Vendedores (<span id="count-sellers">0</span>)</button>
+        </div>
+
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="search" id="search-input" placeholder="Buscar por nombre, cédula, teléfono o email...">
+        </div>
+      </div>
+
+      <!-- Tabla de Datos -->
+      <div class="table-responsive">
+        <table id="subscribers-table">
+          <thead>
+            <tr>
+              <th>Usuario</th>
+              <th>Cédula / ID</th>
+              <th>WhatsApp / Teléfono</th>
+              <th>Email</th>
+              <th>Tipo de Usuario</th>
+              <th>Fecha de Registro</th>
+              <th style="text-align:right;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody id="subscribers-body">
+            <!-- Filas dinámicas -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Estado Vacío -->
+      <div class="empty-state" id="empty-state" hidden>
+        <div class="empty-icon">🌱</div>
+        <h3>No se encontraron suscriptores</h3>
+        <p>Los usuarios que se registren en la aplicación aparecerán listados aquí en tiempo real.</p>
+      </div>
     </section>
+
+    <footer class="admin-footer">
+      <span>© 2026 Subastas del Campo · Panel de Administración</span>
+      <span>Almacenamiento seguro en navegador · Exportable a Excel</span>
+    </footer>
   </main>
 
+  <!-- Script del Panel de Administración -->
   <script>
-    (function(){
-      const data = JSON.parse(localStorage.getItem('subscribers') || '[]');
-      const buyers = data.filter(s => s.role === 'comprador');
-      const sellers = data.filter(s => s.role === 'vendedor');
-      const render = (arr, tbody) => {
-        tbody.innerHTML = arr.map(sub => `
-          <tr>
-            <td>${sub.firstName}</td>
-            <td>${sub.lastName}</td>
-            <td>${sub.idNumber}</td>
-            <td>${sub.phone}</td>
-            <td>${sub.email}</td>
-            <td>${new Date(sub.timestamp).toLocaleString()}</td>
-          </tr>`).join('');
-      };
-      render(buyers, document.querySelector('#buyers-table tbody'));
-      render(sellers, document.querySelector('#sellers-table tbody'));
+    (function() {
+      let subscribers = [];
+      let currentFilter = 'all';
+      let searchQuery = '';
+
+      function loadData() {
+        try {
+          subscribers = JSON.parse(localStorage.getItem('subscribers') || '[]');
+        } catch (e) {
+          subscribers = [];
+        }
+      }
+
+      function updateMetrics() {
+        const total = subscribers.length;
+        const buyers = subscribers.filter(s => s.role === 'comprador').length;
+        const sellers = subscribers.filter(s => s.role === 'vendedor').length;
+
+        document.getElementById('metric-total').textContent = total;
+        document.getElementById('metric-buyers').textContent = buyers;
+        document.getElementById('metric-sellers').textContent = sellers;
+
+        document.getElementById('count-all').textContent = total;
+        document.getElementById('count-buyers').textContent = buyers;
+        document.getElementById('count-sellers').textContent = sellers;
+
+        if (total > 0) {
+          const last = subscribers[subscribers.length - 1];
+          const lastDate = new Date(last.timestamp);
+          document.getElementById('metric-latest').textContent = lastDate.toLocaleDateString('es-CO', {
+            day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+          });
+        } else {
+          document.getElementById('metric-latest').textContent = 'Ninguno';
+        }
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById('subscribers-body');
+        const emptyState = document.getElementById('empty-state');
+        const table = document.getElementById('subscribers-table');
+
+        const filtered = subscribers.filter(sub => {
+          // Filtro por Rol
+          if (currentFilter !== 'all' && sub.role !== currentFilter) return false;
+
+          // Filtro por Búsqueda
+          if (searchQuery) {
+            const q = searchQuery.toLowerCase();
+            const fullName = `${sub.firstName || ''} ${sub.lastName || ''}`.toLowerCase();
+            const idNumber = (sub.idNumber || '').toLowerCase();
+            const email = (sub.email || '').toLowerCase();
+            const phone = (sub.phone || '').toLowerCase();
+
+            return fullName.includes(q) || idNumber.includes(q) || email.includes(q) || phone.includes(q);
+          }
+          return true;
+        });
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = '';
+          emptyState.hidden = false;
+          table.hidden = true;
+          return;
+        }
+
+        emptyState.hidden = true;
+        table.hidden = false;
+
+        tbody.innerHTML = filtered.map(sub => {
+          const initials = `${(sub.firstName || 'U')[0] || ''}${(sub.lastName || '')[0] || ''}`.toUpperCase() || 'U';
+          const isSeller = sub.role === 'vendedor';
+          const roleLabel = isSeller ? 'Vendedor Agrícola' : 'Comprador';
+          const roleClass = isSeller ? 'seller' : 'buyer';
+          const roleIcon = isSeller ? '🌾' : '🛒';
+
+          const phoneDigits = (sub.phone || '').replace(/\D/g, '');
+          const waUrl = phoneDigits ? `https://wa.me/57${phoneDigits}` : '#';
+
+          const dateStr = sub.timestamp ? new Date(sub.timestamp).toLocaleString('es-CO', {
+            year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit'
+          }) : 'Fecha no reg.';
+
+          return `
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <div class="user-avatar">${initials}</div>
+                  <div class="user-name-box">
+                    <strong>${escapeHtml(sub.firstName || '')} ${escapeHtml(sub.lastName || '')}</strong>
+                    <small>ID: ${sub.id || '-'}</small>
+                  </div>
+                </div>
+              </td>
+              <td><strong>${escapeHtml(sub.idNumber || 'Sin cédula')}</strong></td>
+              <td>
+                ${phoneDigits ? `
+                  <a href="${waUrl}" target="_blank" rel="noopener" class="wa-btn" title="Contactar por WhatsApp">
+                    <span>💬</span>
+                    <span>${escapeHtml(sub.phone)}</span>
+                  </a>
+                ` : '<span style="color:#999;">Sin celular</span>'}
+              </td>
+              <td>
+                <a href="mailto:${escapeHtml(sub.email || '')}" class="contact-link">
+                  <span>✉</span>
+                  <span>${escapeHtml(sub.email || '-')}</span>
+                </a>
+              </td>
+              <td>
+                <span class="role-badge ${roleClass}">
+                  <span>${roleIcon}</span>
+                  <span>${roleLabel}</span>
+                </span>
+              </td>
+              <td style="color:#687769;font-size:11.5px;">${dateStr}</td>
+              <td style="text-align:right;">
+                <button type="button" class="action-btn" data-delete-id="${sub.id}" title="Eliminar este registro">
+                  ✕
+                </button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, m => ({
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+        }[m]));
+      }
+
+      // Exportar a CSV (Compatible con Excel)
+      function exportToCSV() {
+        if (!subscribers.length) {
+          alert('No hay suscriptores registrados para exportar.');
+          return;
+        }
+
+        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Fecha de Registro'];
+        const rows = subscribers.map(s => [
+          s.id || '',
+          `"${(s.firstName || '').replace(/"/g, '""')}"`,
+          `"${(s.lastName || '').replace(/"/g, '""')}"`,
+          `"${s.idNumber || ''}"`,
+          `"${s.phone || ''}"`,
+          `"${s.email || ''}"`,
+          s.role || '',
+          s.timestamp || ''
+        ]);
+
+        const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `suscriptores_subastas_del_campo_${new Date().toISOString().slice(0, 10)}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // Eventos
+      document.querySelectorAll('.filter-tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentFilter = btn.dataset.filter;
+          renderTable();
+        });
+      });
+
+      document.getElementById('search-input').addEventListener('input', e => {
+        searchQuery = e.target.value.trim();
+        renderTable();
+      });
+
+      document.getElementById('export-csv-btn').addEventListener('click', exportToCSV);
+
+      document.getElementById('clear-demo-btn').addEventListener('click', () => {
+        if (confirm('¿Estás seguro de que deseas limpiar la lista de suscriptores de prueba?')) {
+          localStorage.removeItem('subscribers');
+          loadData();
+          updateMetrics();
+          renderTable();
+        }
+      });
+
+      document.getElementById('subscribers-body').addEventListener('click', e => {
+        const delBtn = e.target.closest('[data-delete-id]');
+        if (delBtn) {
+          const id = Number(delBtn.dataset.deleteId);
+          if (confirm('¿Deseas eliminar este suscriptor?')) {
+            subscribers = subscribers.filter(s => s.id !== id);
+            localStorage.setItem('subscribers', JSON.stringify(subscribers));
+            updateMetrics();
+            renderTable();
+          }
+        }
+      });
+
+      // Inicialización
+      loadData();
+      updateMetrics();
+      renderTable();
     })();
   </script>
 </body>
