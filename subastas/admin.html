@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Listado de suscriptores - Admin</title>
+  <link rel="stylesheet" href="styles-market-v2.css">
+  <link rel="stylesheet" href="responsive.css">
+  <style>
+    table { width: 100%; border-collapse: collapse; margin-bottom: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <a class="wordmark" href="index.html" aria-label="Subastas del Campo, inicio">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 40 40"><path d="M20 34V16m0 7c-8 0-12-5-12-12 8 0 12 4 12 12Zm0-5c0-7 4-11 12-11 0 7-4 11-12 11Z"/><path d="M9 32h22"/></svg></span>
+      <span>Subastas<span class="wordmark-soft"> del Campo</span></span>
+    </a>
+    <nav class="topnav" aria-label="Navegación principal">
+      <a href="index.html" class="button button-primary">Volver</a>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Suscriptores</h1>
+    <section id="compradores">
+      <h2>Compradores</h2>
+      <table id="buyers-table">
+        <thead><tr><th>Nombre</th><th>Apellido</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Fecha</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+    <section id="vendedores">
+      <h2>Vendedores</h2>
+      <table id="sellers-table">
+        <thead><tr><th>Nombre</th><th>Apellido</th><th>Cédula</th><th>Teléfono</th><th>Email</th><th>Fecha</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      const data = JSON.parse(localStorage.getItem('subscribers') || '[]');
+      const buyers = data.filter(s => s.role === 'comprador');
+      const sellers = data.filter(s => s.role === 'vendedor');
+      const render = (arr, tbody) => {
+        tbody.innerHTML = arr.map(sub => `
+          <tr>
+            <td>${sub.firstName}</td>
+            <td>${sub.lastName}</td>
+            <td>${sub.idNumber}</td>
+            <td>${sub.phone}</td>
+            <td>${sub.email}</td>
+            <td>${new Date(sub.timestamp).toLocaleString()}</td>
+          </tr>`).join('');
+      };
+      render(buyers, document.querySelector('#buyers-table tbody'));
+      render(sellers, document.querySelector('#sellers-table tbody'));
+    })();
+  </script>
+</body>
+</html>
