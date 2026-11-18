@@ -1,4 +1,4 @@
-﻿(function() {
+(function() {
   const authScreen = document.getElementById('auth-screen');
   const appContent = document.getElementById('app-content');
   const toast = document.getElementById('toast');
@@ -322,6 +322,31 @@
       showToast('Perfil actualizado correctamente.');
     });
   }
+
+  // Vinculación de la barra de navegación inferior móvil
+  const mobilePublishBtn = document.getElementById('mobile-bottom-publish');
+  if (mobilePublishBtn) {
+    mobilePublishBtn.addEventListener('click', () => {
+      const pubDialog = document.getElementById('publish-dialog');
+      if (pubDialog) pubDialog.showModal();
+    });
+  }
+
+  const mobileProfileBtn = document.getElementById('mobile-bottom-profile');
+  if (mobileProfileBtn) {
+    mobileProfileBtn.addEventListener('click', () => {
+      refreshProfileModal();
+      if (profileDialog) profileDialog.showModal();
+    });
+  }
+
+  // Sincronizar estado activo en la barra inferior móvil
+  document.querySelectorAll('.bnav-btn[data-view]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.bnav-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
 
   // Comprobar estado inicial
   const isSubscribed = localStorage.getItem('isSubscribed') === 'true';

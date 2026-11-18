@@ -53,10 +53,33 @@
         <footer class="app-footer"><span>© 2026 Subastas del Campo · Prototipo independiente</span><span>Sin custodia de dinero · Sin operación de transporte</span></footer>
       </section>
     </main>
+    <!-- Barra de navegación inferior fija estilo App (Móviles / Tablets) -->
+    <nav class="mobile-app-bottom-nav" aria-label="Navegación de la aplicación">
+      <button class="bnav-btn active" data-view="market" type="button">
+        <span class="bnav-icon">⌂</span>
+        <span>Mercado</span>
+      </button>
+      <button class="bnav-btn" data-view="bids" type="button">
+        <span class="bnav-icon">↗</span>
+        <span>Pujas</span>
+      </button>
+      <button class="bnav-btn bnav-publish" id="mobile-bottom-publish" type="button" title="Publicar Cosecha">
+        <span class="bnav-icon">＋</span>
+        <span>Publicar</span>
+      </button>
+      <button class="bnav-btn" data-view="chats" type="button">
+        <span class="bnav-icon">💬</span>
+        <span>Chats</span>
+      </button>
+      <button class="bnav-btn" id="mobile-bottom-profile" type="button">
+        <span class="bnav-icon">👤</span>
+        <span>Perfil</span>
+      </button>
+    </nav>
   </div>
 
   <dialog class="modal" id="profile-dialog">
-    <div class="modal-card" style="max-width: 480px;">
+    <div class="modal-card">
       <div class="modal-head">
         <div>
           <p class="eyebrow">MI CUENTA · SUBASTAS DEL CAMPO</p>
@@ -66,36 +89,36 @@
       </div>
 
       <!-- Tarjeta visual de cabecera de usuario -->
-      <div style="display:flex;align-items:center;gap:14px;padding:16px;background:#f5f8f2;border:1px solid #e2ebd9;border-radius:14px;margin-bottom:18px;">
-        <div class="avatar" id="modal-profile-avatar" style="width:48px;height:48px;font-size:18px;background:#173e32;color:#fff;">M</div>
+      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#f5f8f2;border:1px solid #e2ebd9;border-radius:14px;margin-bottom:16px;">
+        <div class="avatar" id="modal-profile-avatar" style="width:48px;height:48px;font-size:18px;background:#173e32;color:#fff;flex-shrink:0;">M</div>
         <div style="min-width:0;flex:1;">
-          <strong id="modal-profile-name" style="display:block;color:#1d342b;font-size:15px;font-family:var(--display);">Usuario Activo</strong>
+          <strong id="modal-profile-name" style="display:block;color:#1d342b;font-size:15px;font-family:var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Usuario Activo</strong>
           <span class="role-badge buyer" id="modal-profile-role-badge" style="margin-top:4px;display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;background:#e8f4f8;color:#27627a;">
             Comprador de cosechas
           </span>
         </div>
-        <span style="font-size:10px;color:#527c44;background:#eaf3e3;padding:4px 8px;border-radius:6px;font-weight:700;">Activo ✓</span>
+        <span style="font-size:10px;color:#527c44;background:#eaf3e3;padding:4px 8px;border-radius:6px;font-weight:700;flex-shrink:0;">Activo ✓</span>
       </div>
 
-      <!-- Resumen de datos de la cuenta -->
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:18px;">
-        <div style="padding:11px 13px;background:#ffffff;border:1px solid #e7ebe3;border-radius:10px;">
-          <small style="display:block;color:#7c8c7d;font-size:10px;font-weight:600;text-transform:uppercase;">Cédula / ID</small>
-          <strong id="modal-profile-id" style="display:block;margin-top:2px;color:#24362b;font-size:12px;">Registrado</strong>
+      <!-- Resumen de datos de la cuenta en grid responsivo sin desborde -->
+      <div class="profile-data-grid">
+        <div class="profile-data-item">
+          <small>Cédula / ID</small>
+          <strong id="modal-profile-id">Registrado</strong>
         </div>
-        <div style="padding:11px 13px;background:#ffffff;border:1px solid #e7ebe3;border-radius:10px;">
-          <small style="display:block;color:#7c8c7d;font-size:10px;font-weight:600;text-transform:uppercase;">Celular / WhatsApp</small>
-          <strong id="modal-profile-phone" style="display:block;margin-top:2px;color:#24362b;font-size:12px;">Registrado</strong>
+        <div class="profile-data-item">
+          <small>WhatsApp / Celular</small>
+          <strong id="modal-profile-phone">Registrado</strong>
         </div>
-        <div style="padding:11px 13px;background:#ffffff;border:1px solid #e7ebe3;border-radius:10px;grid-column:1/-1;">
-          <small style="display:block;color:#7c8c7d;font-size:10px;font-weight:600;text-transform:uppercase;">Correo Electrónico</small>
-          <strong id="modal-profile-email" style="display:block;margin-top:2px;color:#24362b;font-size:12px;">usuario@correo.com</strong>
+        <div class="profile-data-item wide">
+          <small>Correo Electrónico</small>
+          <strong id="modal-profile-email">usuario@correo.com</strong>
         </div>
       </div>
 
       <!-- Personalización de datos -->
       <form id="profile-form" style="border-top:1px solid #edf1ea;padding-top:14px;">
-        <p style="margin:0 0 10px;color:#788879;font-size:11px;font-weight:600;">Actualizar nombre público o rol:</p>
+        <p style="margin:0 0 10px;color:#788879;font-size:11px;font-weight:600;">Personalizar nombre o rol:</p>
         <div class="form-grid">
           <label class="wide">Nombre público o finca
             <input id="profile-name-input" name="name" required maxlength="60" placeholder="Tu nombre">
@@ -107,10 +130,13 @@
             </select>
           </label>
         </div>
-        <div class="modal-actions" style="margin-top:16px;">
-          <button class="btn btn-light" type="button" id="modal-logout-btn" style="color:#b94b3e;border-color:#f4d5d0;background:#fff5f3;">⎋ Cerrar sesión</button>
-          <button class="btn btn-light" type="button" data-close>Cerrar</button>
-          <button class="btn btn-primary" type="submit">Guardar cambios</button>
+
+        <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
+          <button class="btn btn-primary" type="submit" style="width:100%;height:42px;font-size:12px;border-radius:10px;">Guardar cambios</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="btn btn-light" type="button" data-close style="height:38px;border-radius:10px;">Cerrar</button>
+            <button class="btn btn-light" type="button" id="modal-logout-btn" style="height:38px;border-radius:10px;color:#b94b3e;border-color:#f4d5d0;background:#fff5f3;">⎋ Cerrar sesión</button>
+          </div>
         </div>
       </form>
     </div>
