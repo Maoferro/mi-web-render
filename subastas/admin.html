@@ -548,17 +548,21 @@
       </div>
     </a>
 
-    <div class="admin-pill">
+    <div class="admin-pill" id="sync-status-pill">
       <span class="dot"></span>
-      <span>Base de datos en tiempo real</span>
+      <span id="sync-status-text">Base de datos en tiempo real</span>
     </div>
 
     <div class="topbar-actions">
+      <button class="btn btn-secondary" id="refresh-data-btn" title="Refrescar lista en vivo">
+        <span>🔄</span>
+        <span>Actualizar</span>
+      </button>
       <button class="btn btn-export" id="export-csv-btn">
         <span>📥</span>
         <span>Exportar Excel / CSV</span>
       </button>
-      <a href="app.html" class="btn btn-primary">
+      <a href="app.html" class="btn btn-primary" target="_blank" title="Abrir la aplicación">
         <span>Abrir App</span>
         <span>↗</span>
       </a>
@@ -750,13 +754,23 @@
             year: 'numeric', month: 'short', day: '2-digit', hour: '2-digit', minute: '2-digit'
           }) : 'Fecha no reg.';
 
+          const updateStr = sub.updatedAt ? `
+            <div style="font-size:10px;color:#2e6a37;margin-top:3px;font-weight:600;">
+              ✎ Editado: ${new Date(sub.updatedAt).toLocaleString('es-CO', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' })}
+            </div>
+          ` : '';
+
+          const modifiedBadge = sub.updatedAt ? `
+            <span style="display:inline-block;margin-left:6px;background:#e2eedb;color:#2c6b35;font-size:9.5px;padding:1px 6px;border-radius:4px;font-weight:700;">Modificado</span>
+          ` : '';
+
           return `
             <tr>
               <td>
                 <div class="user-cell">
                   <div class="user-avatar">${initials}</div>
                   <div class="user-name-box">
-                    <strong>${escapeHtml(sub.firstName || '')} ${escapeHtml(sub.lastName || '')}</strong>
+                    <strong>${escapeHtml(sub.firstName || '')} ${escapeHtml(sub.lastName || '')} ${modifiedBadge}</strong>
                     <small>ID: ${sub.id || '-'}</small>
                   </div>
                 </div>
@@ -782,7 +796,10 @@
                   <span>${roleLabel}</span>
                 </span>
               </td>
-              <td style="color:#687769;font-size:11.5px;">${dateStr}</td>
+              <td style="color:#687769;font-size:11.5px;">
+                <div>${dateStr}</div>
+                ${updateStr}
+              </td>
               <td style="text-align:right;">
                 <button type="button" class="action-btn" data-delete-id="${sub.id}" title="Eliminar este registro">
                   ✕
@@ -806,7 +823,7 @@
           return;
         }
 
-        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Fecha de Registro'];
+        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Fecha de Registro', 'Última Modificación'];
         const rows = subscribers.map(s => [
           s.id || '',
           `"${(s.firstName || '').replace(/"/g, '""')}"`,
@@ -815,7 +832,8 @@
           `"${s.phone || ''}"`,
           `"${s.email || ''}"`,
           s.role || '',
-          s.timestamp || ''
+          s.timestamp || '',
+          s.updatedAt || ''
         ]);
 
         const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\r\n');
@@ -829,7 +847,32 @@
         document.body.removeChild(link);
       }
 
+      function refreshAll() {
+        loadData();
+        updateMetrics();
+        renderTable();
+        flashSyncIndicator();
+      }
+
+      function flashSyncIndicator() {
+        const pill = document.getElementById('sync-status-pill');
+        const text = document.getElementById('sync-status-text');
+        if (!pill) return;
+        pill.style.background = '#d8f0d5';
+        pill.style.borderColor = '#9fd297';
+        if (text) text.textContent = '¡Sincronizado ahora!';
+        setTimeout(() => {
+          pill.style.background = '';
+          pill.style.borderColor = '';
+          if (text) text.textContent = 'Base de datos en tiempo real';
+        }, 1800);
+      }
+
       // Eventos
+      document.getElementById('refresh-data-btn')?.addEventListener('click', () => {
+        refreshAll();
+      });
+
       document.querySelectorAll('.filter-tab').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
@@ -866,6 +909,18 @@
             renderTable();
           }
         }
+      });
+
+      // Sincronización en tiempo real entre pestañas/ventanas
+      window.addEventListener('storage', (e) => {
+        if (!e || e.key === 'subscribers' || e.key === null) {
+          refreshAll();
+        }
+      });
+
+      // Sincronización automática al enfocar la pestaña
+      window.addEventListener('focus', () => {
+        refreshAll();
       });
 
       // Inicialización

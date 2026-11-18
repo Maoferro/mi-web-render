@@ -89,50 +89,53 @@
       </div>
 
       <!-- Tarjeta visual de cabecera de usuario -->
-      <div style="display:flex;align-items:center;gap:14px;padding:14px;background:#f5f8f2;border:1px solid #e2ebd9;border-radius:14px;margin-bottom:16px;">
-        <div class="avatar" id="modal-profile-avatar" style="width:48px;height:48px;font-size:18px;background:#173e32;color:#fff;flex-shrink:0;">M</div>
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:#f5f8f2;border:1px solid #e2ebd9;border-radius:14px;margin-bottom:14px;">
+        <div class="avatar" id="modal-profile-avatar" style="width:46px;height:46px;font-size:17px;background:#173e32;color:#fff;flex-shrink:0;">M</div>
         <div style="min-width:0;flex:1;">
-          <strong id="modal-profile-name" style="display:block;color:#1d342b;font-size:15px;font-family:var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Usuario Activo</strong>
-          <span class="role-badge buyer" id="modal-profile-role-badge" style="margin-top:4px;display:inline-block;padding:3px 9px;border-radius:99px;font-size:10px;font-weight:700;background:#e8f4f8;color:#27627a;">
+          <strong id="modal-profile-name" style="display:block;color:#1d342b;font-size:14px;font-family:var(--display);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Usuario Activo</strong>
+          <span class="role-badge buyer" id="modal-profile-role-badge" style="margin-top:3px;display:inline-block;padding:3px 8px;border-radius:99px;font-size:10px;font-weight:700;">
             Comprador de cosechas
           </span>
         </div>
-        <span style="font-size:10px;color:#527c44;background:#eaf3e3;padding:4px 8px;border-radius:6px;font-weight:700;flex-shrink:0;">Activo ✓</span>
+        <span style="font-size:9.5px;color:#3d6731;background:#e3efdc;padding:4px 8px;border-radius:6px;font-weight:700;flex-shrink:0;">Sincronizado ✓</span>
       </div>
 
-      <!-- Resumen de datos de la cuenta en grid responsivo sin desborde -->
-      <div class="profile-data-grid">
-        <div class="profile-data-item">
-          <small>Cédula / ID</small>
-          <strong id="modal-profile-id">Registrado</strong>
-        </div>
-        <div class="profile-data-item">
-          <small>WhatsApp / Celular</small>
-          <strong id="modal-profile-phone">Registrado</strong>
-        </div>
-        <div class="profile-data-item wide">
-          <small>Correo Electrónico</small>
-          <strong id="modal-profile-email">usuario@correo.com</strong>
-        </div>
-      </div>
-
-      <!-- Personalización de datos -->
-      <form id="profile-form" style="border-top:1px solid #edf1ea;padding-top:14px;">
-        <p style="margin:0 0 10px;color:#788879;font-size:11px;font-weight:600;">Personalizar nombre o rol:</p>
-        <div class="form-grid">
-          <label class="wide">Nombre público o finca
-            <input id="profile-name-input" name="name" required maxlength="60" placeholder="Tu nombre">
-          </label>
-          <label class="wide">Rol en el mercado
+      <!-- Formulario para editar y sincronizar todos los datos con Admin -->
+      <form id="profile-form">
+        <p style="margin:0 0 12px;color:#596b5c;font-size:11.5px;font-weight:600;">Modifica tus datos. Cualquier cambio se reflejará automáticamente en la app y en el panel de administración:</p>
+        
+        <div class="profile-edit-grid">
+          <div class="profile-input-group">
+            <label for="profile-firstname-input">Nombres</label>
+            <input type="text" id="profile-firstname-input" name="firstName" required maxlength="50" placeholder="Nombres">
+          </div>
+          <div class="profile-input-group">
+            <label for="profile-lastname-input">Apellidos</label>
+            <input type="text" id="profile-lastname-input" name="lastName" maxlength="50" placeholder="Apellidos">
+          </div>
+          <div class="profile-input-group">
+            <label for="profile-id-input">Cédula / Documento de Identidad</label>
+            <input type="text" id="profile-id-input" name="idNumber" required maxlength="30" placeholder="Número de cédula">
+          </div>
+          <div class="profile-input-group">
+            <label for="profile-phone-input">WhatsApp / Celular</label>
+            <input type="tel" id="profile-phone-input" name="phone" required maxlength="20" placeholder="Número móvil">
+          </div>
+          <div class="profile-input-group wide">
+            <label for="profile-email-input">Correo Electrónico</label>
+            <input type="email" id="profile-email-input" name="email" required maxlength="80" placeholder="correo@ejemplo.com">
+          </div>
+          <div class="profile-input-group wide">
+            <label for="profile-role-input">Tipo de Usuario / Rol en Subastas</label>
             <select id="profile-role-input" name="role">
-              <option value="buyer">Comprador de cosechas</option>
-              <option value="seller">Vendedor / Productor agrícola</option>
+              <option value="comprador">Comprador de cosechas</option>
+              <option value="vendedor">Vendedor / Productor agrícola</option>
             </select>
-          </label>
+          </div>
         </div>
 
         <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
-          <button class="btn btn-primary" type="submit" style="width:100%;height:42px;font-size:12px;border-radius:10px;">Guardar cambios</button>
+          <button class="btn btn-primary" type="submit" id="profile-save-btn" style="width:100%;height:42px;font-size:12.5px;font-weight:700;border-radius:10px;">💾 Guardar cambios y sincronizar</button>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
             <button class="btn btn-light" type="button" data-close style="height:38px;border-radius:10px;">Cerrar</button>
             <button class="btn btn-light" type="button" id="modal-logout-btn" style="height:38px;border-radius:10px;color:#b94b3e;border-color:#f4d5d0;background:#fff5f3;">⎋ Cerrar sesión</button>

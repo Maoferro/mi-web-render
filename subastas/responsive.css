@@ -494,6 +494,61 @@ html, body {
   white-space: nowrap;
 }
 
+/* Grilla editable de perfil - Moderno y adaptable */
+.profile-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.profile-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.profile-input-group.wide {
+  grid-column: 1 / -1;
+}
+
+.profile-input-group label {
+  font-size: 11px;
+  font-weight: 700;
+  color: #2b3e32;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.profile-input-group input,
+.profile-input-group select {
+  width: 100%;
+  height: 38px;
+  padding: 0 11px;
+  border: 1.5px solid #dbe2d4;
+  border-radius: 9px;
+  font-size: 12.5px;
+  font-family: 'DM Sans', sans-serif;
+  color: #1e3325;
+  background: #ffffff;
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.profile-input-group input:focus,
+.profile-input-group select:focus {
+  border-color: #173e32;
+  box-shadow: 0 0 0 3px rgba(23, 62, 50, 0.08);
+}
+
+@media (max-width: 540px) {
+  .profile-edit-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
 /* ========================================================
    BARRA DE NAVEGACIÓN INFERIOR (Estilo App Nativa en Móviles)
    ======================================================== */

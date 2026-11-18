@@ -39,12 +39,14 @@
       if (list.length > 0) return list[list.length - 1];
     } catch (_) {}
     return {
+      id: 101,
       firstName: 'Mauricio',
       lastName: 'Rodríguez',
-      idNumber: '1012345678',
-      phone: '3001234567',
+      idNumber: '1018273645',
+      phone: '3104567890',
       email: 'mauricio.rodriguez@gmail.com',
-      role: 'comprador'
+      role: 'comprador',
+      timestamp: new Date().toISOString()
     };
   }
 
@@ -86,9 +88,6 @@
       const modalName = document.getElementById('modal-profile-name');
       const modalAvatar = document.getElementById('modal-profile-avatar');
       const modalBadge = document.getElementById('modal-profile-role-badge');
-      const modalId = document.getElementById('modal-profile-id');
-      const modalPhone = document.getElementById('modal-profile-phone');
-      const modalEmail = document.getElementById('modal-profile-email');
 
       if (modalName) modalName.textContent = name;
       if (modalAvatar) modalAvatar.textContent = initialChar;
@@ -97,18 +96,12 @@
         modalBadge.textContent = roleLabel;
         modalBadge.className = 'role-badge ' + (isSeller ? 'seller' : 'buyer');
       }
-
-      if (extraData) {
-        if (modalId && extraData.idNumber) modalId.textContent = extraData.idNumber;
-        if (modalPhone && extraData.phone) modalPhone.textContent = extraData.phone;
-        if (modalEmail && extraData.email) modalEmail.textContent = extraData.email;
-      }
     } catch (err) {
       console.warn('Error al sincronizar perfil:', err);
     }
   }
 
-  // Actualiza los valores del modal cuando se abre
+  // Actualiza los valores de todos los campos del modal cuando se abre
   function refreshProfileModal() {
     const user = getCurrentUser();
     const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.name || 'Usuario';
@@ -117,11 +110,23 @@
 
     syncUserProfile(fullName, roleLabel, user);
 
-    const nameInput = document.getElementById('profile-name-input');
+    const fnInput = document.getElementById('profile-firstname-input');
+    const lnInput = document.getElementById('profile-lastname-input');
+    const idInput = document.getElementById('profile-id-input');
+    const phInput = document.getElementById('profile-phone-input');
+    const emInput = document.getElementById('profile-email-input');
     const roleInput = document.getElementById('profile-role-input');
-    if (nameInput) nameInput.value = fullName;
-    if (roleInput) roleInput.value = isSeller ? 'seller' : 'buyer';
+
+    if (fnInput) fnInput.value = user.firstName || '';
+    if (lnInput) lnInput.value = user.lastName || '';
+    if (idInput) idInput.value = user.idNumber || '';
+    if (phInput) phInput.value = user.phone || '';
+    if (emInput) emInput.value = user.email || '';
+    if (roleInput) roleInput.value = isSeller ? 'vendedor' : 'comprador';
   }
+
+  // Exponer para llamada global desde barra de navegación u otros scripts
+  window.refreshProfileModal = refreshProfileModal;
 
   // Interceptar la apertura de perfil para actualizar datos
   const profileOpenBtn = document.getElementById('profile-open');
@@ -184,29 +189,47 @@
   if (loginForm) {
     loginForm.addEventListener('submit', e => {
       e.preventDefault();
-      const email = document.getElementById('login-email').value.trim();
-      let displayName = 'Usuario';
-      if (email.includes('@')) {
-        displayName = email.split('@')[0];
-        displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-      } else if (email) {
-        displayName = 'Usuario ' + email.slice(-4);
+      const email = (document.getElementById('login-email').value || '').trim();
+      let subscribers = [];
+      try {
+        subscribers = JSON.parse(localStorage.getItem('subscribers') || '[]');
+      } catch (_) {
+        subscribers = [];
       }
 
-      const user = {
-        firstName: displayName,
-        lastName: '',
-        email: email,
-        phone: '3001234567',
-        idNumber: '1012345678',
-        role: 'comprador'
-      };
+      // Buscar si el usuario ya existe en suscriptores
+      let user = subscribers.find(s => s.email && s.email.toLowerCase() === email.toLowerCase());
+
+      if (!user) {
+        let displayName = 'Usuario';
+        if (email.includes('@')) {
+          displayName = email.split('@')[0];
+          displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+        } else if (email) {
+          displayName = 'Usuario ' + email.slice(-4);
+        }
+
+        user = {
+          id: Date.now(),
+          firstName: displayName,
+          lastName: '',
+          email: email,
+          phone: '3001234567',
+          idNumber: '1012345678',
+          role: 'comprador',
+          timestamp: new Date().toISOString()
+        };
+        subscribers.push(user);
+        localStorage.setItem('subscribers', JSON.stringify(subscribers));
+      }
 
       setCurrentUser(user);
       localStorage.setItem('isSubscribed', 'true');
-      syncUserProfile(displayName, 'Comprador de cosechas', user);
+      const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.firstName || 'Usuario';
+      const roleLabel = user.role === 'vendedor' ? 'Vendedor agrícola' : 'Comprador de cosechas';
+      syncUserProfile(fullName, roleLabel, user);
       setAuthenticated(true);
-      showToast('¡Bienvenido de nuevo, ' + displayName + '!');
+      showToast('¡Bienvenido de nuevo, ' + fullName + '!');
       loginForm.reset();
     });
   }
@@ -269,7 +292,7 @@
     googleQuickAccount.addEventListener('click', () => {
       googleModal.close();
       const googleUser = {
-        id: Date.now(),
+        id: 101,
         firstName: 'Mauricio',
         lastName: 'Rodríguez',
         email: 'mauricio.rodriguez@gmail.com',
@@ -281,7 +304,10 @@
 
       let list = [];
       try { list = JSON.parse(localStorage.getItem('subscribers') || '[]'); } catch (_) { list = []; }
-      list.push(googleUser);
+      const existingIdx = list.findIndex(s => s.id === googleUser.id || (s.email && s.email.toLowerCase() === googleUser.email.toLowerCase()));
+      if (existingIdx === -1) {
+        list.push(googleUser);
+      }
       localStorage.setItem('subscribers', JSON.stringify(list));
       localStorage.setItem('isSubscribed', 'true');
       setCurrentUser(googleUser);
@@ -303,23 +329,85 @@
   if (logoutBtn) logoutBtn.addEventListener('click', handleLogout);
   if (modalLogoutBtn) modalLogoutBtn.addEventListener('click', handleLogout);
 
-  // Guardar cambios desde el modal de perfil
+  // Guardar cambios desde el modal de perfil y sincronizarlos con la administración
   if (profileForm) {
     profileForm.addEventListener('submit', e => {
       e.preventDefault();
-      const newName = (document.getElementById('profile-name-input').value || '').trim();
-      const newRole = document.getElementById('profile-role-input').value;
-      const roleLabel = newRole === 'seller' ? 'Vendedor agrícola' : 'Comprador de cosechas';
 
-      const user = getCurrentUser();
-      user.firstName = newName;
-      user.lastName = '';
-      user.role = newRole === 'seller' ? 'vendedor' : 'comprador';
-      setCurrentUser(user);
+      const firstName = (document.getElementById('profile-firstname-input')?.value || '').trim();
+      const lastName = (document.getElementById('profile-lastname-input')?.value || '').trim();
+      const idNumber = (document.getElementById('profile-id-input')?.value || '').trim();
+      const phone = (document.getElementById('profile-phone-input')?.value || '').trim();
+      const email = (document.getElementById('profile-email-input')?.value || '').trim();
+      const roleVal = document.getElementById('profile-role-input')?.value || 'comprador';
 
-      syncUserProfile(newName, roleLabel, user);
+      if (!firstName) {
+        showToast('El nombre es obligatorio.');
+        return;
+      }
+
+      const prevUser = getCurrentUser();
+      const userId = prevUser.id || Date.now();
+      const createdAt = prevUser.timestamp || new Date().toISOString();
+      const updatedAt = new Date().toISOString();
+
+      const updatedUser = {
+        id: userId,
+        firstName: firstName,
+        lastName: lastName,
+        idNumber: idNumber || prevUser.idNumber || '',
+        phone: phone || prevUser.phone || '',
+        email: email || prevUser.email || '',
+        role: roleVal,
+        timestamp: createdAt,
+        updatedAt: updatedAt
+      };
+
+      // 1. Guardar usuario actual
+      setCurrentUser(updatedUser);
+
+      // 2. Sincronizar en la lista de suscriptores (localStorage 'subscribers') que lee admin.html
+      let list = [];
+      try {
+        list = JSON.parse(localStorage.getItem('subscribers') || '[]');
+      } catch (_) {
+        list = [];
+      }
+
+      let targetIndex = list.findIndex(s => s.id && s.id === userId);
+      if (targetIndex === -1 && prevUser.email) {
+        targetIndex = list.findIndex(s => s.email && s.email.toLowerCase() === prevUser.email.toLowerCase());
+      }
+      if (targetIndex === -1 && prevUser.idNumber) {
+        targetIndex = list.findIndex(s => s.idNumber && s.idNumber === prevUser.idNumber);
+      }
+
+      if (targetIndex !== -1) {
+        list[targetIndex] = {
+          ...list[targetIndex],
+          ...updatedUser,
+          id: list[targetIndex].id || userId,
+          timestamp: list[targetIndex].timestamp || createdAt,
+          updatedAt: updatedAt
+        };
+      } else {
+        list.push(updatedUser);
+      }
+
+      localStorage.setItem('subscribers', JSON.stringify(list));
+
+      // 3. Sincronizar UI de la aplicación
+      const fullName = `${firstName} ${lastName}`.trim() || 'Usuario';
+      const roleLabel = roleVal === 'vendedor' ? 'Vendedor agrícola' : 'Comprador de cosechas';
+      syncUserProfile(fullName, roleLabel, updatedUser);
+
+      // 4. Notificar evento a otras pestañas/páginas (como admin.html)
+      try {
+        window.dispatchEvent(new Event('storage'));
+      } catch (_) {}
+
       if (profileDialog) profileDialog.close();
-      showToast('Perfil actualizado correctamente.');
+      showToast('✅ Tus datos se han actualizado y sincronizado con el panel de administración.');
     });
   }
 
