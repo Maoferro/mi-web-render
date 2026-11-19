@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#173e32">
   <meta name="description" content="Aplicación demostrativa para explorar lotes agrícolas, hacer ofertas y administrar publicaciones.">
   <title>Mercado | Subastas del Campo</title>
-  <link rel="stylesheet" href="app-v12.css">
+  <link rel="stylesheet" href="app-v13.css">
 <link rel="stylesheet" href="responsive.css">
-  <script src="market-v12.js" defer></script>
+  <script src="market-v13.js" defer></script>
 <script src="subscribe.js" defer></script>
 </head>
 <body>
@@ -24,6 +24,7 @@
         <button class="side-link" data-view="favorites"><span>♡</span> Guardados</button>
         <button class="side-link" data-view="chats"><span>◌</span> Conversaciones <b>1</b></button>
         <button class="side-link" data-view="tokens"><span>✳</span> Mis tokens <b id="nav-token-count">5</b></button>
+        <button class="side-link" data-view="payments"><span>▣</span> Pagos · demo</button>
       </nav>
       <div class="seller-box"><div class="seller-mark">✳</div><strong>¿Tienes producto para vender?</strong><p>Publica cosechas por volumen o productos de tu marca.</p><button class="btn btn-dark" id="sidebar-publish">＋ Publicar producto</button></div>
       <button class="side-foot profile-open" id="profile-open" type="button"><span class="avatar" id="profile-initial">M</span><span><strong id="profile-name">Visitante</strong><small id="profile-role">Cuenta activa</small></span><span class="dots">Perfil</span></button>
@@ -35,7 +36,7 @@
       <section class="workspace">
         <div class="welcome-row"><div><p class="eyebrow"><span class="pulse"></span> MERCADO AGRÍCOLA · DEMO</p><h1 id="view-title">Encuentra tu próximo lote</h1><p id="view-subtitle">Explora productos del campo y participa con ofertas de prueba.</p></div><button class="btn btn-primary" id="header-publish">＋ Publicar producto</button></div>
 
-        <section class="stats-row" aria-label="Resumen del mercado">
+        <section class="stats-row" id="app-stats" aria-label="Resumen del mercado">
           <article class="stat-card"><span class="stat-icon green">▤</span><div><small>Productos publicados</small><strong id="stat-open">0</strong><em>disponibles para explorar</em></div></article>
           <article class="stat-card"><span class="stat-icon gold">↗</span><div><small>Ofertas registradas aquí</small><strong id="stat-bids">0</strong><em>solo en esta demostración</em></div></article>
           <article class="stat-card"><span class="stat-icon blue">⌖</span><div><small>Departamentos</small><strong>1</strong><em>muestras del Tolima</em></div></article>
@@ -70,6 +71,10 @@
       <button class="bnav-btn" data-view="chats" type="button">
         <span class="bnav-icon">💬</span>
         <span>Chats</span>
+      </button>
+      <button class="bnav-btn" data-view="payments" type="button">
+        <span class="bnav-icon">▣</span>
+        <span>Pagos</span>
       </button>
       <button class="bnav-btn" id="mobile-bottom-profile" type="button">
         <span class="bnav-icon">👤</span>
