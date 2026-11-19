@@ -663,9 +663,18 @@
       </div>
     </section>
 
+    <section class="data-panel" style="margin-top:18px;">
+      <div class="panel-toolbar" style="padding:18px 20px;">
+        <div><h2 style="margin:0;color:#244b35;font-size:17px;">Compras de tokens de prueba</h2><p style="margin:5px 0 0;color:#778577;font-size:11px;">Registro local de simulaciones en este navegador; no equivale a pagos recibidos por Wompi.</p></div>
+        <button class="btn btn-secondary" id="refresh-token-purchases" type="button">Actualizar</button>
+      </div>
+      <div class="table-responsive"><table id="token-purchases-table"><thead><tr><th>Fecha</th><th>Usuario</th><th>Paquete</th><th>Medio de prueba</th><th>Valor simulado</th><th>Estado</th></tr></thead><tbody id="token-purchases-body"></tbody></table></div>
+      <div class="empty-state" id="token-purchases-empty" hidden><div class="empty-icon">✳</div><h3>Aún no hay compras de prueba</h3><p>Las simulaciones de Mis tokens aparecen aquí al usar el mismo navegador.</p></div>
+    </section>
+
     <footer class="admin-footer">
       <span>© 2026 Subastas del Campo · Panel de Administración</span>
-      <span>Almacenamiento seguro en navegador · Exportable a Excel</span>
+      <span>Datos locales de este navegador · Exportable a Excel</span>
     </footer>
   </main>
 
@@ -847,10 +856,34 @@
         document.body.removeChild(link);
       }
 
+      function renderTokenPurchases() {
+        const body = document.getElementById('token-purchases-body');
+        const empty = document.getElementById('token-purchases-empty');
+        const table = document.getElementById('token-purchases-table');
+        let market = {};
+        try { market = JSON.parse(localStorage.getItem('subastas-del-campo-market-v1') || '{}'); } catch (e) {}
+        const purchases = Array.isArray(market.purchases) ? market.purchases : [];
+        if (!purchases.length) {
+          body.innerHTML = '';
+          empty.hidden = false;
+          table.hidden = true;
+          return;
+        }
+        empty.hidden = true;
+        table.hidden = false;
+        body.innerHTML = purchases.map(p => {
+          const date = p.createdAt ? new Date(p.createdAt).toLocaleString('es-CO', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'Sin fecha';
+          const value = new Intl.NumberFormat('es-CO', {style:'currency',currency:'COP',maximumFractionDigits:0}).format(Number(p.amountCop)||0);
+          const methods = {nequi:'Nequi · demo',daviplata:'DaviPlata · demo',pse:'PSE · demo',bancolombia:'Botón Bancolombia · demo'};
+          return '<tr><td>'+escapeHtml(date)+'</td><td>'+escapeHtml(p.buyerName || 'Usuario demo')+'</td><td>'+(Number(p.tokens)||0)+' tokens</td><td>'+escapeHtml(methods[p.method] || p.method || 'Sin seleccionar')+'</td><td>'+escapeHtml(value)+'</td><td><span class="role-badge buyer">APROBADO · SIMULACIÓN</span></td></tr>';
+        }).join('');
+      }
+
       function refreshAll() {
         loadData();
         updateMetrics();
         renderTable();
+        renderTokenPurchases();
         flashSyncIndicator();
       }
 
@@ -869,6 +902,7 @@
       }
 
       // Eventos
+      document.getElementById('refresh-token-purchases')?.addEventListener('click', renderTokenPurchases);
       document.getElementById('refresh-data-btn')?.addEventListener('click', () => {
         refreshAll();
       });
@@ -913,7 +947,7 @@
 
       // Sincronización en tiempo real entre pestañas/ventanas
       window.addEventListener('storage', (e) => {
-        if (!e || e.key === 'subscribers' || e.key === null) {
+        if (!e || e.key === 'subscribers' || e.key === 'subastas-del-campo-market-v1' || e.key === null) {
           refreshAll();
         }
       });
@@ -927,6 +961,7 @@
       loadData();
       updateMetrics();
       renderTable();
+      renderTokenPurchases();
     })();
   </script>
 </body>
