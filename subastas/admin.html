@@ -550,7 +550,7 @@
 
     <div class="admin-pill" id="sync-status-pill">
       <span class="dot"></span>
-      <span id="sync-status-text">Base de datos en tiempo real</span>
+      <span id="sync-status-text">Datos de este navegador</span>
     </div>
 
     <div class="topbar-actions">
@@ -659,7 +659,7 @@
       <div class="empty-state" id="empty-state" hidden>
         <div class="empty-icon">🌱</div>
         <h3>No se encontraron suscriptores</h3>
-        <p>Los usuarios que se registren en la aplicación aparecerán listados aquí en tiempo real.</p>
+        <p>Los perfiles de prueba guardados en este navegador aparecen en esta lista; no se comparten con otros dispositivos.</p>
       </div>
     </section>
 
@@ -893,11 +893,11 @@
         if (!pill) return;
         pill.style.background = '#d8f0d5';
         pill.style.borderColor = '#9fd297';
-        if (text) text.textContent = '¡Sincronizado ahora!';
+        if (text) text.textContent = 'Datos locales actualizados';
         setTimeout(() => {
           pill.style.background = '';
           pill.style.borderColor = '';
-          if (text) text.textContent = 'Base de datos en tiempo real';
+          if (text) text.textContent = 'Datos de este navegador';
         }, 1800);
       }
 
@@ -945,7 +945,7 @@
         }
       });
 
-      // Sincronización en tiempo real entre pestañas/ventanas
+      // Actualiza esta vista si cambia el almacenamiento local en otra pestaña
       window.addEventListener('storage', (e) => {
         if (!e || e.key === 'subscribers' || e.key === 'subastas-del-campo-market-v1' || e.key === null) {
           refreshAll();
