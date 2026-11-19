@@ -53,6 +53,11 @@
   }
 
   attachPhotoPreview('reg-profile-photo', 'reg-profile-photo-preview');
+  const accountTypeInput = document.getElementById('reg-account-type');
+  const businessNameField = document.getElementById('reg-business-name-field');
+  const businessNameInput = document.getElementById('reg-business-name');
+  function syncRegistrationType(){const business=accountTypeInput?.value==='negocio';if(businessNameField)businessNameField.classList.toggle('hidden',!business);if(businessNameInput){businessNameInput.required=Boolean(business);if(!business)businessNameInput.value='';}}
+  if(accountTypeInput){accountTypeInput.addEventListener('change',syncRegistrationType);syncRegistrationType();}
   attachPhotoPreview('profile-photo-input', 'profile-photo-preview');
 
   function setAvatar(element, name, photo) {
@@ -147,10 +152,11 @@
         marketState = {};
       }
       const activeUser = ensureCourtesyWallet(extraData || getCurrentUser());
+      const displayName = activeUser.publicName || activeUser.username || activeUser.businessName || name || 'Usuario';
       setCurrentUser(activeUser);
       saveSubscriberRecord(activeUser);
       const activeUserId = String(activeUser.id || activeUser.email || 'demo-user');
-      marketState.profile = { name: name || 'Usuario', role: roleLabel || 'Comprador (demo)', userId: activeUserId, profilePhoto: activeUser.profilePhoto || '' };
+      marketState.profile = { name: displayName, role: roleLabel || 'Comprador (demo)', userId: activeUserId, profilePhoto: activeUser.profilePhoto || '' };
       marketState.activeUserId = activeUserId;
       marketState.accountRole = activeUser.role || 'comprador';
       marketState.tokens = activeUser.role === 'vendedor' ? 0 : Number(activeUser.tokenBalance) || 0;
@@ -164,19 +170,19 @@
       const initialEl = document.getElementById('profile-initial');
       const headerInitialEl = document.getElementById('profile-open-header');
 
-      if (nameEl) nameEl.textContent = name;
+      if (nameEl) nameEl.textContent = displayName;
       if (roleEl) roleEl.textContent = roleLabel;
       const initialChar = (name || 'U').trim().charAt(0).toUpperCase();
-      if (initialEl) setAvatar(initialEl, name, extraData && extraData.profilePhoto);
-      if (headerInitialEl) setAvatar(headerInitialEl, name, extraData && extraData.profilePhoto);
+      if (initialEl) setAvatar(initialEl, displayName, extraData && extraData.profilePhoto);
+      if (headerInitialEl) setAvatar(headerInitialEl, displayName, extraData && extraData.profilePhoto);
 
       // Actualizar UI en el modal de perfil
       const modalName = document.getElementById('modal-profile-name');
       const modalAvatar = document.getElementById('modal-profile-avatar');
       const modalBadge = document.getElementById('modal-profile-role-badge');
 
-      if (modalName) modalName.textContent = name;
-      if (modalAvatar) setAvatar(modalAvatar, name, extraData && extraData.profilePhoto);
+      if (modalName) modalName.textContent = displayName;
+      if (modalAvatar) setAvatar(modalAvatar, displayName, extraData && extraData.profilePhoto);
       if (modalBadge) {
         const isSeller = roleLabel.toLowerCase().includes('vendedor');
         modalBadge.textContent = roleLabel;
@@ -337,11 +343,17 @@
       const firstName = (formData.get('firstName') || '').trim();
       const lastName = (formData.get('lastName') || '').trim();
       const fullName = (firstName + ' ' + lastName).trim() || 'Nuevo Usuario';
+      const accountType = formData.get('accountType') === 'negocio' ? 'negocio' : 'personal';
+      const businessName = (formData.get('businessName') || '').trim();
+      const username = (formData.get('username') || '').trim().replace(/^@/, '');
+      const publicName = accountType === 'negocio' ? businessName : (username ? '@' + username : fullName);
       const roleVal = formData.get('role');
       const idNumber = (formData.get('idNumber') || '').trim();
       let marketData = {}; try { marketData = JSON.parse(localStorage.getItem('subastas-del-campo-market-v1') || '{}'); } catch (_) {}
       const normalizedIdNumber = idNumber.replace(/\D/g, '');
       if (Array.isArray(marketData.idBlocklist) && marketData.idBlocklist.some(blockedId => String(blockedId).replace(/\D/g, '') === normalizedIdNumber)) { showToast('No es posible crear una cuenta con este documento. Contacta a soporte para revisar el caso.'); return; }
+      if (username) { let existing=[]; try { existing=JSON.parse(localStorage.getItem('subscribers')||'[]'); } catch (_) {} if (existing.some(user=>String(user.username||'').toLowerCase()===username.toLowerCase())) { showToast('Ese nombre de usuario ya está ocupado. Elige otro.'); return; } }
+      if (accountType === 'negocio' && !businessName) { showToast('Escribe el nombre del negocio u organización.'); return; }
       const roleLabel = roleVal === 'vendedor' ? 'Vendedor agrícola' : 'Comprador de cosechas';
       let profilePhoto = '';
       try { profilePhoto = await encodeProfilePhoto(document.getElementById('reg-profile-photo')?.files?.[0]); }
@@ -351,6 +363,10 @@
         id: Date.now(),
         firstName: firstName,
         lastName: lastName,
+        accountType: accountType,
+        businessName: businessName,
+        username: username,
+        publicName: publicName,
         idNumber: idNumber,
         phone: (formData.get('phone') || '').trim(),
         email: (formData.get('email') || '').trim(),
@@ -376,10 +392,11 @@
       localStorage.setItem('isSubscribed', 'true');
       setCurrentUser(subscriber);
 
-      syncUserProfile(fullName, roleLabel, subscriber);
+      syncUserProfile(publicName, roleLabel, subscriber);
       setAuthenticated(true);
       showToast('¡Cuenta creada con éxito! Bienvenido a Subastas del Campo.');
       registerForm.reset();
+      syncRegistrationType();
     });
   }
 

@@ -759,11 +759,13 @@
           if (searchQuery) {
             const q = searchQuery.toLowerCase();
             const fullName = `${sub.firstName || ''} ${sub.lastName || ''}`.toLowerCase();
+            const businessName = (sub.businessName || '').toLowerCase();
+            const username = (sub.username || '').toLowerCase();
             const idNumber = (sub.idNumber || '').toLowerCase();
             const email = (sub.email || '').toLowerCase();
             const phone = (sub.phone || '').toLowerCase();
 
-            return fullName.includes(q) || idNumber.includes(q) || email.includes(q) || phone.includes(q);
+            return fullName.includes(q) || businessName.includes(q) || username.includes(q) || idNumber.includes(q) || email.includes(q) || phone.includes(q);
           }
           return true;
         });
@@ -789,6 +791,9 @@
           const roleLabel = isSeller ? 'Vendedor Agrícola' : 'Comprador';
           const roleClass = isSeller ? 'seller' : 'buyer';
           const roleIcon = isSeller ? '🌾' : '🛒';
+          const registeredName = sub.publicName || sub.username && '@' + sub.username || sub.businessName || `${sub.firstName || ''} ${sub.lastName || ''}`.trim();
+          const contactName = `${sub.firstName || ''} ${sub.lastName || ''}`.trim();
+          const accountLabel = sub.accountType === 'negocio' ? 'Negocio u organización' : 'Cuenta personal';
 
           const phoneDigits = (sub.phone || '').replace(/\D/g, '');
           const waUrl = phoneDigits ? `https://wa.me/57${phoneDigits}` : '#';
@@ -813,8 +818,8 @@
                 <div class="user-cell">
                   <div class="user-avatar">${avatar}</div>
                   <div class="user-name-box">
-                    <strong>${escapeHtml(sub.firstName || '')} ${escapeHtml(sub.lastName || '')} ${modifiedBadge}</strong>
-                    <small>ID: ${sub.id || '-'}</small>
+                    <strong>${escapeHtml(registeredName || contactName || 'Usuario')} ${modifiedBadge}</strong>
+                    <small>${escapeHtml(accountLabel)}${sub.username ? ` · @${escapeHtml(sub.username)}` : ''} · Contacto: ${escapeHtml(contactName || '—')} · ID: ${sub.id || '-'}</small>
                   </div>
                 </div>
               </td>
@@ -869,11 +874,15 @@
           return;
         }
 
-        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Estado de identidad', 'Estado de cuenta', 'Tokens de cortesía', 'Saldo de tokens', 'Foto de perfil', 'Fecha de Registro', 'Última Modificación'];
+        const headers = ['ID', 'Nombres de contacto', 'Apellidos de contacto', 'Tipo de cuenta', 'Nombre del negocio', 'Nombre de usuario', 'Nombre público', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Estado de identidad', 'Estado de cuenta', 'Tokens de cortesía', 'Saldo de tokens', 'Foto de perfil', 'Fecha de Registro', 'Última Modificación'];
         const rows = subscribers.map(s => [
           s.id || '',
           `"${(s.firstName || '').replace(/"/g, '""')}"`,
           `"${(s.lastName || '').replace(/"/g, '""')}"`,
+          s.accountType === 'negocio' ? 'Negocio u organización' : 'Cuenta personal',
+          `"${(s.businessName || '').replace(/"/g, '""')}"`,
+          `"${(s.username || '').replace(/"/g, '""')}"`,
+          `"${(s.publicName || '').replace(/"/g, '""')}"`,
           `"${s.idNumber || ''}"`,
           `"${s.phone || ''}"`,
           `"${s.email || ''}"`,
@@ -1026,6 +1035,6 @@
       renderTokenPurchases();
     })();
   </script>
-  <script src="admin-insights.js"></script>
+  <script src="admin-insights.js?v=20261119-profile-fields"></script>
 </body>
 </html>

@@ -32,7 +32,8 @@
       const userListings = listings.filter(lot => String(lot.sellerUserId || '') === id).length;
       const userOffers = offers.filter(offer => String(offer.userId || offer.bidderId || '') === id);
       const userReviews = reviews.filter(review => String(review.reviewerId) === id || String(review.revieweeId) === id).length;
-      const name = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+      const contact = `${user.firstName || ''} ${user.lastName || ''}`.trim();
+      const name = user.publicName || (user.username ? '@' + user.username : '') || user.businessName || contact;
       return `<tr><td>${safe(name)}</td><td>${safe(user.role || '')}</td><td>${userListings}</td><td>${userOffers.length}</td><td>${userOffers.filter(offer => Number(offer.tokensUsed) > 0).length}</td><td>${userReviews}</td></tr>`;
     }).join('') : '<tr><td colspan="6">No hay usuarios registrados.</td></tr>';
 
@@ -49,7 +50,7 @@
 
     $('#admin-reviews-body').innerHTML = reviews.length ? reviews.slice().reverse().map(review => `<tr><td>${safe(date(review.createdAt))}</td><td>${safe(review.lotTitle)}</td><td>${safe(review.reviewerRole)}</td><td>${'★'.repeat(Number(review.score)||0)}${'☆'.repeat(5-(Number(review.score)||0))}</td><td>${safe([review.criteriaSummary, review.comment].filter(Boolean).join(' · '))}</td></tr>`).join('') : '<tr><td colspan="5">Aún no hay calificaciones.</td></tr>';
 
-    $('#identity-review-body').innerHTML = users.length ? users.map(user => `<tr><td>${safe(`${user.firstName || ''} ${user.lastName || ''}`.trim())}<br><small>${safe(user.id || '')}</small></td><td>${safe(user.idNumber || 'Sin cédula')}</td><td>${safe(user.identityStatus || 'Pendiente revisión manual')}</td><td>${user.identityStatus === 'verificada_manual' ? '<span>Revisada manualmente</span>' : `<button class="btn btn-secondary" data-identity-verify="${safe(user.id)}" ${user.idNumber ? '' : 'disabled'}>Marcar revisada</button>`}</td></tr>`).join('') : '<tr><td colspan="4">No hay usuarios registrados.</td></tr>';
+    $('#identity-review-body').innerHTML = users.length ? users.map(user => `<tr><td>${safe(user.publicName || (user.username ? '@' + user.username : '') || user.businessName || `${user.firstName || ''} ${user.lastName || ''}`.trim())}<br><small>${safe(user.accountType === 'negocio' ? 'Negocio u organización' : 'Cuenta personal')} · Contacto: ${safe(`${user.firstName || ''} ${user.lastName || ''}`.trim())} · ID ${safe(user.id || '')}</small></td><td>${safe(user.idNumber || 'Sin cédula')}</td><td>${safe(user.identityStatus || 'Pendiente revisión manual')}</td><td>${user.identityStatus === 'verificada_manual' ? '<span>Revisada manualmente</span>' : `<button class="btn btn-secondary" data-identity-verify="${safe(user.id)}" ${user.idNumber ? '' : 'disabled'}>Marcar revisada</button>`}</td></tr>`).join('') : '<tr><td colspan="4">No hay usuarios registrados.</td></tr>';
 
     $('#moderation-cases-body').innerHTML = cases.length ? cases.slice().reverse().map(item => {
       const target = users.find(user => String(user.id || user.email) === String(item.targetId));
