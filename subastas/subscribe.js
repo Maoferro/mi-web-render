@@ -107,8 +107,14 @@
     try { localStorage.setItem('subscribers', JSON.stringify(list)); } catch (_) {}
   }
 
+  function emitDomainEvent(type, payload) {
+    window.dispatchEvent(new CustomEvent('subastas:domain-event', { detail: { eventId: 'evt-' + Date.now(), type, occurredAt: new Date().toISOString(), payload } }));
+  }
+
   function ensureCourtesyWallet(user) {
     if (!user) return user;
+    user.identityStatus = user.identityStatus || 'pendiente_revision_manual';
+    user.accountStatus = user.accountStatus || 'activa';
     if (user.role === 'vendedor') {
       if (!Number.isFinite(Number(user.tokenBalance))) user.tokenBalance = 0;
       user.freeTokensGranted = Number(user.freeTokensGranted) || 0;
@@ -309,6 +315,7 @@
         localStorage.setItem('subscribers', JSON.stringify(subscribers));
       }
 
+      if (user.accountStatus === 'suspendida_revision' || user.accountStatus === 'bloqueada_revision_admin') { showToast('Esta cuenta está suspendida o bloqueada mientras se revisa un caso.'); return; }
       user = ensureCourtesyWallet(user);
       saveSubscriberRecord(user);
       setCurrentUser(user);
@@ -331,6 +338,10 @@
       const lastName = (formData.get('lastName') || '').trim();
       const fullName = (firstName + ' ' + lastName).trim() || 'Nuevo Usuario';
       const roleVal = formData.get('role');
+      const idNumber = (formData.get('idNumber') || '').trim();
+      let marketData = {}; try { marketData = JSON.parse(localStorage.getItem('subastas-del-campo-market-v1') || '{}'); } catch (_) {}
+      const normalizedIdNumber = idNumber.replace(/\D/g, '');
+      if (Array.isArray(marketData.idBlocklist) && marketData.idBlocklist.some(blockedId => String(blockedId).replace(/\D/g, '') === normalizedIdNumber)) { showToast('No es posible crear una cuenta con este documento. Contacta a soporte para revisar el caso.'); return; }
       const roleLabel = roleVal === 'vendedor' ? 'Vendedor agrícola' : 'Comprador de cosechas';
       let profilePhoto = '';
       try { profilePhoto = await encodeProfilePhoto(document.getElementById('reg-profile-photo')?.files?.[0]); }
@@ -340,10 +351,11 @@
         id: Date.now(),
         firstName: firstName,
         lastName: lastName,
-        idNumber: (formData.get('idNumber') || '').trim(),
+        idNumber: idNumber,
         phone: (formData.get('phone') || '').trim(),
         email: (formData.get('email') || '').trim(),
         role: roleVal,
+        identityStatus: 'pendiente_revision_manual',
         profilePhoto: profilePhoto,
         tokenBalance: roleVal === 'comprador' ? 10 : 0,
         freeTokensGranted: roleVal === 'comprador' ? 10 : 0,
@@ -360,6 +372,7 @@
       }
       list.push(subscriber);
       localStorage.setItem('subscribers', JSON.stringify(list));
+      emitDomainEvent('user.registered', { userId: subscriber.id, role: subscriber.role });
       localStorage.setItem('isSubscribed', 'true');
       setCurrentUser(subscriber);
 
@@ -395,6 +408,8 @@
         phone: '3104567890',
         idNumber: '1018273645',
         role: 'comprador',
+        identityStatus: 'pendiente_revision_manual',
+        accountStatus: 'activa',
         timestamp: new Date().toISOString()
       };
 
@@ -403,9 +418,14 @@
       const existingIdx = list.findIndex(s => s.id === googleUser.id || (s.email && s.email.toLowerCase() === googleUser.email.toLowerCase()));
       if (existingIdx === -1) {
         list.push(googleUser);
+        emitDomainEvent('user.registered', { userId: googleUser.id, role: googleUser.role, provider: 'demo-google' });
       }
       const storedGoogleUser = existingIdx >= 0 ? { ...googleUser, ...list[existingIdx] } : googleUser;
       const readyGoogleUser = ensureCourtesyWallet(storedGoogleUser);
+      if (readyGoogleUser.accountStatus === 'suspendida_revision' || readyGoogleUser.accountStatus === 'bloqueada_revision_admin') {
+        showToast('Esta cuenta está suspendida o bloqueada mientras se revisa un caso.');
+        return;
+      }
       saveSubscriberRecord(readyGoogleUser);
       localStorage.setItem('isSubscribed', 'true');
       setCurrentUser(readyGoogleUser);
@@ -460,6 +480,8 @@
         phone: phone || prevUser.phone || '',
         email: email || prevUser.email || '',
         role: roleVal,
+        identityStatus: prevUser.identityStatus || 'pendiente_revision_manual',
+        accountStatus: prevUser.accountStatus || 'activa',
         profilePhoto: profilePhoto,
         tokenBalance: roleVal === 'vendedor' ? 0 : Number(prevUser.tokenBalance) || 0,
         freeTokensGranted: Number(prevUser.freeTokensGranted) || 0,

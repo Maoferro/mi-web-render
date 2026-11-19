@@ -684,6 +684,23 @@
       <div class="empty-state" id="token-purchases-empty" hidden><div class="empty-icon">✳</div><h3>Aún no hay compras de prueba</h3><p>Las simulaciones de Mis tokens aparecen aquí al usar el mismo navegador.</p></div>
     </section>
 
+    <section class="data-panel" style="margin-top:18px;padding:20px;">
+      <div class="panel-toolbar"><div><h2 style="margin:0;color:#244b35;font-size:18px;">Actividad del mercado</h2><p style="margin:5px 0 0;color:#778577;font-size:12px;">Demanda observada en ofertas y entregas reportadas. No representa ventas confirmadas.</p></div><button class="btn btn-secondary" id="refresh-insights" type="button">Actualizar indicadores</button></div>
+      <div class="metrics-grid" style="margin:14px 0;">
+        <article class="metric-card"><div class="metric-icon buyers">📈</div><div class="metric-info"><small>Más demandado</small><strong id="insight-most">Sin datos</strong></div></article>
+        <article class="metric-card"><div class="metric-icon recent">📉</div><div class="metric-info"><small>Menos ofertas</small><strong id="insight-least">Sin datos</strong></div></article>
+        <article class="metric-card"><div class="metric-icon sellers">📦</div><div class="metric-info"><small>Publicaciones propias</small><strong id="insight-listings">0</strong></div></article>
+        <article class="metric-card"><div class="metric-icon total">⭐</div><div class="metric-info"><small>Calificaciones recibidas</small><strong id="insight-ratings">0</strong></div></article>
+        <article class="metric-card"><div class="metric-icon sellers">📦</div><div class="metric-info"><small>Entregas reportadas</small><strong id="insight-deliveries">0</strong></div></article>
+      </div>
+      <div class="table-responsive"><table id="insight-listings-table"><thead><tr><th>Producto / subasta</th><th>Vendedor</th><th>Ubicación</th><th>Ofertas</th><th>Estado</th></tr></thead><tbody id="insight-listings-body"></tbody></table></div>
+      <div style="margin-top:20px;"><h3 style="margin:0;color:#244b35;font-size:15px;">Actividad por usuario</h3><div class="table-responsive"><table><thead><tr><th>Usuario</th><th>Rol</th><th>Publicaciones</th><th>Ofertas</th><th>Entradas con token</th><th>Calificaciones</th></tr></thead><tbody id="user-activity-body"></tbody></table></div></div>
+      <div style="margin-top:20px;"><h3 style="margin:0;color:#244b35;font-size:15px;">Temas que aparecen en los chats</h3><p style="color:#778577;font-size:11px;">Conteo local de palabras clave; no muestra conversaciones completas.</p><div id="chat-keyword-insights" class="filter-tabs"></div></div>
+      <div style="margin-top:20px;"><h3 style="margin:0;color:#244b35;font-size:15px;">Calificaciones y comentarios</h3><div class="table-responsive"><table><thead><tr><th>Fecha</th><th>Producto</th><th>Rol evaluador</th><th>Estrellas</th><th>Criterios / comentario</th></tr></thead><tbody id="admin-reviews-body"></tbody></table></div></div>
+      <div style="margin-top:20px;"><h3 style="margin:0;color:#244b35;font-size:15px;">Identidad y casos por revisar</h3><p style="color:#778577;font-size:11px;">Confirma una revisión manual de cédula solo tras comprobarla por un canal autorizado. Esta demo no captura ni compara biometría.</p><div class="table-responsive"><table><thead><tr><th>Usuario / ID</th><th>Cédula</th><th>Estado</th><th>Acción</th></tr></thead><tbody id="identity-review-body"></tbody></table></div><div class="table-responsive"><table><thead><tr><th>Fecha</th><th>Cuenta reportada</th><th>Motivo</th><th>Relato</th><th>Estado</th><th>Revisión</th></tr></thead><tbody id="moderation-cases-body"></tbody></table></div></div>
+      <div class="model-note" style="margin-top:20px;"><strong>Preparada para Supabase y n8n</strong><span>Los datos aún son locales. El mapa de tablas, permisos y eventos para conectarlos está en el plan técnico del proyecto.</span><a href="SUPABASE_N8N_INTEGRATION.md" target="_blank" rel="noopener">Abrir plan de integración</a></div>
+    </section>
+
     <footer class="admin-footer">
       <span>© 2026 Subastas del Campo · Panel de Administración</span>
       <span>Datos locales de este navegador · Exportable a Excel</span>
@@ -852,7 +869,7 @@
           return;
         }
 
-        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Tokens de cortesía', 'Saldo de tokens', 'Foto de perfil', 'Fecha de Registro', 'Última Modificación'];
+        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Estado de identidad', 'Estado de cuenta', 'Tokens de cortesía', 'Saldo de tokens', 'Foto de perfil', 'Fecha de Registro', 'Última Modificación'];
         const rows = subscribers.map(s => [
           s.id || '',
           `"${(s.firstName || '').replace(/"/g, '""')}"`,
@@ -861,6 +878,8 @@
           `"${s.phone || ''}"`,
           `"${s.email || ''}"`,
           s.role || '',
+          s.identityStatus || 'pendiente_revision_manual',
+          s.accountStatus || 'activa',
           s.freeTokensGranted || 0,
           s.tokenBalance || 0,
           s.profilePhoto ? 'Foto cargada' : 'Sin foto',
@@ -1007,5 +1026,6 @@
       renderTokenPurchases();
     })();
   </script>
+  <script src="admin-insights.js"></script>
 </body>
 </html>
