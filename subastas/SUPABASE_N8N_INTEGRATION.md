@@ -32,6 +32,10 @@ La aplicación es estática. Perfiles, publicaciones, ofertas, tokens, chats, ca
 
 La integración de pagos debe verificar la firma del webhook de Wompi desde servidor. El monto y el estado que envía el navegador no son prueba de pago.
 
+## Gobierno del panel y único superadministrador
+
+El panel actual es una demo estática que usa `localStorage`; su enlace no constituye control de acceso y no debe tratarse como panel privado. Para producción, el primer superadministrador debe fijarse mediante el `user_id` confirmado en Supabase Auth durante un proceso de aprovisionamiento privado. No debe existir registro público ni cambio de rol desde el navegador. Mantener una tabla `admin_memberships` con roles `superadmin` y `admin`; el superadministrador podrá invitar o revocar administradores, pero el sistema debe impedir eliminar o degradar al último superadministrador. Aplicar RLS y funciones de servidor a cada operación administrativa y registrar cambios en `admin_audit_log`. Ninguna clave `service_role` debe llegar al cliente. El panel de demo no puede hacer cumplir esta regla hasta que exista backend y autenticación real.
+
 ## Panel Admin y analítica
 
 - Perfil, rol, foto, estado de revisión de cédula, saldo, tokens de cortesía y estado de cuenta.
