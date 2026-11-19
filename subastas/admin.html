@@ -381,7 +381,9 @@
       font-weight: 800;
       font-size: 13px;
       flex-shrink: 0;
+      overflow: hidden;
     }
+    .user-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
 
     .user-name-box strong {
       display: block;
@@ -645,6 +647,7 @@
               <th>WhatsApp / Teléfono</th>
               <th>Email</th>
               <th>Tipo de Usuario</th>
+              <th>Tokens (cortesía / saldo)</th>
               <th>Fecha de Registro</th>
               <th style="text-align:right;">Acciones</th>
             </tr>
@@ -661,6 +664,15 @@
         <h3>No se encontraron suscriptores</h3>
         <p>Los perfiles de prueba guardados en este navegador aparecen en esta lista; no se comparten con otros dispositivos.</p>
       </div>
+    </section>
+
+    <section class="data-panel" style="margin-top:18px;">
+      <div class="panel-toolbar" style="padding:18px 20px;">
+        <div><h2 style="margin:0;color:#244b35;font-size:17px;">Entradas a subastas con token</h2><p style="margin:5px 0 0;color:#778577;font-size:11px;">Una fila por token de entrada; las ofertas adicionales de esa persona en la misma subasta no generan otro consumo.</p></div>
+        <button class="btn btn-secondary" id="refresh-token-usage" type="button">Actualizar</button>
+      </div>
+      <div class="table-responsive"><table id="token-usage-table"><thead><tr><th>Fecha</th><th>Comprador</th><th>Subasta</th><th>Oferta inicial</th><th>Tokens descontados</th></tr></thead><tbody id="token-usage-body"></tbody></table></div>
+      <div class="empty-state" id="token-usage-empty" hidden><div class="empty-icon">✳</div><h3>Aún no hay entradas con token</h3><p>Las entradas registradas en este navegador aparecerán aquí.</p></div>
     </section>
 
     <section class="data-panel" style="margin-top:18px;">
@@ -752,6 +764,11 @@
         tbody.innerHTML = filtered.map(sub => {
           const initials = `${(sub.firstName || 'U')[0] || ''}${(sub.lastName || '')[0] || ''}`.toUpperCase() || 'U';
           const isSeller = sub.role === 'vendedor';
+          const courtesyTokens = Number(sub.freeTokensGranted) || 0;
+          const tokenBalance = Number(sub.tokenBalance) || 0;
+          const avatar = sub.profilePhoto
+            ? `<img src="${escapeHtml(sub.profilePhoto)}" alt="Foto de ${escapeHtml(sub.firstName || 'usuario')}" loading="lazy">`
+            : initials;
           const roleLabel = isSeller ? 'Vendedor Agrícola' : 'Comprador';
           const roleClass = isSeller ? 'seller' : 'buyer';
           const roleIcon = isSeller ? '🌾' : '🛒';
@@ -777,7 +794,7 @@
             <tr>
               <td>
                 <div class="user-cell">
-                  <div class="user-avatar">${initials}</div>
+                  <div class="user-avatar">${avatar}</div>
                   <div class="user-name-box">
                     <strong>${escapeHtml(sub.firstName || '')} ${escapeHtml(sub.lastName || '')} ${modifiedBadge}</strong>
                     <small>ID: ${sub.id || '-'}</small>
@@ -804,6 +821,9 @@
                   <span>${roleIcon}</span>
                   <span>${roleLabel}</span>
                 </span>
+              </td>
+              <td style="color:#687769;font-size:11px;white-space:nowrap;">
+                ${isSeller ? 'Publica gratis' : `${courtesyTokens} cortesía · ${tokenBalance} saldo`}
               </td>
               <td style="color:#687769;font-size:11.5px;">
                 <div>${dateStr}</div>
@@ -832,7 +852,7 @@
           return;
         }
 
-        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Fecha de Registro', 'Última Modificación'];
+        const headers = ['ID', 'Nombre', 'Apellido', 'Cédula', 'Teléfono', 'Email', 'Rol', 'Tokens de cortesía', 'Saldo de tokens', 'Foto de perfil', 'Fecha de Registro', 'Última Modificación'];
         const rows = subscribers.map(s => [
           s.id || '',
           `"${(s.firstName || '').replace(/"/g, '""')}"`,
@@ -841,6 +861,9 @@
           `"${s.phone || ''}"`,
           `"${s.email || ''}"`,
           s.role || '',
+          s.freeTokensGranted || 0,
+          s.tokenBalance || 0,
+          s.profilePhoto ? 'Foto cargada' : 'Sin foto',
           s.timestamp || '',
           s.updatedAt || ''
         ]);
@@ -879,11 +902,30 @@
         }).join('');
       }
 
+      function renderTokenUsage() {
+        const body = document.getElementById('token-usage-body');
+        const empty = document.getElementById('token-usage-empty');
+        const table = document.getElementById('token-usage-table');
+        let market = {};
+        try { market = JSON.parse(localStorage.getItem('subastas-del-campo-market-v1') || '{}'); } catch (e) {}
+        const entries = (Array.isArray(market.offers) ? market.offers : []).filter(entry => Number(entry.tokensUsed) > 0);
+        if (!entries.length) { body.innerHTML = ''; empty.hidden = false; table.hidden = true; return; }
+        empty.hidden = true; table.hidden = false;
+        body.innerHTML = entries.map(entry => {
+          const user = subscribers.find(item => String(item.id || item.email) === String(entry.userId || entry.bidderId));
+          const buyer = user ? `${user.firstName || ''} ${user.lastName || ''}`.trim() : 'Comprador demo';
+          const date = entry.createdAt ? new Date(entry.createdAt).toLocaleString('es-CO', {day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'}) : 'Sin fecha';
+          const amount = new Intl.NumberFormat('es-CO', {style:'currency',currency:'COP',maximumFractionDigits:0}).format(Number(entry.amount) || 0);
+          return '<tr><td>'+escapeHtml(date)+'</td><td>'+escapeHtml(buyer)+'</td><td>'+escapeHtml(entry.lotTitle || entry.lotId || 'Subasta')+'</td><td>'+escapeHtml(amount)+'</td><td>1</td></tr>';
+        }).join('');
+      }
+
       function refreshAll() {
         loadData();
         updateMetrics();
         renderTable();
         renderTokenPurchases();
+        renderTokenUsage();
         flashSyncIndicator();
       }
 
@@ -903,6 +945,7 @@
 
       // Eventos
       document.getElementById('refresh-token-purchases')?.addEventListener('click', renderTokenPurchases);
+      document.getElementById('refresh-token-usage')?.addEventListener('click', renderTokenUsage);
       document.getElementById('refresh-data-btn')?.addEventListener('click', () => {
         refreshAll();
       });

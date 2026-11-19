@@ -96,9 +96,38 @@
   }
 
   function setCurrentUser(user) {
-    try {
-      localStorage.setItem('currentUser', JSON.stringify(user));
-    } catch (_) {}
+    try { localStorage.setItem('currentUser', JSON.stringify(user)); } catch (_) {}
+  }
+
+  function saveSubscriberRecord(user) {
+    let list = [];
+    try { list = JSON.parse(localStorage.getItem('subscribers') || '[]'); } catch (_) {}
+    const index = list.findIndex(s => (user.id && s.id === user.id) || (user.email && s.email && s.email.toLowerCase() === user.email.toLowerCase()));
+    if (index >= 0) list[index] = { ...list[index], ...user }; else list.push(user);
+    try { localStorage.setItem('subscribers', JSON.stringify(list)); } catch (_) {}
+  }
+
+  function ensureCourtesyWallet(user) {
+    if (!user) return user;
+    if (user.role === 'vendedor') {
+      if (!Number.isFinite(Number(user.tokenBalance))) user.tokenBalance = 0;
+      user.freeTokensGranted = Number(user.freeTokensGranted) || 0;
+      user.welcomeTokensGranted = true;
+      user.tokenHistory = Array.isArray(user.tokenHistory) ? user.tokenHistory : [];
+      return user;
+    }
+    if (!user.welcomeTokensGranted) {
+      const now = new Date().toISOString();
+      user.tokenBalance = 10;
+      user.freeTokensGranted = 10;
+      user.welcomeTokensGranted = true;
+      user.tokenHistory = [{ change: 10, label: '10 tokens de cortesía por inscripción', at: now }].concat(Array.isArray(user.tokenHistory) ? user.tokenHistory : []);
+    } else {
+      user.tokenBalance = Math.max(0, Number(user.tokenBalance) || 0);
+      user.freeTokensGranted = Number(user.freeTokensGranted) || 0;
+      user.tokenHistory = Array.isArray(user.tokenHistory) ? user.tokenHistory : [];
+    }
+    return user;
   }
 
   // Sincroniza datos del usuario con el mercado y la cabecera
@@ -111,11 +140,17 @@
       } catch (e) {
         marketState = {};
       }
-      marketState.profile = {
-        name: name || 'Usuario',
-        role: roleLabel || 'Comprador (demo)'
-      };
+      const activeUser = ensureCourtesyWallet(extraData || getCurrentUser());
+      setCurrentUser(activeUser);
+      saveSubscriberRecord(activeUser);
+      const activeUserId = String(activeUser.id || activeUser.email || 'demo-user');
+      marketState.profile = { name: name || 'Usuario', role: roleLabel || 'Comprador (demo)', userId: activeUserId, profilePhoto: activeUser.profilePhoto || '' };
+      marketState.activeUserId = activeUserId;
+      marketState.accountRole = activeUser.role || 'comprador';
+      marketState.tokens = activeUser.role === 'vendedor' ? 0 : Number(activeUser.tokenBalance) || 0;
+      marketState.tokenHistory = Array.isArray(activeUser.tokenHistory) ? activeUser.tokenHistory : [];
       localStorage.setItem(KEY, JSON.stringify(marketState));
+      window.dispatchEvent(new Event('subastas:account-changed'));
 
       // Actualizar UI en la barra lateral y header
       const nameEl = document.getElementById('profile-name');
@@ -266,12 +301,16 @@
           phone: '3001234567',
           idNumber: '1012345678',
           role: 'comprador',
+          tokenBalance: 10, freeTokensGranted: 10, welcomeTokensGranted: true,
+          tokenHistory: [{ change: 10, label: '10 tokens de cortesía por inscripción', at: new Date().toISOString() }],
           timestamp: new Date().toISOString()
         };
         subscribers.push(user);
         localStorage.setItem('subscribers', JSON.stringify(subscribers));
       }
 
+      user = ensureCourtesyWallet(user);
+      saveSubscriberRecord(user);
       setCurrentUser(user);
       localStorage.setItem('isSubscribed', 'true');
       const fullName = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.firstName || 'Usuario';
@@ -306,6 +345,10 @@
         email: (formData.get('email') || '').trim(),
         role: roleVal,
         profilePhoto: profilePhoto,
+        tokenBalance: roleVal === 'comprador' ? 10 : 0,
+        freeTokensGranted: roleVal === 'comprador' ? 10 : 0,
+        welcomeTokensGranted: true,
+        tokenHistory: roleVal === 'comprador' ? [{ change: 10, label: '10 tokens de cortesía por inscripción', at: new Date().toISOString() }] : [],
         timestamp: new Date().toISOString()
       };
 
@@ -361,11 +404,13 @@
       if (existingIdx === -1) {
         list.push(googleUser);
       }
-      localStorage.setItem('subscribers', JSON.stringify(list));
+      const storedGoogleUser = existingIdx >= 0 ? { ...googleUser, ...list[existingIdx] } : googleUser;
+      const readyGoogleUser = ensureCourtesyWallet(storedGoogleUser);
+      saveSubscriberRecord(readyGoogleUser);
       localStorage.setItem('isSubscribed', 'true');
-      setCurrentUser(googleUser);
+      setCurrentUser(readyGoogleUser);
 
-      syncUserProfile('Mauricio Rodríguez', 'Comprador de cosechas', googleUser);
+      syncUserProfile('Mauricio Rodríguez', 'Comprador de cosechas', readyGoogleUser);
       setAuthenticated(true);
       showToast('¡Acceso concedido con Google! Bienvenido, Mauricio Rodríguez.');
     });
@@ -416,6 +461,10 @@
         email: email || prevUser.email || '',
         role: roleVal,
         profilePhoto: profilePhoto,
+        tokenBalance: roleVal === 'vendedor' ? 0 : Number(prevUser.tokenBalance) || 0,
+        freeTokensGranted: Number(prevUser.freeTokensGranted) || 0,
+        welcomeTokensGranted: Boolean(prevUser.welcomeTokensGranted),
+        tokenHistory: Array.isArray(prevUser.tokenHistory) ? prevUser.tokenHistory : [],
         timestamp: createdAt,
         updatedAt: updatedAt
       };

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Información de privacidad y condiciones de uso de la demostración Subastas del Campo.">
   <title>Privacidad y condiciones | Subastas del Campo</title>
-  <link rel="stylesheet" href="app-v14.css">
+  <link rel="stylesheet" href="app-v15.css">
   <style>
     body{background:#f6f7f3;color:#23372d;font-family:var(--sans)}.legal-wrap{max-width:850px;margin:40px auto;padding:0 20px 50px}.legal-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.legal-top a{color:#245944;font-size:12px;font-weight:700;text-decoration:none}.legal-card{margin-top:20px;padding:clamp(20px,5vw,42px);background:#fff;border:1px solid #e7ebe3;border-radius:16px}.legal-card h1{margin:0;color:#173e32;font:800 clamp(24px,5vw,36px) var(--display)}.legal-card h2{margin:30px 0 8px;color:#245944;font:750 18px var(--display)}.legal-card p,.legal-card li{color:#667466;font-size:14px;line-height:1.75}.legal-alert{padding:14px 16px;color:#775d26;background:#fff8e9;border:1px solid #f0e5c8;border-radius:9px;font-size:12px;line-height:1.65}.legal-footer{margin-top:20px;color:#7f8a7d;font-size:11px;text-align:center}
   </style>
@@ -20,7 +20,17 @@
       <h2 id="terms">Términos de uso · borrador</h2>
       <p>Subastas del Campo es un prototipo que explora la conexión entre productores y compradores de cosechas y productos locales. En esta demo, las publicaciones, ofertas, conversaciones, cuentas y recargas son pruebas locales. No constituyen ofertas comerciales vinculantes ni pagos reales.</p>
       <p>El propósito previsto de la plataforma es conectar a las partes. El vendedor y el comprador deberán acordar directamente la calidad, cantidad, precio final, pago, transporte, entrega y cualquier reclamación. La plataforma no recibe ni custodia el precio del producto ni organiza la logística.</p>
-      <p>Las cifras, tokens, lotes y estados mostrados pueden ser datos de ejemplo. El botón de aprobación de recargas solo modifica el saldo de demostración de este navegador; no abre Wompi, Nequi, DaviPlata ni PSE y no realiza cobros.</p>
+      <h3>Reglas de publicaciones, tokens y subastas</h3>
+      <ul>
+        <li><strong>Vendedores/campesinos:</strong> publicar cosechas es gratis e ilimitado, sujeto a las reglas de contenido. No se necesitan tokens.</li>
+        <li><strong>Compradores:</strong> al registrarse reciben una sola vez 10 tokens de cortesía para probar la plataforma. Los tokens no son dinero ni se transfieren entre cuentas.</li>
+        <li><strong>Entrada a una subasta:</strong> la primera oferta válida de un comprador en cada subasta descuenta exactamente 1 token. Ese token habilita su participación en esa subasta; las ofertas siguientes del mismo comprador no descuentan más tokens.</li>
+        <li><strong>Token consumido:</strong> cubre el derecho de participación, no la compra del producto. No es reembolsable si otra persona gana o si el comprador deja de ofertar.</li>
+        <li><strong>Cierre y ganador:</strong> la publicación indica el reloj y las condiciones de cierre. Gana la oferta válida más alta registrada al cierre. Solo la cuenta ganadora podrá ver el contacto del vendedor para continuar la negociación.</li>
+        <li><strong>Acuerdo directo:</strong> las partes acuerdan calidad, cantidad, pago del producto, fecha, transporte, entrega y reclamaciones. La plataforma conecta a las partes; no custodia el pago de la cosecha ni organiza la logística.</li>
+        <li><strong>Paquetes:</strong> al integrar una pasarela real, cada paquete se cobrará en una sola transacción. Las pujas descontarán tokens del saldo virtual, sin procesar un pago nuevo por cada oferta.</li>
+      </ul>
+      <p>Esta versión sigue siendo una demostración. Las recargas no abren Wompi, Nequi, DaviPlata ni PSE y no cobran dinero. Los datos se guardan localmente; las reglas de cierre, saldo y acceso al contacto ganador necesitan validación en un backend seguro antes de operar con usuarios reales.</p>
       <h2 id="privacy">Aviso de privacidad de la demo</h2>
       <p>Los datos de registro de esta versión (nombre, documento, teléfono, correo y foto de perfil opcional) se guardan en el almacenamiento local del navegador. La app de demostración no los sincroniza con una base de datos de usuarios en un servidor. No uses documentos reales ni información que no quieras conservar en este dispositivo.</p>
       <p>La foto es solo una imagen de perfil: esta demo no detecta ni reconoce rostros, no verifica la identidad y no crea plantillas biométricas. La imagen se reduce en el dispositivo y se guarda localmente. Puedes retirar o cambiar la foto desde el perfil o borrar los datos locales del sitio desde la configuración del navegador.</p>
