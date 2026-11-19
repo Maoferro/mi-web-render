@@ -15,7 +15,7 @@ La aplicación es estática. Perfiles, publicaciones, ofertas, tokens, chats, ca
 ## Tablas sugeridas
 
 - `profiles`: `user_id`, `role`, nombre público, celular, foto (ruta de Storage), `identity_status`, `account_status`, fecha de alta.
-- `identity_checks`: referencia del proveedor, resultado, fecha y auditoría. Evitar guardar fotos de cédula/selfie o plantillas biométricas si un proveedor puede devolver una verificación sin retenerlas.
+- `identity_checks`: estado de revisión, fechas, usuario revisor y referencia de auditoría. Si se requieren fotos de cédula, cargarlas desde el cliente directamente a un bucket privado de Supabase Storage con URLs firmadas de corta duración; guardar solo la ruta y metadatos mínimos. RLS y políticas de Storage deben impedir acceso público y limitar lectura al titular y revisores autorizados. Definir plazo de eliminación. No guardar imágenes en `localStorage` ni enviarlas a n8n; n8n recibe solo el evento `identity.review_requested` sin la cédula. La demo no debe solicitar documentos reales hasta tener este flujo activo y probado. Evitar selfies/plantillas biométricas si basta con revisión documental.
 - `listings`: vendedor, título, cultivo, variedad, calidad, cantidad/unidad, cosecha, ubicación, foto, alcance y estado.
 - `auctions`: publicación, apertura, cierre, incremento, umbral privado del vendedor y ganador. El umbral privado solo debe ser accesible desde funciones autorizadas y para el vendedor.
 - `bids`: subasta, comprador, monto, hora y estado.
@@ -42,7 +42,7 @@ La integración de pagos debe verificar la firma del webhook de Wompi desde serv
 
 ## Identidad y biometría
 
-Esta demo puede marcar una revisión manual de cédula, pero no valida el documento contra una entidad ni hace reconocimiento facial. En Colombia, los datos biométricos son sensibles y la autorización debe ser explícita e informada; no se debe tratar como un requisito técnico ya habilitado. Antes de elegir un proveedor se debe definir una alternativa no biométrica, finalidad, retención, seguridad y proceso de derechos del titular.
+Esta demo puede marcar una revisión manual de cédula, pero no valida el documento contra una entidad ni hace reconocimiento facial. Aún no solicita fotos de la cédula: por ahora el número se guarda localmente en el navegador y no es una verificación. La carga de anverso y reverso debe activarse solo después de configurar Supabase Auth, Storage privado, RLS, revisión administrativa y eliminación segura; no se deben guardar imágenes de identidad en `localStorage` ni publicar enlaces abiertos. En Colombia, los datos biométricos son sensibles y la autorización debe ser explícita e informada; no se debe tratar como un requisito técnico ya habilitado. Antes de elegir un proveedor se debe definir una alternativa no biométrica, finalidad, retención, seguridad y proceso de derechos del titular.
 
 ## Orden de migración
 
