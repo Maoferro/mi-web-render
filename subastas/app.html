@@ -6,9 +6,9 @@
   <meta name="theme-color" content="#173e32">
   <meta name="description" content="Aplicación demostrativa para explorar lotes agrícolas, hacer ofertas y administrar publicaciones.">
   <title>Mercado | Subastas del Campo</title>
-  <link rel="stylesheet" href="app-v13.css">
+  <link rel="stylesheet" href="app-v14.css">
 <link rel="stylesheet" href="responsive.css">
-  <script src="market-v13.js" defer></script>
+  <script src="market-v14.js" defer></script>
 <script src="subscribe.js" defer></script>
 </head>
 <body>
@@ -51,7 +51,7 @@
           <div class="lot-grid" id="lot-grid" aria-live="polite"></div>
           <div class="empty-state" id="empty-state" hidden><span>🌱</span><h3>Aún no hay productos en esta sección</h3><p>Cambia el filtro o publica el primero.</p><button class="btn btn-primary" id="empty-publish">Publicar producto</button></div>
         </section>
-        <footer class="app-footer"><span>© 2026 Subastas del Campo · Prototipo independiente</span><span>Sin custodia de dinero · Sin operación de transporte</span></footer>
+        <footer class="app-footer"><span>© 2026 Subastas del Campo. Todos los derechos reservados.</span><span><a href="legal.html#terms">Términos</a> · <a href="legal.html#privacy">Privacidad</a> · Prototipo de demostración</span></footer>
       </section>
     </main>
     <!-- Barra de navegación inferior fija estilo App (Móviles / Tablets) -->
@@ -130,6 +130,12 @@
           <div class="profile-input-group">
             <label for="profile-phone-input">WhatsApp / Celular</label>
             <input type="tel" id="profile-phone-input" name="phone" required maxlength="20" placeholder="Número móvil">
+          </div>
+          <div class="profile-input-group wide profile-photo-edit">
+            <label for="profile-photo-input">Foto de perfil (opcional)</label>
+            <input type="file" id="profile-photo-input" accept="image/jpeg,image/png,image/webp">
+            <small>JPG, PNG o WebP · máximo 5 MB. No se realiza reconocimiento facial.</small>
+            <img id="profile-photo-preview" class="profile-photo-preview" alt="Vista previa de la foto del perfil" hidden>
           </div>
           <div class="profile-input-group wide">
             <label for="profile-email-input">Correo Electrónico</label>
@@ -264,6 +270,13 @@
           </div>
         </div>
 
+        <div class="auth-field auth-photo-field">
+          <label class="auth-label" for="reg-profile-photo">Foto de perfil (opcional)</label>
+          <input class="auth-input auth-photo-input" type="file" id="reg-profile-photo" name="profilePhoto" accept="image/jpeg,image/png,image/webp">
+          <small>JPG, PNG o WebP · máximo 5 MB. Se usa solo como imagen del perfil; no hacemos reconocimiento facial.</small>
+          <img id="reg-profile-photo-preview" class="profile-photo-preview" alt="Vista previa de la foto de perfil" hidden>
+        </div>
+
         <div class="auth-field">
           <label class="auth-label" for="reg-role">Tipo de usuario</label>
           <div class="auth-input-box">
@@ -300,7 +313,7 @@
     </div>
 
     <!-- Texto legal fuera de la tarjeta -->
-    <p class="auth-terms-note">Al continuar, aceptas nuestros Términos de Servicio y Política de Privacidad.</p>
+    <p class="auth-terms-note">Consulta el <a href="legal.html#terms" target="_blank" rel="noopener">borrador de Términos de uso</a> y el <a href="legal.html#privacy" target="_blank" rel="noopener">Aviso de privacidad</a>. Registro de demostración.</p>
 
     <!-- Badge de versión -->
     <div class="auth-version-badge">v1.0.0-demo</div>

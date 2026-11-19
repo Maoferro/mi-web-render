@@ -22,6 +22,51 @@
 
   let toastTimer;
 
+  async function encodeProfilePhoto(file) {
+    if (!file) return '';
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 5 * 1024 * 1024) {
+      throw new Error('La foto debe ser JPG, PNG o WebP y pesar máximo 5 MB.');
+    }
+    const bitmap = await createImageBitmap(file);
+    const side = Math.min(bitmap.width, bitmap.height);
+    const sx = Math.round((bitmap.width - side) / 2);
+    const sy = Math.round((bitmap.height - side) / 2);
+    const canvas = document.createElement('canvas');
+    canvas.width = 256; canvas.height = 256;
+    canvas.getContext('2d').drawImage(bitmap, sx, sy, side, side, 0, 0, 256, 256);
+    bitmap.close();
+    return canvas.toDataURL('image/jpeg', 0.78);
+  }
+
+  function attachPhotoPreview(inputId, previewId) {
+    const input = document.getElementById(inputId), preview = document.getElementById(previewId);
+    if (!input || !preview) return;
+    input.addEventListener('change', () => {
+      if (preview.dataset.objectUrl) URL.revokeObjectURL(preview.dataset.objectUrl);
+      const file = input.files && input.files[0];
+      if (!file) { preview.hidden = true; preview.removeAttribute('src'); delete preview.dataset.objectUrl; return; }
+      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type) || file.size > 5 * 1024 * 1024) {
+        input.value = ''; preview.hidden = true; showToast('La foto debe ser JPG, PNG o WebP y pesar máximo 5 MB.'); return;
+      }
+      const url = URL.createObjectURL(file); preview.dataset.objectUrl = url; preview.src = url; preview.hidden = false;
+    });
+  }
+
+  attachPhotoPreview('reg-profile-photo', 'reg-profile-photo-preview');
+  attachPhotoPreview('profile-photo-input', 'profile-photo-preview');
+
+  function setAvatar(element, name, photo) {
+    if (!element) return;
+    const initial = (name || 'U').trim().charAt(0).toUpperCase();
+    element.replaceChildren();
+    if (photo) {
+      const img = document.createElement('img'); img.src = photo; img.alt = 'Foto de perfil';
+      element.appendChild(img); element.classList.add('has-profile-photo');
+    } else {
+      element.textContent = initial; element.classList.remove('has-profile-photo');
+    }
+  }
+
   function showToast(message) {
     if (!toast) return;
     toast.textContent = message;
@@ -81,8 +126,8 @@
       if (nameEl) nameEl.textContent = name;
       if (roleEl) roleEl.textContent = roleLabel;
       const initialChar = (name || 'U').trim().charAt(0).toUpperCase();
-      if (initialEl) initialEl.textContent = initialChar;
-      if (headerInitialEl) headerInitialEl.textContent = initialChar;
+      if (initialEl) setAvatar(initialEl, name, extraData && extraData.profilePhoto);
+      if (headerInitialEl) setAvatar(headerInitialEl, name, extraData && extraData.profilePhoto);
 
       // Actualizar UI en el modal de perfil
       const modalName = document.getElementById('modal-profile-name');
@@ -90,7 +135,7 @@
       const modalBadge = document.getElementById('modal-profile-role-badge');
 
       if (modalName) modalName.textContent = name;
-      if (modalAvatar) modalAvatar.textContent = initialChar;
+      if (modalAvatar) setAvatar(modalAvatar, name, extraData && extraData.profilePhoto);
       if (modalBadge) {
         const isSeller = roleLabel.toLowerCase().includes('vendedor');
         modalBadge.textContent = roleLabel;
@@ -123,6 +168,10 @@
     if (phInput) phInput.value = user.phone || '';
     if (emInput) emInput.value = user.email || '';
     if (roleInput) roleInput.value = isSeller ? 'vendedor' : 'comprador';
+    const photoInput = document.getElementById('profile-photo-input');
+    const photoPreview = document.getElementById('profile-photo-preview');
+    if (photoInput) photoInput.value = '';
+    if (photoPreview) { photoPreview.src = user.profilePhoto || ''; photoPreview.hidden = !user.profilePhoto; }
   }
 
   // Exponer para llamada global desde barra de navegación u otros scripts
@@ -236,7 +285,7 @@
 
   // Manejo de envío en Registro
   if (registerForm) {
-    registerForm.addEventListener('submit', e => {
+    registerForm.addEventListener('submit', async e => {
       e.preventDefault();
       const formData = new FormData(registerForm);
       const firstName = (formData.get('firstName') || '').trim();
@@ -244,6 +293,9 @@
       const fullName = (firstName + ' ' + lastName).trim() || 'Nuevo Usuario';
       const roleVal = formData.get('role');
       const roleLabel = roleVal === 'vendedor' ? 'Vendedor agrícola' : 'Comprador de cosechas';
+      let profilePhoto = '';
+      try { profilePhoto = await encodeProfilePhoto(document.getElementById('reg-profile-photo')?.files?.[0]); }
+      catch (error) { showToast(error.message); return; }
 
       const subscriber = {
         id: Date.now(),
@@ -253,6 +305,7 @@
         phone: (formData.get('phone') || '').trim(),
         email: (formData.get('email') || '').trim(),
         role: roleVal,
+        profilePhoto: profilePhoto,
         timestamp: new Date().toISOString()
       };
 
@@ -331,7 +384,7 @@
 
   // Guardar cambios desde el modal de perfil y sincronizarlos con la administración
   if (profileForm) {
-    profileForm.addEventListener('submit', e => {
+    profileForm.addEventListener('submit', async e => {
       e.preventDefault();
 
       const firstName = (document.getElementById('profile-firstname-input')?.value || '').trim();
@@ -347,6 +400,9 @@
       }
 
       const prevUser = getCurrentUser();
+      let profilePhoto = prevUser.profilePhoto || '';
+      try { const selectedPhoto = document.getElementById('profile-photo-input')?.files?.[0]; if (selectedPhoto) profilePhoto = await encodeProfilePhoto(selectedPhoto); }
+      catch (error) { showToast(error.message); return; }
       const userId = prevUser.id || Date.now();
       const createdAt = prevUser.timestamp || new Date().toISOString();
       const updatedAt = new Date().toISOString();
@@ -359,6 +415,7 @@
         phone: phone || prevUser.phone || '',
         email: email || prevUser.email || '',
         role: roleVal,
+        profilePhoto: profilePhoto,
         timestamp: createdAt,
         updatedAt: updatedAt
       };
