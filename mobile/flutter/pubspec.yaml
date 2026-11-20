@@ -1,0 +1,15 @@
+name: subastas_del_campo
+description: App móvil de Subastas del Campo para Android e iOS.
+publish_to: none
+version: 0.2.0+2
+
+environment:
+  sdk: '>=3.6.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  shared_preferences: ^2.5.3
+
+flutter:
+  uses-material-design: true

@@ -1,12 +1,16 @@
-name: Build Android preview APK
+name: Build native Android preview APK
 
 on:
+  push:
+    paths:
+      - 'mobile/flutter/**'
+      - '.github/workflows/build-android-apk.yml'
   workflow_dispatch:
     inputs:
       tag:
-        description: Release tag for the preview APK
-        required: true
-        default: v0.1.0-preview
+        description: Release tag for the preview APK (leave empty to only create an artifact)
+        required: false
+        default: ''
 
 permissions:
   contents: write
@@ -17,34 +21,40 @@ jobs:
     steps:
       - name: Check out source
         uses: actions/checkout@v4
-      - name: Set up Java
-        uses: actions/setup-java@v5
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
         with:
-          distribution: temurin
-          java-version: '17'
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
-        with:
-          packages: ''
-      - name: Install Android platform and build tools
+          channel: stable
+          cache: true
+      - name: Generate Android platform project
+        run: flutter create --platforms=android --org co.fumigo --project-name subastas_del_campo --empty "$RUNNER_TEMP/subastas_del_campo"
+      - name: Add shared Flutter app source
         run: |
-          yes | sdkmanager --licenses >/dev/null
-          sdkmanager "platforms;android-35" "build-tools;35.0.0"
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
+          cp mobile/flutter/pubspec.yaml "$RUNNER_TEMP/subastas_del_campo/pubspec.yaml"
+          rm -rf "$RUNNER_TEMP/subastas_del_campo/lib"
+          cp -R mobile/flutter/lib "$RUNNER_TEMP/subastas_del_campo/lib"
+          sed -i 's/android:label="subastas_del_campo"/android:label="Subastas del Campo"/' "$RUNNER_TEMP/subastas_del_campo/android/app/src/main/AndroidManifest.xml"
+      - name: Build Android APK
+        working-directory: ${{ runner.temp }}/subastas_del_campo
+        run: |
+          flutter pub get
+          flutter build apk --release
+      - name: Upload installable APK
+        uses: actions/upload-artifact@v4
         with:
-          gradle-version: '8.7'
-      - name: Build debug APK
-        run: gradle --no-daemon -p mobile/android assembleDebug
-      - name: Publish APK to GitHub Release
+          name: subastas-del-campo-android
+          path: ${{ runner.temp }}/subastas_del_campo/build/app/outputs/flutter-apk/app-release.apk
+          if-no-files-found: error
+          retention-days: 30
+      - name: Publish APK release
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.tag != '' }}
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
+          APK: ${{ runner.temp }}/subastas_del_campo/build/app/outputs/flutter-apk/app-release.apk
         run: |
-          gh release create "$TAG" mobile/android/app/build/outputs/apk/debug/app-debug.apk \
+          gh release create "$TAG" "$APK" \
             --repo "$GITHUB_REPOSITORY" \
             --title "Subastas del Campo $TAG" \
-            --notes "APK de prueba para Android. Es una app contenedora que carga el prototipo web hospedado en Render; requiere internet. Ofertas, tokens, perfiles y publicaciones siguen en modo demostración local." \
-            --latest=false || gh release upload "$TAG" mobile/android/app/build/outputs/apk/debug/app-debug.apk \
-            --repo "$GITHUB_REPOSITORY" --clobber
-
+            --notes "Aplicación Android nativa de demostración. No usa WebView. Los datos permanecen en el dispositivo hasta integrar el backend compartido." \
+            --latest=false || gh release upload "$TAG" "$APK" --repo "$GITHUB_REPOSITORY" --clobber

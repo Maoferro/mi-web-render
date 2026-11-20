@@ -1,27 +1,34 @@
-# App Android de prueba
+# App de Subastas del Campo
 
-Este proyecto genera un APK de prueba de **Subastas del Campo**. La app abre la versión web hospedada en Render dentro de una WebView y necesita conexión a internet. El selector de archivos permite elegir fotos para publicaciones.
+## Aplicación móvil
 
-El APK es una vista móvil del prototipo web, no un backend nativo. Las pujas, perfiles, tokens y publicaciones continúan siendo una demostración guardada localmente en el navegador/WebView.
+El código compartido de la app está en `mobile/flutter`. Está hecho con Flutter y muestra su interfaz desde código móvil; no carga la web en un WebView. El mismo código Dart sirve como base para Android e iOS.
 
-## Descargar APK
+El APK que compila `.github/workflows/build-android-apk.yml` usa esta app Flutter. El anterior APK basado en WebView fue retirado para evitar confundirlo con la app móvil nativa.
 
-Cuando se ejecute la acción de GitHub, el APK aparecerá en la sección **Releases** del repositorio. La acción se puede ejecutar desde GitHub → Actions → **Build Android preview APK** → Run workflow.
+## Alcance de esta versión
 
-## Compilar localmente
+Esta es una demostración interactiva de un solo dispositivo. Se puede crear un perfil de prueba, explorar y filtrar subastas, revisar el reloj y las cinco ofertas más altas, publicar como productor, ofertar con la regla de un token por subasta y administrar el saldo de demostración. Las publicaciones, los perfiles, los tokens y las ofertas se guardan localmente y no se comparten entre teléfonos.
 
-Se requiere Java 17, Android SDK Platform 35, Build Tools 35.0.0 y Gradle 8.7:
+El saldo de prueba no cobra dinero. Esta versión tampoco valida cédulas ni reconocimiento facial, no procesa pagos, no envía notificaciones entre usuarios y no ofrece una conexión real entre comprador y vendedor. No usar datos personales reales ni tomar decisiones comerciales basadas en esta demo.
+
+## Preparar el proyecto local
+
+Instala Flutter y Android Studio con el SDK de Android. Después:
 
 ```powershell
-gradle --no-daemon -p mobile/android assembleDebug
+cd mobile/flutter
+flutter create --platforms=android,ios --org co.fumigo --project-name subastas_del_campo .
+flutter pub get
+flutter run
 ```
 
-Salida: `mobile/android/app/build/outputs/apk/debug/app-debug.apk`.
+El comando genera los proyectos nativos Android e iOS alrededor del código Flutter. En macOS se puede compilar y firmar iOS con Xcode; para distribuir por TestFlight o App Store se necesitan la cuenta y el proceso de Apple.
 
-## iOS y una misma base para ambas plataformas
+## Generar APK desde GitHub
 
-La web alojada es la base compartida. El APK Android actual abre esa web en una WebView, así que sus cambios de interfaz aparecen al conectarse a Render; solo hay que reconstruir el APK cuando cambie el contenedor nativo.
+Cada actualización del código Flutter genera un APK instalable como artefacto de GitHub Actions. El workflow también permite crear un Release manual ingresando una etiqueta. Es una versión de prueba sin firma de publicación de Play Store.
 
-Para iPhone se puede añadir un contenedor iOS (por ejemplo, Capacitor) que cargue la misma app. El proyecto iOS se debe compilar y firmar con Xcode en macOS. Para probar en un dispositivo personal se puede usar Xcode; para distribuir por TestFlight o App Store se necesita una membresía del Apple Developer Program y el flujo de revisión de Apple. No es posible producir el paquete iOS firmado desde este equipo Windows.
+## Próxima etapa antes de operar
 
-Antes de publicar cualquiera de las dos apps para usuarios reales, se debe conectar el backend seguro de Supabase: el estado actual de perfiles, tokens, ofertas y publicaciones sigue siendo local a cada navegador o instalación.
+Conectar autenticación, subastas en tiempo real, tokens, cierre y permisos administrativos a Supabase mediante políticas de servidor y RLS. Luego integrar el pago real y diseñar el flujo de privacidad/verificación antes de solicitar documentos de identidad. Render sigue alojando la página web; no es el backend de esta aplicación móvil.
