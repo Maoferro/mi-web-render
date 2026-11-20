@@ -4,11 +4,13 @@
 
 El código compartido de la app está en `mobile/flutter`. Está hecho con Flutter y muestra su interfaz desde código móvil; no carga la web en un WebView. El mismo código Dart sirve como base para Android e iOS.
 
-El APK que compila `.github/workflows/build-android-apk.yml` usa esta app Flutter. El anterior APK basado en WebView fue retirado para evitar confundirlo con la app móvil nativa.
+El APK que compila `.github/workflows/build-android-apk.yml` usa esta app Flutter y el icono propio de Subastas del Campo. El anterior APK basado en WebView fue retirado para evitar confundirlo con la app móvil nativa.
 
 ## Alcance de esta versión
 
-Esta es una demostración interactiva de un solo dispositivo. Se puede crear un perfil de prueba, explorar y filtrar subastas, revisar el reloj y las cinco ofertas más altas, publicar como productor, ofertar con la regla de un token por subasta y administrar el saldo de demostración. Las publicaciones, los perfiles, los tokens y las ofertas se guardan localmente y no se comparten entre teléfonos.
+La interfaz móvil nativa cubre los principales recorridos de la web: mercado con búsqueda tolerante a tildes, filtros por ubicación/categoría y orden, detalle con cronómetro semáforo, gráfico y cinco mejores ofertas, publicación de producto individual o paquete con foto, alcance geográfico y reglas de cierre, ofertas con token único por subasta, favoritos, actividad del comprador/vendedor, conversación habilitada al ganador, confirmación de entrega y calificación, reglas y saldo con checkout simulado.
+
+Sigue siendo una demostración de un solo dispositivo. Perfiles, lotes, fotos, chats y ofertas se guardan localmente y no se comparten entre teléfonos. La simulación de Nequi/DaviPlata/PSE no cobra; no existe verificación de identidad, push, moderación de cuentas ni panel de superadministrador seguro. Estos servicios necesitan backend y autenticación real. La calificación se guarda como evento local; la app no puede congelar o expulsar cuentas de forma segura sin revisión/servidor.
 
 El saldo de prueba no cobra dinero. Esta versión tampoco valida cédulas ni reconocimiento facial, no procesa pagos, no envía notificaciones entre usuarios y no ofrece una conexión real entre comprador y vendedor. No usar datos personales reales ni tomar decisiones comerciales basadas en esta demo.
 
