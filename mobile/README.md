@@ -14,20 +14,19 @@ El saldo de prueba no cobra dinero. Esta versión tampoco valida cédulas ni rec
 
 ## Preparar el proyecto local
 
-Instala Flutter y Android Studio con el SDK de Android. Después:
+Los archivos nativos de Android ya están en `mobile/flutter/android`. Instala Flutter y Android Studio con el SDK de Android; luego ejecuta:
 
 ```powershell
 cd mobile/flutter
-flutter create --platforms=android,ios --org co.fumigo --project-name subastas_del_campo .
 flutter pub get
 flutter run
 ```
 
-El comando genera los proyectos nativos Android e iOS alrededor del código Flutter. En macOS se puede compilar y firmar iOS con Xcode; para distribuir por TestFlight o App Store se necesitan la cuenta y el proceso de Apple.
+En macOS, Flutter puede generar la plataforma iOS alrededor del mismo código con `flutter create --platforms=ios --org co.fumigo --project-name subastas_del_campo .` y compilarla con Xcode. Para distribuir por TestFlight o App Store se necesitan la cuenta y el proceso de Apple.
 
 ## Generar APK desde GitHub
 
-Cada actualización del código Flutter genera un APK instalable como artefacto de GitHub Actions. El workflow también permite crear un Release manual ingresando una etiqueta. Es una versión de prueba sin firma de publicación de Play Store.
+Cada actualización del código Flutter genera un APK instalable como artefacto de GitHub Actions desde el proyecto ubicado en esta carpeta. El workflow también permite crear un Release manual ingresando una etiqueta. Es una versión de prueba sin firma de publicación de Play Store.
 
 ## Próxima etapa antes de operar
 

@@ -26,16 +26,8 @@ jobs:
         with:
           channel: stable
           cache: true
-      - name: Generate Android platform project
-        run: flutter create --platforms=android --org co.fumigo --project-name subastas_del_campo --empty "$RUNNER_TEMP/subastas_del_campo"
-      - name: Add shared Flutter app source
-        run: |
-          cp mobile/flutter/pubspec.yaml "$RUNNER_TEMP/subastas_del_campo/pubspec.yaml"
-          rm -rf "$RUNNER_TEMP/subastas_del_campo/lib"
-          cp -R mobile/flutter/lib "$RUNNER_TEMP/subastas_del_campo/lib"
-          sed -i 's/android:label="subastas_del_campo"/android:label="Subastas del Campo"/' "$RUNNER_TEMP/subastas_del_campo/android/app/src/main/AndroidManifest.xml"
       - name: Build Android APK
-        working-directory: ${{ runner.temp }}/subastas_del_campo
+        working-directory: mobile/flutter
         run: |
           flutter pub get
           flutter build apk --release
@@ -43,20 +35,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: subastas-del-campo-android
-          path: ${{ runner.temp }}/subastas_del_campo/build/app/outputs/flutter-apk/app-release.apk
-          if-no-files-found: error
-          retention-days: 30
-      - name: Prepare Android platform files
-        run: |
-          rm -rf "$RUNNER_TEMP/subastas_del_campo/android/.gradle" \
-            "$RUNNER_TEMP/subastas_del_campo/android/build" \
-            "$RUNNER_TEMP/subastas_del_campo/android/app/build"
-          rm -f "$RUNNER_TEMP/subastas_del_campo/android/local.properties"
-      - name: Upload Android platform project
-        uses: actions/upload-artifact@v4
-        with:
-          name: subastas-del-campo-android-platform
-          path: ${{ runner.temp }}/subastas_del_campo/android
+          path: mobile/flutter/build/app/outputs/flutter-apk/app-release.apk
           if-no-files-found: error
           retention-days: 30
       - name: Publish APK release
@@ -64,7 +43,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag }}
-          APK: ${{ runner.temp }}/subastas_del_campo/build/app/outputs/flutter-apk/app-release.apk
+          APK: ${{ github.workspace }}/mobile/flutter/build/app/outputs/flutter-apk/app-release.apk
         run: |
           gh release create "$TAG" "$APK" \
             --repo "$GITHUB_REPOSITORY" \

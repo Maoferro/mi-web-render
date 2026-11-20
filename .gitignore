@@ -1,0 +1,8 @@
+/mobile/android/
+/mobile/downloads/*.apk
+/mobile/flutter/.dart_tool/
+/mobile/flutter/build/
+/mobile/flutter/.flutter-plugins
+/mobile/flutter/.flutter-plugins-dependencies
+/mobile/flutter/android/.gradle/
+/mobile/flutter/android/local.properties
